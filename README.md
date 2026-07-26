@@ -2,37 +2,42 @@
 
 > Every number traceable. Every valuation explainable.
 
-Equity Research Terminal is an auditable equity research platform that transforms financial filings into transparent analysis and intrinsic valuation.
+## Functional Prototype v0.2
 
-## Preview v0.1
+This version adds:
 
-This first static preview includes:
-
-- Alphabet dashboard
-- DCF calculator
+- Ticker switching between GOOG, MSFT and META
+- Dashboard
+- Income statement
+- Balance sheet
+- Cash flow statement
+- Growth analysis
+- Margin analysis
+- ROIC, ROE and ROA
+- Business quality score
+- Reported FCF
+- SBC-adjusted FCF
+- Owner earnings
+- CapEx classification
+- Capital allocation analysis
+- DCF
 - Reverse DCF
-- Five-year financial summary
-- Fact / assumption / calculation separation
-- Expandable valuation explanation
-
-## Open locally
-
-Download the files and double-click `index.html`.
-
-No installation or local server is required.
-
-## GitHub Pages
-
-After uploading these files to the root of the repository:
-
-1. Open **Settings**
-2. Select **Pages**
-3. Under **Build and deployment**, choose **Deploy from a branch**
-4. Select the `main` branch and `/ (root)`
-5. Click **Save**
-
-GitHub will create a public website URL.
+- Bull / Base / Bear scenarios
+- WACC × terminal-growth sensitivity table
+- Audit trail
 
 ## Important
 
-The figures in Preview v0.1 are illustrative demo data. They are not live SEC data, verified financial results, or investment advice.
+The financial and market figures in v0.2 are illustrative demonstration datasets. They are not live SEC data, verified company results or investment advice.
+
+## Deploy
+
+Upload these files to the root of the GitHub repository and replace the previous files:
+
+- index.html
+- styles.css
+- data.js
+- script.js
+- README.md
+
+GitHub Pages will redeploy automatically after the commit.

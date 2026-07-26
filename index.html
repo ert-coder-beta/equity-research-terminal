@@ -4,250 +4,235 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Equity Research Terminal — Every number traceable. Every valuation explainable." />
-  <title>Equity Research Terminal</title>
+  <title>Equity Research Terminal v0.2</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
-    <div>
-      <h1>Equity Research Terminal</h1>
-      <p>Every number traceable. Every valuation explainable.</p>
+    <div class="brand-wrap">
+      <div class="brand">Equity Research Terminal</div>
+      <div class="tagline">Every number traceable. Every valuation explainable.</div>
     </div>
-    <span class="version">Preview v0.1</span>
+    <div class="top-actions">
+      <label class="ticker-control">
+        <span>Ticker</span>
+        <select id="tickerSelect">
+          <option value="GOOG">GOOG — Alphabet</option>
+          <option value="MSFT">MSFT — Microsoft</option>
+          <option value="META">META — Meta Platforms</option>
+        </select>
+      </label>
+      <span class="version">Functional Prototype v0.2</span>
+    </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div>
-        <span class="eyebrow">COMPANY OVERVIEW</span>
-        <h2>Alphabet Inc. <span>GOOG</span></h2>
-        <p>
-          Research is not about predicting the future. It is about understanding
-          what today’s price already assumes.
-        </p>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <button class="nav-item active" data-view="dashboard">Dashboard</button>
+      <button class="nav-item" data-view="financials">Financials</button>
+      <button class="nav-item" data-view="growth">Growth & Margins</button>
+      <button class="nav-item" data-view="returns">Returns & Quality</button>
+      <button class="nav-item" data-view="cashflow">Cash Flow</button>
+      <button class="nav-item" data-view="capital">Capital Allocation</button>
+      <button class="nav-item" data-view="valuation">Valuation</button>
+      <button class="nav-item" data-view="audit">Audit Trail</button>
+    </aside>
+
+    <main class="content">
+      <div class="notice">
+        v0.2 uses internal demonstration datasets for GOOG, MSFT and META. Figures are illustrative and are not live SEC or market data.
       </div>
-      <div class="price-box">
-        <span>Current price</span>
-        <strong id="currentPrice">$185.00</strong>
-        <small>Manual preview input</small>
-      </div>
-    </section>
 
-    <section class="kpi-grid">
-      <article class="card">
-        <span class="label">Intrinsic value</span>
-        <strong id="intrinsicValue">$203.14</strong>
-        <small>Base-case DCF</small>
-      </article>
-      <article class="card">
-        <span class="label">Margin of safety</span>
-        <strong id="marginSafety" class="positive">8.9%</strong>
-        <small>Price vs intrinsic value</small>
-      </article>
-      <article class="card">
-        <span class="label">Revenue</span>
-        <strong>$350.0B</strong>
-        <small class="positive">+12.4% YoY</small>
-      </article>
-      <article class="card">
-        <span class="label">Free cash flow</span>
-        <strong>$74.0B</strong>
-        <small>21.1% FCF margin</small>
-      </article>
-    </section>
-
-    <section class="layout">
-      <article class="panel">
-        <div class="panel-heading">
+      <section id="dashboard" class="view active">
+        <div class="company-hero">
           <div>
-            <span class="eyebrow">VALUATION</span>
-            <h3>DCF assumptions</h3>
+            <span class="eyebrow">COMPANY OVERVIEW</span>
+            <h1><span id="companyName">Alphabet Inc.</span> <small id="companyTicker">GOOG</small></h1>
+            <p id="companyDescription">Search, advertising, cloud, YouTube and other technology businesses.</p>
           </div>
-          <span class="pill assumption">ASSUMPTION</span>
-        </div>
-
-        <div class="form-grid">
-          <label>
-            Current price ($)
-            <input id="price" type="number" value="185" step="0.01" />
-          </label>
-          <label>
-            Base FCF ($B)
-            <input id="fcf" type="number" value="74" step="0.1" />
-          </label>
-          <label>
-            Net cash ($B)
-            <input id="netCash" type="number" value="98" step="0.1" />
-          </label>
-          <label>
-            Shares outstanding (B)
-            <input id="shares" type="number" value="12.2" step="0.1" />
-          </label>
-          <label>
-            FCF growth, years 1–5 (%)
-            <input id="growth" type="number" value="8" step="0.1" />
-          </label>
-          <label>
-            WACC (%)
-            <input id="wacc" type="number" value="8.5" step="0.1" />
-          </label>
-          <label>
-            Terminal growth (%)
-            <input id="terminalGrowth" type="number" value="2.5" step="0.1" />
-          </label>
-          <label>
-            Valuation basis
-            <select id="valuationBasis">
-              <option value="74">Reported FCF</option>
-              <option value="50">SBC-adjusted FCF</option>
-              <option value="61">Owner Earnings</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="valuation-result">
-          <span>Estimated intrinsic value per share</span>
-          <strong id="dcfResult">$203.14</strong>
-          <small id="valuationRange">Indicative range: $177–$235</small>
-        </div>
-
-        <details>
-          <summary>Explain this valuation</summary>
-          <pre id="explanation"></pre>
-        </details>
-      </article>
-
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <span class="eyebrow">MARKET EXPECTATIONS</span>
-            <h3>Reverse DCF</h3>
-          </div>
-          <span class="pill calculation">CALCULATION</span>
-        </div>
-
-        <p class="muted">
-          The reverse DCF solves for the FCF growth rate required to justify the
-          current market price.
-        </p>
-
-        <div class="reverse-result">
-          <span>Market-implied FCF growth</span>
-          <strong id="reverseGrowth">6.7%</strong>
-          <small>Using the same WACC and terminal-growth assumptions.</small>
-        </div>
-
-        <div class="comparison">
-          <div>
-            <span>Your base case</span>
-            <strong id="baseCaseGrowth">8.0%</strong>
-          </div>
-          <div>
-            <span>Expectation gap</span>
-            <strong id="expectationGap" class="positive">+1.3%</strong>
+          <div class="market-card">
+            <span>Current price</span>
+            <strong id="dashboardPrice">$185.00</strong>
+            <small>Manual demo market input</small>
           </div>
         </div>
 
-        <blockquote>
-          The market sets the price. Research explains the price. Conviction
-          comes from understanding the difference.
-        </blockquote>
-      </article>
-    </section>
-
-    <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <span class="eyebrow">FINANCIAL HISTORY</span>
-          <h3>Five-year financial summary</h3>
+        <div class="kpi-grid six">
+          <article class="card"><span class="label">Intrinsic value</span><strong id="dashboardIntrinsic">$139.20</strong><small>Base-case DCF</small></article>
+          <article class="card"><span class="label">Margin of safety</span><strong id="dashboardMos" class="negative">-32.9%</strong><small>Price vs intrinsic value</small></article>
+          <article class="card"><span class="label">Revenue</span><strong id="dashboardRevenue">$350.0B</strong><small id="dashboardRevenueGrowth" class="positive">+7.6% YoY</small></article>
+          <article class="card"><span class="label">Free cash flow</span><strong id="dashboardFcf">$74.0B</strong><small id="dashboardFcfMargin">21.1% margin</small></article>
+          <article class="card"><span class="label">ROIC</span><strong id="dashboardRoic">24.5%</strong><small>Formula-driven</small></article>
+          <article class="card"><span class="label">Business quality</span><strong id="dashboardQuality">9.1 / 10</strong><small>Growth, returns, balance sheet</small></article>
         </div>
-        <span class="pill fact">DEMO FACT</span>
-      </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>USD billions</th>
-              <th>2021</th>
-              <th>2022</th>
-              <th>2023</th>
-              <th>2024</th>
-              <th>2025</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Revenue</td>
-              <td>257.6</td>
-              <td>282.8</td>
-              <td>307.4</td>
-              <td>325.2</td>
-              <td>350.0</td>
-            </tr>
-            <tr>
-              <td>Operating income</td>
-              <td>78.7</td>
-              <td>74.8</td>
-              <td>84.3</td>
-              <td>104.0</td>
-              <td>118.0</td>
-            </tr>
-            <tr>
-              <td>Operating cash flow</td>
-              <td>91.7</td>
-              <td>91.5</td>
-              <td>101.7</td>
-              <td>118.0</td>
-              <td>126.0</td>
-            </tr>
-            <tr>
-              <td>Capital expenditure</td>
-              <td>24.6</td>
-              <td>31.5</td>
-              <td>32.3</td>
-              <td>48.0</td>
-              <td>52.0</td>
-            </tr>
-            <tr>
-              <td>Free cash flow</td>
-              <td>67.0</td>
-              <td>60.0</td>
-              <td>69.5</td>
-              <td>70.0</td>
-              <td>74.0</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><div><span class="eyebrow">HISTORICAL TREND</span><h2>Revenue and FCF</h2></div><span class="pill fact">DEMO FACT</span></div>
+            <div class="chart-wrap"><svg id="dashboardChart" viewBox="0 0 760 300"></svg></div>
+            <div class="legend"><span><i class="dot revenue"></i>Revenue</span><span><i class="dot fcf"></i>Free cash flow</span></div>
+          </article>
 
-    <section class="audit-grid">
-      <article class="panel compact">
-        <span class="eyebrow">DATA TYPE</span>
-        <h3>Fact</h3>
-        <p>Reported financial values will link back to SEC filings and XBRL tags.</p>
-      </article>
-      <article class="panel compact">
-        <span class="eyebrow">DATA TYPE</span>
-        <h3>Assumption</h3>
-        <p>User-defined growth, WACC, terminal growth and maintenance CapEx.</p>
-      </article>
-      <article class="panel compact">
-        <span class="eyebrow">DATA TYPE</span>
-        <h3>Calculation</h3>
-        <p>Every formula can be expanded and reproduced.</p>
-      </article>
-    </section>
+          <article class="panel">
+            <div class="panel-heading"><div><span class="eyebrow">MARKET EXPECTATIONS</span><h2>Reverse DCF summary</h2></div><span class="pill calculation">CALCULATION</span></div>
+            <div class="summary-list">
+              <div><span>Market-implied FCF growth</span><strong id="dashboardImplied">15.3%</strong></div>
+              <div><span>Your base-case growth</span><strong id="dashboardBaseGrowth">8.0%</strong></div>
+              <div><span>Expectation gap</span><strong id="dashboardGap" class="negative">-7.3%</strong></div>
+              <div><span>Valuation status</span><strong id="dashboardStatus" class="negative">Above base-case value</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-    <footer>
-      <p>
-        Offline product preview. Demo figures are illustrative and are not live,
-        verified financial data or investment advice.
-      </p>
-    </footer>
-  </main>
+      <section id="financials" class="view">
+        <div class="page-heading"><div><span class="eyebrow">FINANCIAL STATEMENTS</span><h1>Annual financials</h1></div><span class="pill fact">DEMO SEC-STYLE FACTS</span></div>
+        <div class="tabs" id="statementTabs">
+          <button class="active" data-statement="incomeStatement">Income Statement</button>
+          <button data-statement="balanceSheet">Balance Sheet</button>
+          <button data-statement="cashFlowStatement">Cash Flow Statement</button>
+        </div>
+        <article class="panel">
+          <div class="table-wrap"><table id="financialTable"></table></div>
+        </article>
+      </section>
 
+      <section id="growth" class="view">
+        <div class="page-heading"><div><span class="eyebrow">OPERATING PERFORMANCE</span><h1>Growth & margins</h1></div></div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><h2>Growth analysis</h2><span class="pill calculation">CALCULATION</span></div>
+            <div class="table-wrap"><table id="growthTable"></table></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><h2>Margin analysis</h2><span class="pill calculation">CALCULATION</span></div>
+            <div class="table-wrap"><table id="marginTable"></table></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="returns" class="view">
+        <div class="page-heading"><div><span class="eyebrow">QUALITY OF ECONOMICS</span><h1>Returns & quality</h1></div></div>
+        <div class="kpi-grid four">
+          <article class="card"><span class="label">ROIC</span><strong id="returnsRoic">24.5%</strong><small>NOPAT / invested capital</small></article>
+          <article class="card"><span class="label">ROE</span><strong id="returnsRoe">29.7%</strong><small>Net income / equity</small></article>
+          <article class="card"><span class="label">ROA</span><strong id="returnsRoa">21.1%</strong><small>Net income / assets</small></article>
+          <article class="card"><span class="label">FCF conversion</span><strong id="returnsConversion">71.8%</strong><small>FCF / net income</small></article>
+        </div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><h2>Business quality score</h2><span class="pill calculation">FORMULA-DRIVEN</span></div>
+            <div id="qualityBreakdown" class="score-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><h2>Formula explanation</h2></div>
+            <details open><summary>ROIC</summary><pre id="roicExplain"></pre></details>
+            <details><summary>ROE</summary><pre id="roeExplain"></pre></details>
+            <details><summary>ROA</summary><pre id="roaExplain"></pre></details>
+          </article>
+        </div>
+      </section>
+
+      <section id="cashflow" class="view">
+        <div class="page-heading"><div><span class="eyebrow">CASH GENERATION</span><h1>Cash flow analysis</h1></div></div>
+        <div class="kpi-grid four">
+          <article class="card"><span class="label">Reported FCF</span><strong id="reportedFcf">$74.0B</strong><small>OCF − total CapEx</small></article>
+          <article class="card"><span class="label">SBC-adjusted FCF</span><strong id="sbcAdjustedFcf">$50.0B</strong><small>Reported FCF − SBC</small></article>
+          <article class="card"><span class="label">Owner earnings</span><strong id="ownerEarnings">$61.0B</strong><small>OCF − maintenance CapEx − SBC</small></article>
+          <article class="card"><span class="label">FCF margin</span><strong id="cashflowMargin">21.1%</strong><small>FCF / revenue</small></article>
+        </div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><h2>Five-year cash flow history</h2></div>
+            <div class="table-wrap"><table id="cashflowAnalysisTable"></table></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><h2>CapEx classification</h2><span class="pill assumption">ASSUMPTION</span></div>
+            <div class="summary-list">
+              <div><span>Reported CapEx</span><strong id="capexReported">$52.0B</strong></div>
+              <div><span>Maintenance CapEx</span><strong id="capexMaintenance">$13.0B</strong></div>
+              <div><span>Growth CapEx</span><strong id="capexGrowth">$39.0B</strong></div>
+              <div><span>AI / infrastructure estimate</span><strong id="capexAi">$31.0B</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="capital" class="view">
+        <div class="page-heading"><div><span class="eyebrow">CAPITAL ALLOCATION</span><h1>Buybacks, SBC and reinvestment</h1></div></div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><h2>Capital allocation history</h2></div>
+            <div class="table-wrap"><table id="capitalTable"></table></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><h2>Latest-year allocation</h2></div>
+            <div id="capitalBars" class="bar-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="valuation" class="view">
+        <div class="page-heading"><div><span class="eyebrow">VALUATION ENGINE</span><h1>DCF, reverse DCF and scenarios</h1></div></div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-heading"><h2>DCF assumptions</h2><span class="pill assumption">USER ASSUMPTIONS</span></div>
+            <div class="form-grid">
+              <label>Current price ($)<input id="priceInput" type="number" step="0.01"></label>
+              <label>Shares outstanding (B)<input id="sharesInput" type="number" step="0.1"></label>
+              <label>Base FCF ($B)<input id="fcfInput" type="number" step="0.1"></label>
+              <label>Net cash ($B)<input id="netCashInput" type="number" step="0.1"></label>
+              <label>FCF growth, years 1–5 (%)<input id="growthInput" type="number" step="0.1"></label>
+              <label>WACC (%)<input id="waccInput" type="number" step="0.1"></label>
+              <label>Terminal growth (%)<input id="terminalInput" type="number" step="0.1"></label>
+              <label>Valuation basis
+                <select id="basisInput">
+                  <option value="reported">Reported FCF</option>
+                  <option value="sbcAdjusted">SBC-adjusted FCF</option>
+                  <option value="ownerEarnings">Owner Earnings</option>
+                </select>
+              </label>
+            </div>
+            <div class="valuation-result"><span>Intrinsic value per share</span><strong id="valuationResult">$139.20</strong><small id="valuationRange">Indicative range</small></div>
+            <details><summary>Explain valuation</summary><pre id="valuationExplain"></pre></details>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading"><h2>Reverse DCF</h2><span class="pill calculation">MARKET-IMPLIED</span></div>
+            <div class="reverse-result"><span>Implied FCF growth</span><strong id="reverseResult">15.3%</strong><small>Growth needed to justify current price</small></div>
+            <div class="comparison">
+              <div><span>Your base case</span><strong id="reverseBase">8.0%</strong></div>
+              <div><span>Expectation gap</span><strong id="reverseGap" class="negative">-7.3%</strong></div>
+            </div>
+            <blockquote>The market sets the price. Research explains the price. Conviction comes from understanding the difference.</blockquote>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading"><h2>Bull / Base / Bear scenarios</h2><span class="pill calculation">SCENARIO ENGINE</span></div>
+          <div class="scenario-grid" id="scenarioGrid"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading"><h2>WACC × terminal growth sensitivity</h2><span class="pill calculation">SENSITIVITY</span></div>
+          <div class="table-wrap"><table id="sensitivityTable"></table></div>
+        </article>
+      </section>
+
+      <section id="audit" class="view">
+        <div class="page-heading"><div><span class="eyebrow">TRACEABILITY</span><h1>Audit trail</h1></div></div>
+        <article class="panel">
+          <div class="audit-head"><span>Metric</span><span>Source / XBRL tag</span><span>Period</span><span>Status</span></div>
+          <div id="auditRows"></div>
+          <details open><summary>Balance-sheet validation</summary><pre id="balanceValidation"></pre></details>
+        </article>
+      </section>
+
+      <footer>Functional prototype only. Demo data are illustrative and are not live SEC data, verified financial results or investment advice.</footer>
+    </main>
+  </div>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
