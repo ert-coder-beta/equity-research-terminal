@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Equity Research Terminal — Every number traceable. Every valuation explainable." />
+  <title>Equity Research Terminal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Equity Research Terminal</h1>
+      <p>Every number traceable. Every valuation explainable.</p>
+    </div>
+    <span class="version">Preview v0.1</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">COMPANY OVERVIEW</span>
+        <h2>Alphabet Inc. <span>GOOG</span></h2>
+        <p>
+          Research is not about predicting the future. It is about understanding
+          what today’s price already assumes.
+        </p>
+      </div>
+      <div class="price-box">
+        <span>Current price</span>
+        <strong id="currentPrice">$185.00</strong>
+        <small>Manual preview input</small>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="card">
+        <span class="label">Intrinsic value</span>
+        <strong id="intrinsicValue">$203.14</strong>
+        <small>Base-case DCF</small>
+      </article>
+      <article class="card">
+        <span class="label">Margin of safety</span>
+        <strong id="marginSafety" class="positive">8.9%</strong>
+        <small>Price vs intrinsic value</small>
+      </article>
+      <article class="card">
+        <span class="label">Revenue</span>
+        <strong>$350.0B</strong>
+        <small class="positive">+12.4% YoY</small>
+      </article>
+      <article class="card">
+        <span class="label">Free cash flow</span>
+        <strong>$74.0B</strong>
+        <small>21.1% FCF margin</small>
+      </article>
+    </section>
+
+    <section class="layout">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">VALUATION</span>
+            <h3>DCF assumptions</h3>
+          </div>
+          <span class="pill assumption">ASSUMPTION</span>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Current price ($)
+            <input id="price" type="number" value="185" step="0.01" />
+          </label>
+          <label>
+            Base FCF ($B)
+            <input id="fcf" type="number" value="74" step="0.1" />
+          </label>
+          <label>
+            Net cash ($B)
+            <input id="netCash" type="number" value="98" step="0.1" />
+          </label>
+          <label>
+            Shares outstanding (B)
+            <input id="shares" type="number" value="12.2" step="0.1" />
+          </label>
+          <label>
+            FCF growth, years 1–5 (%)
+            <input id="growth" type="number" value="8" step="0.1" />
+          </label>
+          <label>
+            WACC (%)
+            <input id="wacc" type="number" value="8.5" step="0.1" />
+          </label>
+          <label>
+            Terminal growth (%)
+            <input id="terminalGrowth" type="number" value="2.5" step="0.1" />
+          </label>
+          <label>
+            Valuation basis
+            <select id="valuationBasis">
+              <option value="74">Reported FCF</option>
+              <option value="50">SBC-adjusted FCF</option>
+              <option value="61">Owner Earnings</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="valuation-result">
+          <span>Estimated intrinsic value per share</span>
+          <strong id="dcfResult">$203.14</strong>
+          <small id="valuationRange">Indicative range: $177–$235</small>
+        </div>
+
+        <details>
+          <summary>Explain this valuation</summary>
+          <pre id="explanation"></pre>
+        </details>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">MARKET EXPECTATIONS</span>
+            <h3>Reverse DCF</h3>
+          </div>
+          <span class="pill calculation">CALCULATION</span>
+        </div>
+
+        <p class="muted">
+          The reverse DCF solves for the FCF growth rate required to justify the
+          current market price.
+        </p>
+
+        <div class="reverse-result">
+          <span>Market-implied FCF growth</span>
+          <strong id="reverseGrowth">6.7%</strong>
+          <small>Using the same WACC and terminal-growth assumptions.</small>
+        </div>
+
+        <div class="comparison">
+          <div>
+            <span>Your base case</span>
+            <strong id="baseCaseGrowth">8.0%</strong>
+          </div>
+          <div>
+            <span>Expectation gap</span>
+            <strong id="expectationGap" class="positive">+1.3%</strong>
+          </div>
+        </div>
+
+        <blockquote>
+          The market sets the price. Research explains the price. Conviction
+          comes from understanding the difference.
+        </blockquote>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">FINANCIAL HISTORY</span>
+          <h3>Five-year financial summary</h3>
+        </div>
+        <span class="pill fact">DEMO FACT</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>USD billions</th>
+              <th>2021</th>
+              <th>2022</th>
+              <th>2023</th>
+              <th>2024</th>
+              <th>2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Revenue</td>
+              <td>257.6</td>
+              <td>282.8</td>
+              <td>307.4</td>
+              <td>325.2</td>
+              <td>350.0</td>
+            </tr>
+            <tr>
+              <td>Operating income</td>
+              <td>78.7</td>
+              <td>74.8</td>
+              <td>84.3</td>
+              <td>104.0</td>
+              <td>118.0</td>
+            </tr>
+            <tr>
+              <td>Operating cash flow</td>
+              <td>91.7</td>
+              <td>91.5</td>
+              <td>101.7</td>
+              <td>118.0</td>
+              <td>126.0</td>
+            </tr>
+            <tr>
+              <td>Capital expenditure</td>
+              <td>24.6</td>
+              <td>31.5</td>
+              <td>32.3</td>
+              <td>48.0</td>
+              <td>52.0</td>
+            </tr>
+            <tr>
+              <td>Free cash flow</td>
+              <td>67.0</td>
+              <td>60.0</td>
+              <td>69.5</td>
+              <td>70.0</td>
+              <td>74.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="audit-grid">
+      <article class="panel compact">
+        <span class="eyebrow">DATA TYPE</span>
+        <h3>Fact</h3>
+        <p>Reported financial values will link back to SEC filings and XBRL tags.</p>
+      </article>
+      <article class="panel compact">
+        <span class="eyebrow">DATA TYPE</span>
+        <h3>Assumption</h3>
+        <p>User-defined growth, WACC, terminal growth and maintenance CapEx.</p>
+      </article>
+      <article class="panel compact">
+        <span class="eyebrow">DATA TYPE</span>
+        <h3>Calculation</h3>
+        <p>Every formula can be expanded and reproduced.</p>
+      </article>
+    </section>
+
+    <footer>
+      <p>
+        Offline product preview. Demo figures are illustrative and are not live,
+        verified financial data or investment advice.
+      </p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
