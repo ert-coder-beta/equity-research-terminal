@@ -1,43 +1,32 @@
-# Equity Research Terminal
+# Equity Research Terminal — Milestone 1
 
-> Every number traceable. Every valuation explainable.
+Every number traceable. Every valuation explainable.
 
-## Functional Prototype v0.2
+This is the first durable foundation build. It deploys on GitHub Pages without a paid service or build pipeline.
 
-This version adds:
+## Included
 
-- Ticker switching between GOOG, MSFT and META
-- Dashboard
-- Income statement
-- Balance sheet
-- Cash flow statement
-- Growth analysis
-- Margin analysis
-- ROIC, ROE and ROA
-- Business quality score
-- Reported FCF
-- SBC-adjusted FCF
-- Owner earnings
-- CapEx classification
-- Capital allocation analysis
-- DCF
-- Reverse DCF
-- Bull / Base / Bear scenarios
-- WACC × terminal-growth sensitivity table
-- Audit trail
+- Modular project structure
+- Responsive research-terminal interface
+- Company switching for GOOG, MSFT and META
+- Overview dashboard
+- Three financial statement views
+- Initial audit interaction
+- Browser-local research notes
+- Product documentation
+- GitHub Pages workflow
 
-## Important
+## Data notice
 
-The financial and market figures in v0.2 are illustrative demonstration datasets. They are not live SEC data, verified company results or investment advice.
+All financial and market data in this milestone is sample data for interface development. It is not yet connected to live SEC or market-data services.
 
-## Deploy
+## Deploy to GitHub Pages
 
-Upload these files to the root of the GitHub repository and replace the previous files:
+1. Upload all files to the repository root.
+2. Open **Settings → Pages**.
+3. Under **Build and deployment**, choose **GitHub Actions**.
+4. The included workflow publishes the site automatically.
 
-- index.html
-- styles.css
-- data.js
-- script.js
-- README.md
+## Next milestone
 
-GitHub Pages will redeploy automatically after the commit.
+SEC company lookup, CIK mapping, Company Facts ingestion, financial line-item normalisation and real source lineage.
