@@ -1,7 +1,11 @@
-# ERT GOOG Alpha 0.5
+# ERT GOOG Alpha 0.6 Revised
 
-Integrated test build with Overview, full statements, analysis, professional DCF, Market, Evidence Inspector, Report and Disclaimer.
+Revisions:
+- Fully editable WACC breakdown
+- Every WACC component recalculates DCF immediately
+- 5Y average FCF margin shown with yearly margins
+- Market chart includes labelled price axis, time axis, legend, current-price marker and DCF label
+- Report includes star rating, scorecards and valuation chart
+- Sensitivity highlights the cell closest to current price
 
-Data are fixed test data. Not investment advice.
-
-Suggested commit: `Release GOOG Alpha 0.5 integrated research build`
+Fixed test data only. Not investment advice.
