@@ -1,16 +1,7 @@
-# ERT Sprint 2 — GOOG Evidence Engine
+# ERT GOOG Alpha 0.5
 
-Adds a split Source Verification View for Alphabet's 2024 Form 10-K.
+Integrated test build with Overview, full statements, analysis, professional DCF, Market, Evidence Inspector, Report and Disclaimer.
 
-Implemented:
-- Clickable statement rows
-- Exact annual-report page mapping
-- SEC PDF viewer
-- Internal cell IDs
-- XBRL concept display
-- Filing accession metadata
-- Operating-margin formula trace
-- Free-cash-flow formula trace
-- Disclaimer
+Data are fixed test data. Not investment advice.
 
-Commit message: `Sprint 2 - Add GOOG Evidence Engine`
+Suggested commit: `Release GOOG Alpha 0.5 integrated research build`
