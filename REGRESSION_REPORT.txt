@@ -1,4 +1,13 @@
-ERT Alpha 1.4 FORWARD RESEARCH — RELEASE CHECKS
+ERT Alpha 1.4.1 — Refresh Fix
+
+Root cause fixed:
+- /api/all invoked consensusData(ticker) without env.
+- consensusData then attempted env.BUSINESS_QUANT_API_KEY and crashed the whole refresh.
+
+Fixes:
+- Pass env into consensusData.
+- Defensive env={} and optional chaining.
+- Missing BUSINESS_QUANT_API_KEY now returns consensus unavailable instead of failing SEC/market refresh.
 
 PASS frontend_script_0
 PASS frontend_script_1
@@ -6,10 +15,3 @@ PASS frontend_script_2
 PASS frontend_script_3
 PASS frontend_script_4
 PASS worker
-PASS No TTM column in Alpha14 annual statement
-PASS Current-year Actual/Guidance/ERT columns
-PASS Forecast years are FY labels
-PASS Business overview restored in Report
-PASS Report KPI text CSS explicit
-PASS Business Quant Worker adapter
-PASS No demo price target in Alpha14 Market
