@@ -1,19 +1,25 @@
-ERT index(5) Financials Recovery
+ERT index(7) recovery build
 
-Syntax checks:
+Syntax:
 PASS script 0
 PASS script 1
 PASS script 2
 PASS script 3
+PASS script 4
 
-Chromium checks:
-PASS Financials page renders
-PASS Latest live snapshot moved inside Financials
-PASS No separate Current Year tab
-PASS Q1/Q2 columns present
-PASS H1/YTD column present
-PASS Guidance column present
-PASS Consensus column present
-PASS ERT forecast column present
-PASS Old top live anchor not visible
+Chromium interaction:
+PASS Overview valuation multiples present
+PASS P/E inspector formula and inputs
+PASS EV/FCF uses forward forecast FCF
+PASS Valuation forecast engine present
+PASS Report retains/adds Company & business overview
+PASS Report retains/adds Business / revenue mix
+PASS Report retains/adds Three-minute summary
+PASS Report retains/adds Valuation view
+PASS Report retains/adds Market & consensus
+PASS Report retains/adds What to watch next
+PASS Report retains/adds Chart analysis
+PASS Report retains/adds Revenue — historical + ERT forecast
+PASS Report retains/adds Forward FCF
+PASS Old LIVE TTM statement removed
 PASS no non-localStorage runtime errors

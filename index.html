@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.2 FINANCIALS RECOVERY</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.3 FORWARD-VALUATION + REPORT CHARTS</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -1025,6 +1025,246 @@ setTimeout(enhance,0);
     }
     return baseInspector();
   };
+})();
+</script>
+
+
+<style id="index7-recovery-css">
+/* Keep the current report layout; charts are additive. */
+#ertLiveFinancials,#ertLiveStatements{display:none!important}
+.reportAnalysisCharts{margin-top:22px}
+.reportChartGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.reportChartBox{border:1px solid #d9e0e6;border-radius:10px;padding:16px;background:#fff}
+.reportChartBox h3{margin:0 0 8px}
+.reportChartBox svg{width:100%;height:250px;display:block}
+.reportChartNote{font-size:13px;line-height:1.5;color:#24313d;margin-top:10px}
+.reportAxis{stroke:#b8c2cc;stroke-width:1}
+.reportGridline{stroke:#e5e9ed;stroke-width:1}
+.reportActual{fill:none;stroke:#2e7be6;stroke-width:3}
+.reportForecast{fill:none;stroke:#8b5cf6;stroke-width:3;stroke-dasharray:8 5}
+.reportBarA{fill:#2e7be6}.reportBarB{fill:#19a36f}.reportBarC{fill:#d99000}
+.reportLegend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#556573;margin-top:8px}
+.reportLegend i{width:14px;height:3px;display:inline-block;margin-right:5px;vertical-align:middle}
+@media(max-width:950px){.reportChartGrid{grid-template-columns:1fr}}
+</style>
+
+<script id="index7-recovery-runtime">
+(function(){
+  const originalInspector = window.inspector;
+  const originalReport = window.report;
+  const originalEvFcf = window.evFcf;
+  const originalPe = window.pe;
+  const originalPeg = window.peg;
+
+  function liveSec(){ return D.live?.sec || null; }
+  function liveMarket(){ return D.live?.market || null; }
+  function latestPrice(){ return Number(D.market?.price); }
+  function currentYear(){ const p=String(liveSec()?.latest_period||''); const y=Number(p.slice(0,4)); return Number.isFinite(y)&&y>0?y:(Number(D.years.at(-1))+1); }
+
+  function latestTtmEps(){
+    const s=liveSec();
+    const v=s?.income_ttm?.diluted_eps ?? s?.diluted_eps_ttm ?? s?.ttm?.diluted_eps;
+    return Number.isFinite(Number(v)) ? Number(v) : null;
+  }
+  function latestTtmRevenue(){
+    const s=liveSec();
+    const v=s?.revenue_ttm_m ?? s?.income_ttm?.revenue;
+    return Number.isFinite(Number(v)) ? Number(v) : null;
+  }
+  function latestTtmOp(){
+    const s=liveSec();
+    const v=s?.income_ttm?.operating_income ?? s?.operating_income_ttm_m;
+    return Number.isFinite(Number(v)) ? Number(v) : null;
+  }
+  function latestDebt(){ const s=liveSec(); return Number.isFinite(Number(s?.debt_m))?Number(s.debt_m):Number(last(by('balance.long_debt')[2])); }
+  function latestNetCash(){ const s=liveSec(); return Number.isFinite(Number(s?.net_cash_m))?Number(s.net_cash_m):Number(D.market.net_cash_m); }
+  function latestShares(){ const s=liveSec(); return Number.isFinite(Number(s?.shares_m))?Number(s.shares_m):Number(D.market.shares_m); }
+  function enterpriseValue(){
+    const mc=latestPrice()*latestShares();
+    return mc-latestNetCash(); // equivalent to market cap + debt - cash/securities where net cash is defined consistently
+  }
+
+  function forecastDcf(g=S.g,w=wacc().w,t=S.terminal){
+    // Forward FCF DCF: forecast revenue -> OCF -> CapEx -> FCF.
+    let rev = Number(last(by('income.revenue')[2]));
+    const d=[], pvParts=[];
+    let pv=0, f=NaN;
+    const years=5;
+    for(let i=0;i<years;i++){
+      const rg=Number(S.drvRev[i]);
+      const om=Number(S.drvOcf[i]);
+      const ci=Number(S.drvCap[i]);
+      if(![rev,rg,om,ci].every(Number.isFinite)) return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:[],tvshare:NaN};
+      rev *= 1 + rg/100;
+      const ocf = rev * om/100;
+      const capex = rev * ci/100;
+      f = ocf - capex;
+      const df = 1/Math.pow(1+w/100,i+1);
+      const pvi=f*df;
+      pv += pvi;
+      d.push({year:currentYear()+i,revenue:rev,g:rg,ocfMargin:om,capexIntensity:ci,ocf,capex,fcfMargin:(om-ci),fcf:f,df,pv:pvi});
+    }
+    const spread=w/100-t/100;
+    if(!(spread>0) || !Number.isFinite(f)) return {ps:NaN,equity:NaN,ev:NaN,pv,pvt:NaN,detail:d,tvshare:NaN};
+    const tv=f*(1+t/100)/spread;
+    const pvt=tv/Math.pow(1+w/100,5);
+    const evv=pv+pvt;
+    const eq=evv+latestNetCash();
+    return {ps:eq/latestShares(),equity:eq,ev:evv,pv,pvt,detail:d,tvshare:pvt/evv*100};
+  }
+
+  // DCF must use forward forecast FCF, never TTM FCF as the forecast itself.
+  window.dcf = forecastDcf;
+
+  window.pe=function(){
+    const eps=latestTtmEps();
+    return eps>0?latestPrice()/eps:originalPe();
+  };
+  window.evSales=function(){
+    const r=latestTtmRevenue();
+    return r>0?enterpriseValue()/r:NaN;
+  };
+  window.evEbit=function(){
+    const op=latestTtmOp();
+    return op>0?enterpriseValue()/op:NaN;
+  };
+  window.evFcf=function(){
+    const f=forecastDcf()?.detail?.[0]?.fcf;
+    return f>0?enterpriseValue()/f:NaN;
+  };
+  window.peg=function(){
+    const p=window.pe();
+    let growth=null,source='Historical 5Y diluted EPS CAGR';
+    if(D.consensus?.status==='LIVE' && Number.isFinite(Number(D.consensus.epsGrowth)) && Number(D.consensus.epsGrowth)>0){
+      growth=Number(D.consensus.epsGrowth); source='Live analyst consensus EPS growth';
+    } else {
+      growth=cagr(by('income.eps')[2]);
+    }
+    return Number.isFinite(p)&&Number.isFinite(growth)&&growth>0?p/growth:NaN;
+  };
+
+  function calcInspector(m){
+    const price=latestPrice(), priceAsOf=D.market.asof||liveMarket()?.asof||'—';
+    const fy=currentYear(), sec=liveSec();
+    const evv=enterpriseValue(), shares=latestShares(), netCash=latestNetCash(), debt=latestDebt();
+    const ttmEps=latestTtmEps(), ttmRev=latestTtmRevenue(), ttmOp=latestTtmOp();
+    const fwd=forecastDcf()?.detail?.[0];
+    let cur,formula,rows=[],note='',status='LATEST / LIVE-DERIVED';
+
+    if(m==='P/E'){
+      cur=window.pe();
+      formula=`P/E = Current price ÷ TTM diluted EPS<br>${money(price)} ÷ ${ttmEps!=null?money(ttmEps):'Unavailable'} = ${Number.isFinite(cur)?cur.toFixed(2)+'x':'Unavailable'}`;
+      rows=[['Current price',money(price)],['Price as of',priceAsOf],['TTM diluted EPS',ttmEps!=null?money(ttmEps):'Unavailable'],['EPS period',sec?.latest_period||'—'],['Price source','Configured live market Worker'],['EPS source','SEC XBRL / latest normalized TTM']];
+      note='Trailing earnings multiple. It uses the latest market price and latest validated TTM diluted EPS.';
+    } else if(m==='PEG'){
+      cur=window.peg();
+      let growth=(D.consensus?.status==='LIVE'&&Number(D.consensus.epsGrowth)>0)?Number(D.consensus.epsGrowth):cagr(by('income.eps')[2]);
+      let gs=(D.consensus?.status==='LIVE'&&Number(D.consensus.epsGrowth)>0)?'Live analyst consensus EPS growth':'Historical 5Y diluted EPS CAGR';
+      formula=`PEG = P/E ÷ EPS growth rate<br>${window.pe().toFixed(2)}x ÷ ${pct(growth)} = ${Number.isFinite(cur)?cur.toFixed(2):'Unavailable'}`;
+      rows=[['P/E',window.pe().toFixed(2)+'x'],['EPS growth',pct(growth)],['Growth definition',gs],['Price as of',priceAsOf],['Financial source','SEC / consensus where live']];
+      note='PEG is only meaningful if the growth denominator is clearly defined. This build labels the growth source explicitly.';
+    } else if(m==='EV/Sales'){
+      cur=window.evSales();
+      formula=`EV/Sales = Enterprise Value ÷ TTM Revenue<br>${fmt(evv,1)}m ÷ ${ttmRev!=null?fmt(ttmRev,1)+'m':'Unavailable'} = ${Number.isFinite(cur)?cur.toFixed(2)+'x':'Unavailable'}`;
+      rows=[['Market cap',fmt(price*shares,1)+'m'],['Net cash',fmt(netCash,1)+'m'],['Enterprise value',fmt(evv,1)+'m'],['TTM revenue',ttmRev!=null?fmt(ttmRev,1)+'m':'Unavailable'],['Revenue period',sec?.latest_period||'—'],['Source','Live market + SEC XBRL']];
+      note='Enterprise value uses the current market price and latest validated net-cash position.';
+    } else if(m==='EV/EBIT'){
+      cur=window.evEbit();
+      formula=`EV/EBIT = Enterprise Value ÷ TTM operating income<br>${fmt(evv,1)}m ÷ ${ttmOp!=null?fmt(ttmOp,1)+'m':'Unavailable'} = ${Number.isFinite(cur)?cur.toFixed(2)+'x':'Unavailable'}`;
+      rows=[['Enterprise value',fmt(evv,1)+'m'],['TTM operating income',ttmOp!=null?fmt(ttmOp,1)+'m':'Unavailable'],['Operating-income period',sec?.latest_period||'—'],['Source','Live market + SEC XBRL']];
+      note='EBIT is proxied by operating income, and the exact definition is stated rather than hidden.';
+    } else if(m==='EV/FCF'){
+      cur=window.evFcf();
+      formula=`Forward EV/FCF = Enterprise Value ÷ FY${fy}E FCF<br>${fmt(evv,1)}m ÷ ${fwd?.fcf!=null?fmt(fwd.fcf,1)+'m':'Unavailable'} = ${Number.isFinite(cur)?cur.toFixed(2)+'x':'Unavailable'}`;
+      rows=[['Enterprise value',fmt(evv,1)+'m'],['FY'+fy+'E Revenue',fwd?.revenue!=null?fmt(fwd.revenue,1)+'m':'Unavailable'],['Forecast OCF margin',fwd?.ocfMargin!=null?pct(fwd.ocfMargin):'Unavailable'],['Forecast OCF',fwd?.ocf!=null?fmt(fwd.ocf,1)+'m':'Unavailable'],['Forecast CapEx intensity',fwd?.capexIntensity!=null?pct(fwd.capexIntensity):'Unavailable'],['Forecast CapEx',fwd?.capex!=null?fmt(fwd.capex,1)+'m':'Unavailable'],['FY'+fy+'E FCF',fwd?.fcf!=null?fmt(fwd.fcf,1)+'m':'Unavailable'],['Forecast source','ERT driver forecast anchored to latest SEC annual data']];
+      note='This is a forward EV/FCF. It does not use TTM FCF as the forecast denominator.';
+    }
+
+    const hist=D.historicalMultiples?.[m]||[];
+    const histRows=hist.length?list([['5Y average',avg(hist).toFixed(2)+'x'],['5Y median',med(hist).toFixed(2)+'x'],['5Y low',Math.min(...hist).toFixed(2)+'x'],['5Y high',Math.max(...hist).toFixed(2)+'x']]):'<div class="sourcebox">Historical comparison unavailable.</div>';
+    return specialInspector(`${m} — ${Number.isFinite(cur)?cur.toFixed(2)+'x':'Unavailable'}`,
+      `<span class="badge good">${status}</span>
+       <div class="formula">${formula}</div>
+       ${list(rows)}
+       <div class="sourcebox"><strong>Calculation basis:</strong> ${note}</div>
+       ${histRows}
+       <div class="finding ${hist.length&&Number.isFinite(cur)&&cur>avg(hist)?'find-risk':'find-pos'}"><h4>So what?</h4><p>${hist.length&&Number.isFinite(cur)?(cur>avg(hist)?'Above its own historical average.':'Below its own historical average.'):'Use the formula and inputs above before interpreting the multiple.'}</p></div>`);
+  }
+
+  window.inspector=function(){
+    const k=String(S.sel||'');
+    if(k.startsWith('multiple:')) return calcInspector(k.split(':')[1]);
+    return originalInspector();
+  };
+
+  function reportCharts(){
+    const yrs=[...D.years];
+    const rev=by('income.revenue')[2].map(Number), eps=by('income.eps')[2].map(Number);
+    const op=by('income.op')[2].map(Number), ocf=by('cashflow.ocf')[2].map(Number), cap=by('cashflow.capex')[2].map(Number);
+    const fcf=yrs.map((_,i)=>Number(ocf[i])-Number(cap[i]));
+    const opmSeries=yrs.map((_,i)=>rev[i]?op[i]/rev[i]*100:NaN);
+    const fcfmSeries=yrs.map((_,i)=>rev[i]?fcf[i]/rev[i]*100:NaN);
+    const fd=forecastDcf().detail||[];
+
+    function svgLine(actual, forecast, labels, unit){
+      const vals=[...actual,...forecast].filter(Number.isFinite);
+      const min=Math.min(...vals),max=Math.max(...vals),W=560,H=250,p=44;
+      const y=v=>H-p-(v-min)/(max-min||1)*(H-2*p);
+      const n=labels.length, x=i=>p+i*(W-2*p)/Math.max(1,n-1);
+      const line=(arr,start,cls)=>{
+        let d='',started=false;
+        arr.forEach((v,j)=>{if(!Number.isFinite(v))return;const i=start+j;d+=(started?'L':'M')+x(i)+','+y(v)+' ';started=true});
+        return `<path class="${cls}" d="${d}"/>`;
+      };
+      const ticks=[min,min+(max-min)*.5,max];
+      return `<svg viewBox="0 0 ${W} ${H}">
+        <line class="reportAxis" x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}"/>
+        <line class="reportAxis" x1="${p}" y1="${p}" x2="${p}" y2="${H-p}"/>
+        ${ticks.map(t=>`<line class="reportGridline" x1="${p}" y1="${y(t)}" x2="${W-p}" y2="${y(t)}"/><text x="${p-7}" y="${y(t)+4}" text-anchor="end" font-size="10" fill="#52606d">${unit==='%'?t.toFixed(1)+'%':unit+' '+Math.round(t).toLocaleString()}</text>`).join('')}
+        ${line(actual,0,'reportActual')}
+        ${forecast.length?line(forecast,actual.length-1,'reportForecast'):''}
+        ${labels.map((l,i)=>`<text x="${x(i)}" y="${H-15}" text-anchor="middle" font-size="9" fill="#52606d">${l}</text>`).join('')}
+      </svg>`;
+    }
+
+    const fYears=fd.map(x=>String(x.year)+'E');
+    const revenueForecast=fd.map(x=>x.revenue);
+    const fcfForecast=fd.map(x=>x.fcf);
+
+    return `<div class="reportAnalysisCharts">
+      <h2>Chart analysis</h2>
+      <div class="reportChartGrid">
+        <div class="reportChartBox"><h3>Revenue — historical + ERT forecast</h3>
+          ${svgLine(rev,revenueForecast,[...yrs.map(String),...fYears],'USDm')}
+          <div class="reportLegend"><span><i style="background:#2e7be6"></i>SEC actual</span><span><i style="background:#8b5cf6"></i>ERT forecast</span></div>
+          <div class="reportChartNote">Revenue grew to <strong>${fmt(last(rev),0)}m</strong> in FY${yrs.at(-1)}. The ERT forecast begins from the latest complete SEC fiscal year and applies the editable revenue-growth drivers.</div>
+        </div>
+        <div class="reportChartBox"><h3>Operating margin & FCF margin</h3>
+          ${svgLine(opmSeries,[],yrs.map(String),'%')}
+          <div class="reportChartNote">Operating margin is shown from SEC actuals. FCF margin is analysed separately because CapEx can move sharply with AI/data-centre investment.</div>
+        </div>
+        <div class="reportChartBox"><h3>Historical OCF / CapEx / FCF</h3>
+          ${svgLine(fcf,[],yrs.map(String),'USDm')}
+          <div class="reportChartNote">Historical FCF equals OCF minus CapEx. The latest reported year is context only; DCF uses forward forecast FCF rather than repeating this trailing figure.</div>
+        </div>
+        <div class="reportChartBox"><h3>Forward FCF — FY${currentYear()}E onward</h3>
+          ${svgLine([fcf.at(-1)],fcfForecast,[String(yrs.at(-1)),...fYears],'USDm')}
+          <div class="reportLegend"><span><i style="background:#2e7be6"></i>Latest actual</span><span><i style="background:#8b5cf6"></i>ERT forecast</span></div>
+          <div class="reportChartNote">Forward FCF is generated from <strong>forecast Revenue × OCF margin − forecast CapEx</strong>. This same series feeds the DCF.</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  window.report=function(){
+    const base=originalReport();
+    if(base.includes('reportAnalysisCharts')) return base;
+    const marker='<h2>Disclaimer</h2>';
+    return base.includes(marker)?base.replace(marker,reportCharts()+marker):base+reportCharts();
+  };
+
+  // Remove the old TTM statement injector permanently; Financials combined table remains the main statement.
+  window.liveFinancialStatements=function(){};
 })();
 </script>
 
