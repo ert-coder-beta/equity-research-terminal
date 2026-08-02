@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ERT GOOG Alpha 0.9.2</title>
+<title>ERT GOOG Alpha 0.9.2.1 FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -99,7 +99,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function top(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.2</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work" id="work"><section class="content">${content}</section><div class="res" id="res"></div>${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.2.1 FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work" id="work"><section class="content">${content}</section><div class="res" id="res"></div>${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 function overview(){
  let v=dcf().ps,mos=(v/D.market.price-1)*100,rev=reverse(),R=rating(),mults=[['P/E',pe(),D.historicalMultiples['P/E']],['PEG',peg(),D.historicalMultiples.PEG],['EV/Sales',evSales(),D.historicalMultiples['EV/Sales']],['EV/EBIT',evEbit(),D.historicalMultiples['EV/EBIT']],['EV/FCF',evFcf(),D.historicalMultiples['EV/FCF']]];
@@ -211,7 +211,7 @@ function specialInspector(title,body){return `<aside class="ins mobileOpen"><div
 function soWhat(id){if(id==='cashflow.capex')return 'CapEx reduces current free cash flow, but may create future capacity and AI growth. The key question is whether future ROIC justifies the spending.';if(id==='income.revenue')return 'Revenue growth sets the starting point for future profit and FCF. Faster sustainable growth usually raises intrinsic value.';if(id==='balance.receivables')return 'Receivables should be compared with revenue growth. If receivables rise much faster, collection quality may be weakening.';return 'Use the trend, source and related calculations to understand whether this item improves or weakens the investment thesis.'}
 function spark(a){let W=320,H=150,p=24,mn=Math.min(...a),mx=Math.max(...a),x=i=>p+i*(W-2*p)/(a.length-1),y=v=>H-p-(v-mn)/(mx-mn||1)*(H-2*p),d=a.map((v,i)=>(i?'L':'M')+x(i)+','+y(v)).join(' ');return `<div class="chart" style="height:165px"><svg viewBox="0 0 ${W} ${H}"><line class="axis" x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}"/><path class="priceLine" d="${d}"/>${a.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="var(--blue)"/><text x="${x(i)}" y="${H-6}" fill="#99adbf" font-size="9" text-anchor="middle">${D.years[i]}</text>`).join('')}</svg></div>`}
 
-function render(){let P={overview,financials,analysis,valuation,market,research,report,disclaimer};app.innerHTML=top(P[S.page]());bind()}
+function render(){let P={overview,financials,analysis,valuation,market,research,report,disclaimer};app.innerHTML=appLayout(P[S.page]());bind()}
 function bind(){
  document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{S.page=b.dataset.page;S.menu=false;render()});
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{S.st=b.dataset.tab;S.sel=D[S.st][0][0];render()});
@@ -229,7 +229,13 @@ function bind(){
  document.getElementById('save')?.addEventListener('click',()=>{localStorage.setItem('ert07notes',document.getElementById('notes').value);document.getElementById('save').textContent='Saved'});
  let r=document.getElementById('res'),w=document.getElementById('work');if(r&&w&&S.show&&window.innerWidth>767){let drag=false;r.onmousedown=()=>drag=true;window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(!drag)return;let b=w.getBoundingClientRect(),right=Math.max(290,Math.min(620,b.right-e.clientX));w.style.gridTemplateColumns=`minmax(560px,1fr) 6px ${right}px`};r.ondblclick=()=>w.style.gridTemplateColumns='minmax(560px,1fr) 6px 360px'}
 }
-render();
+try{
+  render();
+}catch(err){
+  console.error(err);
+  document.body.innerHTML=`<div style="min-height:100vh;background:#091017;color:#eef5fc;padding:30px;font-family:Segoe UI,Arial,sans-serif">
+  <h1>ERT startup error</h1><pre style="white-space:pre-wrap;background:#121b25;border:1px solid #2b3b4c;padding:16px;border-radius:10px;color:#ff8895">${String(err && (err.stack||err.message) || err)}</pre></div>`;
+}
 </script>
 
 <script id="alpha092-runtime-patch">
