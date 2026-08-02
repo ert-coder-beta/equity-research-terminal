@@ -1,23 +1,24 @@
-ERT Alpha 1.5 BASELINE RESTORE
+ERT Alpha 1.6 RECOVERY — regression checks
+NOTE: PASS below means syntax/static source gate passed. It is NOT a claim of full live-browser E2E testing.
 
-SYNTAX CHECKS:
-PASS frontend_0
-PASS frontend_1
-PASS frontend_2
-PASS frontend_3
-PASS frontend_4
-PASS frontend_5
-PASS frontend_6
-PASS frontend_7
-PASS frontend_8
-PASS worker
-
-BASELINE GATES:
-PASS BL-01 inspector desktop right-column CSS
-PASS BL-03 inspector not hidden below at 1050
-PASS BL-06 combined financials
-PASS BL-07 no separate current-year baseline tab
-PASS BL-10 company guidance column
-PASS BL-11 analyst consensus column
-PASS BL-12 ERT forecast column
-PASS BL-15 business overview retained
+PASS JS syntax 0
+PASS JS syntax 1
+PASS JS syntax 2
+PASS JS syntax 3
+PASS JS syntax 4
+PASS JS syntax 5
+PASS JS syntax 6
+PASS JS syntax 7
+PASS JS syntax 8
+PASS JS syntax 9
+PASS Worker syntax
+PASS Inspector desktop grid column 3
+PASS Inspector sticky
+PASS Financials combined baseline retained
+PASS Report labels current price
+PASS Report labels daily change
+PASS Report labels fair value
+PASS Report business overview
+PASS Report What matters now
+PASS Report forward evidence separation
+PASS Historical valuation code retained

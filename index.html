@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.5 BASELINE RESTORE</title>
+<title>ERT GOOG · Alpha 1.6 RECOVERY</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -467,6 +467,48 @@ table{min-width:max-content}
   }catch(_e){}
 })();
 </script>
+
+
+<style id="alpha16-recovery-css">
+/* Desktop baseline: NAV | CONTENT | INSPECTOR */
+.shell{
+  display:grid !important;
+  grid-template-columns:190px minmax(0,1fr) 360px !important;
+  align-items:start !important;
+  min-height:calc(100vh - 82px) !important;
+}
+.nav{grid-column:1 !important;min-width:0 !important}
+.main{grid-column:2 !important;min-width:0 !important;max-width:none !important}
+.inspector{
+  grid-column:3 !important;
+  grid-row:1 !important;
+  position:sticky !important;
+  top:0 !important;
+  height:calc(100vh - 82px) !important;
+  overflow:auto !important;
+  display:block !important;
+  min-width:0 !important;
+}
+@media(max-width:1180px){
+ .shell{grid-template-columns:170px minmax(0,1fr) 320px !important}
+}
+@media(max-width:820px){
+ .shell{grid-template-columns:150px minmax(0,1fr) !important}
+ .inspector{display:none !important}
+}
+.reportHeroMetrics{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:12px!important}
+.reportHeroMetric{background:#fff;color:#0c1a28;border-radius:10px;padding:14px;min-height:82px;overflow:hidden}
+.reportHeroMetric .lab{display:block;font-size:11px;color:#526779;margin-bottom:8px;text-transform:uppercase;letter-spacing:.03em}
+.reportHeroMetric .val{font-size:25px;font-weight:800;line-height:1.1;overflow-wrap:anywhere}
+.reportHeroMetric .sub{display:block;font-size:10px;color:#687b8d;margin-top:7px}
+.reportSection{background:#fff;color:#0b1723;border:1px solid #d8e1e8;border-radius:12px;padding:20px;margin:14px 0}
+.reportSection h2,.reportSection h3{color:#0b1723}
+.reportGrid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.reportCallout{padding:14px;border-radius:10px;background:#f5f8fb;border-left:4px solid #376b9b}
+.reportRisk{background:#fff1f2;border-left-color:#d6455d}
+.reportGood{background:#edf9f2;border-left-color:#27a66b}
+@media(max-width:1000px){.reportHeroMetrics{grid-template-columns:repeat(3,1fr)!important}.reportGrid2{grid-template-columns:1fr}}
+</style>
 
 </head>
 <body>
@@ -1377,7 +1419,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.5 BASELINE RESTORE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.6 RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1812,7 +1854,7 @@ setTimeout(enhance,0);
   }
 
   function layout14(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.5 BASELINE RESTORE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.6 RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
   }
 
   window.render14=function(){
@@ -2081,6 +2123,70 @@ setTimeout(enhance,0);
     try{n=localStorage.getItem('ert07notes')||''}catch(_e){}
     return `<h1>Research Notes</h1><div class="lead">Record your thesis, assumptions and why you changed them.</div><div class="card"><textarea id="notes" style="min-height:240px">${n}</textarea><div class="actions"><button class="btn primary" id="save">Save notes</button></div></div>`;
   };
+})();
+</script>
+
+
+<script id="alpha16-report-recovery">
+(function(){
+ const oldReport=window.report14;
+ function money(v){return Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'Unavailable'}
+ function pctv(v){return Number.isFinite(Number(v))?(Number(v)>=0?'+':'')+Number(v).toFixed(2)+'%':'Unavailable'}
+ function report16(){
+   let base='';
+   try{ base=oldReport?oldReport():'' }catch(e){}
+   const p=Number(live?.data?.market?.price ?? D.live?.market?.price);
+   const ch=Number(live?.data?.market?.change_pct ?? D.live?.market?.change_pct);
+   let fv=null, pe=null, rating=null;
+   try{const x=dcf(); fv=Number(x?.fair ?? x?.valuePerShare ?? x?.perShare); }catch(e){}
+   try{pe=Number(D.live?.valuation?.pe ?? D.market?.pe ?? D.pe)}catch(e){}
+   try{rating=Number(score()?.overall ?? D.rating)}catch(e){}
+   const up=(Number.isFinite(fv)&&Number.isFinite(p)&&p)?(fv/p-1)*100:null;
+   const consensus=(D.consensus?.status==='LIVE')?(D.consensus.displaySource||'Live analyst source'):'Unavailable — live provider not connected';
+
+   const hero=`<div class="reportHeroMetrics">
+    <div class="reportHeroMetric"><span class="lab">Current price</span><span class="val">${money(p)}</span><span class="sub">Latest connected market close</span></div>
+    <div class="reportHeroMetric"><span class="lab">Daily change</span><span class="val">${pctv(ch)}</span><span class="sub">vs previous close</span></div>
+    <div class="reportHeroMetric"><span class="lab">DCF fair value</span><span class="val">${Number.isFinite(fv)?money(fv):'Unavailable'}</span><span class="sub">${Number.isFinite(fv)?'ERT base DCF':'DCF inputs/validation incomplete'}</span></div>
+    <div class="reportHeroMetric"><span class="lab">Upside / downside</span><span class="val">${pctv(up)}</span><span class="sub">Fair value vs current price</span></div>
+    <div class="reportHeroMetric"><span class="lab">P / E</span><span class="val">${Number.isFinite(pe)?pe.toFixed(2)+'x':'Unavailable'}</span><span class="sub">Current price ÷ TTM diluted EPS</span></div>
+    <div class="reportHeroMetric"><span class="lab">ERT rating</span><span class="val">${Number.isFinite(rating)?rating.toFixed(1)+'/5':'Unavailable'}</span><span class="sub">Research scorecard</span></div>
+   </div>`;
+
+   const narrative=`<div class="reportSection"><h2>Executive summary</h2>
+    <p>Alphabet combines Search, YouTube and Cloud with strong cash generation. The central research question is whether AI/cloud growth and future cash conversion justify current capital intensity and valuation.</p>
+   </div>
+   <div class="reportSection"><h2>Company & business overview</h2><div class="reportGrid2">
+    <div><h3>What does Alphabet do?</h3><p>Alphabet is the parent company of Google. Its economics are driven primarily by Search and other advertising, YouTube, subscriptions/platforms/devices, Google Cloud and smaller Other Bets.</p><p><b>Sector / industry:</b> Interactive media / internet services<br><b>Primary cash engine:</b> Google advertising<br><b>Major growth engine:</b> Google Cloud / AI</p></div>
+    <div><h3>Investment framing</h3><p>The research question is not only whether Alphabet is a high-quality business, but whether future growth and cash conversion justify the current valuation while infrastructure CapEx remains elevated.</p></div>
+   </div></div>
+   <div class="reportSection"><h2>What matters now</h2><div class="reportGrid2">
+    <div class="reportCallout reportGood"><b>Growth and operating quality</b><p>Use the latest SEC revenue, EPS, operating-margin and cash-flow trends to test whether business quality is improving.</p></div>
+    <div class="reportCallout reportRisk"><b>CapEx and valuation</b><p>Elevated infrastructure investment can support AI/Cloud growth but reduces near-term FCF. The key question is whether future returns compensate for the current capital intensity.</p></div>
+   </div></div>
+   <div class="reportSection"><h2>Forward view</h2><p><b>Company guidance:</b> ${D.live?.guidance?.available?'Connected':'Not provided / not connected'}<br><b>Analyst consensus:</b> ${consensus}<br><b>ERT forecast:</b> kept separate from actuals, company guidance and Street consensus.</p></div>`;
+
+   // Keep every pre-existing chart/table/section; replace only the unlabeled hero if detectable,
+   // and prepend missing narrative instead of deleting old report content.
+   if(base){
+     const bodyStart=base.indexOf('<div class="report');
+     return `<h1>Alphabet Inc. (GOOG)</h1><div class="lead">Equity Research Terminal · live market + validated SEC financials + explicit ERT forecast</div>${hero}${narrative}${base}`;
+   }
+   return `<h1>Alphabet Inc. (GOOG)</h1>${hero}${narrative}`;
+ }
+ window.report16=report16;
+
+ // Route report to recovery renderer without touching other pages.
+ const origRender=window.render;
+ if(typeof origRender==='function'){
+   window.render=function(){
+     if(window.S?.page==='report'){
+       const m=document.getElementById('main');
+       if(m){m.innerHTML=report16(); if(typeof bind==='function')bind(); return}
+     }
+     return origRender.apply(this,arguments);
+   }
+ }
 })();
 </script>
 
