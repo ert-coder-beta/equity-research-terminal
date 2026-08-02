@@ -1,25 +1,19 @@
-ERT Alpha 1.2 STABLE CORE
+ERT index(5) Financials Recovery
 
-Release rule:
-New features must not regress existing working features.
+Syntax checks:
+PASS script 0
+PASS script 1
+PASS script 2
+PASS script 3
 
-Stabilisation changes:
-- Financials annual table now renders the live validated fiscal-year list, including FY2025 when present.
-- Annual + TTM keeps TTM separate from fiscal years.
-- Quarterly view remains isolated and does not alter annual data.
-- Current-price daily change is displayed on Market as well as Overview.
-- Consensus Unavailable is responsive and cannot overflow its card.
-- DCF/Rating NaN values are guarded; invalid DCF shows unavailable rather than propagating NaN.
-- Report rebuilt to use the same shared dataset and calculation functions.
-- Report charts now have axes, units, gridlines, point/bar value labels and written interpretation.
-- Report retains text sections; charts supplement rather than replace analysis.
-- Report includes Executive summary, Strengths/Risks, 5Y performance, cash generation, valuation, scorecard, market expectations, watch list, conclusion, and sources.
-- New-feature code is appended as an isolated stabilisation layer to minimise regression risk.
-
-Syntax regression checks:
-PASS frontend_script_0
-PASS frontend_script_1
-PASS frontend_script_2
-PASS frontend_script_3
-PASS frontend_script_4
-PASS worker
+Chromium checks:
+PASS Financials page renders
+PASS Latest live snapshot moved inside Financials
+PASS No separate Current Year tab
+PASS Q1/Q2 columns present
+PASS H1/YTD column present
+PASS Guidance column present
+PASS Consensus column present
+PASS ERT forecast column present
+PASS Old top live anchor not visible
+PASS no non-localStorage runtime errors

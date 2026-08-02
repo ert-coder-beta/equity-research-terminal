@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.1 INSPECTOR FIX</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.2 FINANCIALS RECOVERY</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -184,7 +184,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.2</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -774,4 +774,258 @@ setTimeout(enhance,0);
   window.ERT_REFRESH_LIVE=refresh;
 })();
 </script>
+
+<style id="ert-index5-financials-recovery-css">
+/* The old live anchor was injected above the whole application. Hide it.
+   A scoped version is rendered inside Financial Statements instead. */
+#ertLiveFinancials{display:none!important}
+
+.finRecoverTop{margin-bottom:12px}
+.finRecoverGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.finRecoverGrid .card{margin:0}
+.finRecoverTable{min-width:1500px}
+.finRecoverTable th,.finRecoverTable td{white-space:nowrap}
+.finRecoverTable .hist{background:#121b25}
+.finRecoverTable .qactual{background:#10283a}
+.finRecoverTable .ytd{background:#123146}
+.finRecoverTable .guidance{background:#2d2612}
+.finRecoverTable .consensus{background:#211c38}
+.finRecoverTable .forecast{background:#271d3b}
+.finRecoverTag{display:block;font-size:9px;line-height:1.2;color:#9db6cb;margin-top:3px;white-space:normal}
+.finRecoverLegend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.finRecoverLegend span{font-size:10px;padding:4px 7px;border-radius:999px;border:1px solid var(--line)}
+@media(max-width:1000px){.finRecoverGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.finRecoverGrid{grid-template-columns:1fr}}
+</style>
+
+<script id="ert-index5-financials-recovery">
+(function(){
+  const originalFinancials = window.financials;
+
+  function secData(){
+    return D.live?.sec || null;
+  }
+  function annualKeyMap(){
+    return {
+      'income.revenue':'revenue','income.cost':'cost','income.rnd':'rnd','income.sales':'sales','income.gna':'gna',
+      'income.op':'op','income.pretax':'pretax','income.tax':'tax','income.net':'net','income.eps':'eps','income.shares':'diluted_shares',
+      'cashflow.net':'net','cashflow.ocf':'ocf','cashflow.capex':'capex','cashflow.fcf':'fcf',
+      'balance.cash':'cash','balance.market':'marketable','balance.long_debt':'debt','balance.equity':'equity','balance.assets':'assets'
+    };
+  }
+  function qKeyMap(){
+    return {
+      'income.revenue':['income','revenue'],
+      'income.cost':['income','cost'],
+      'income.rnd':['income','rnd'],
+      'income.sales':['income','sales'],
+      'income.gna':['income','gna'],
+      'income.op':['income','op'],
+      'income.pretax':['income','pretax'],
+      'income.tax':['income','tax'],
+      'income.net':['income','net'],
+      'income.eps':['income','eps'],
+      'income.shares':['income','shares'],
+      'cashflow.net':['cashflow','net'],
+      'cashflow.ocf':['cashflow','ocf'],
+      'cashflow.capex':['cashflow','capex'],
+      'cashflow.fcf':['cashflow','fcf'],
+      'balance.cash':['balance','cash'],
+      'balance.market':['balance','marketable'],
+      'balance.long_debt':['balance','debt'],
+      'balance.equity':['balance','equity'],
+      'balance.assets':['balance','assets']
+    };
+  }
+  function qNo(x){ return Number(x?.q || String(x?.label||'').match(/Q([1-4])/)?.[1]); }
+  function qYear(x){ return Number(x?.year || String(x?.period||'').slice(0,4)); }
+  function qSeries(id){
+    const m=qKeyMap()[id], s=secData();
+    if(!m || !s?.quarterly) return [];
+    return s.quarterly?.[m[0]]?.[m[1]] || [];
+  }
+  function qFact(id,year,q){
+    return qSeries(id).find(x=>qYear(x)===year && qNo(x)===q && x.value!=null) || null;
+  }
+  function latestCurrentYear(){
+    const s=secData(), p=String(s?.latest_period||'');
+    const y=Number(p.slice(0,4));
+    return Number.isFinite(y)&&y>0?y:Number(D.years.at(-1))+1;
+  }
+  function latestQuarter(year){
+    const qs=qSeries('income.revenue').filter(x=>qYear(x)===year&&x.value!=null).map(qNo).filter(Number.isFinite);
+    return qs.length?Math.max(...qs):0;
+  }
+  function isFlow(id){
+    return id.startsWith('income.') || id.startsWith('cashflow.');
+  }
+  function sumToQuarter(id,year,n){
+    if(!n)return null;
+    if(id==='income.eps') return null;
+    let total=0;
+    for(let q=1;q<=n;q++){
+      const x=qFact(id,year,q);
+      if(!x)return null;
+      total+=Number(x.value);
+    }
+    return total;
+  }
+  function ytdValue(id,year,n){
+    if(!n)return null;
+    if(id.startsWith('balance.')){
+      return qFact(id,year,n)?.value ?? null;
+    }
+    return sumToQuarter(id,year,n);
+  }
+  function asAnnualValue(row,year){
+    const idx=D.years.indexOf(year);
+    return idx>=0 ? row[2][idx] : null;
+  }
+  function displayVal(id,v){
+    if(v==null || !Number.isFinite(Number(v))) return '—';
+    if(id==='income.eps') return Number(v).toFixed(2);
+    return fmt(Number(v),2);
+  }
+  function annualYoy(row,i){
+    if(i===0)return null;
+    return yy(row[2],i);
+  }
+
+  function companyGuidance(id){
+    const g=D.live?.guidance;
+    if(!g?.available) return {value:'Not provided', note:'COMPANY GUIDANCE'};
+    const v=g.metrics?.[id];
+    return {value:v==null?'Not quantitatively guided':String(v), note:'COMPANY GUIDANCE'};
+  }
+  function streetConsensus(id,year){
+    const c=D.consensus;
+    if(c?.status!=='LIVE') return {value:'Unavailable', note:'ANALYST CONSENSUS'};
+    if(id==='income.revenue'){
+      const r=(c.forwardAnnual?.revenue||[]).find(x=>Number(x.period)===year && String(x.data_type).toLowerCase()==='estimate');
+      if(r?.estimate!=null)return {value:'$'+(Number(r.estimate)/1e9).toFixed(1)+'bn', note:'ANALYST CONSENSUS'};
+    }
+    if(id==='income.eps'){
+      const r=(c.forwardAnnual?.eps||[]).find(x=>Number(x.period)===year && String(x.data_type).toLowerCase()==='estimate');
+      if(r?.estimate!=null)return {value:Number(r.estimate).toFixed(2), note:'ANALYST CONSENSUS'};
+    }
+    return {value:'—', note:'ANALYST CONSENSUS'};
+  }
+  function ertForecast(id,year,qn){
+    let d;
+    try{ d=dcf(); }catch(_e){ return null; }
+    const first=d?.detail?.[0];
+    if(!first)return null;
+
+    if(id==='income.revenue' && first.revenue!=null) return first.revenue;
+    if(id==='cashflow.fcf' && first.fcf!=null) return first.fcf;
+    if(id==='cashflow.ocf' && first.revenue!=null && first.ocfMargin!=null) return first.revenue*first.ocfMargin/100;
+    if(id==='cashflow.capex' && first.revenue!=null && first.capexIntensity!=null) return first.revenue*first.capexIntensity/100;
+
+    // For selected income-statement lines, extend the current YTD ratio to ERT revenue.
+    const ertRev=first.revenue;
+    const ytdRev=ytdValue('income.revenue',year,qn);
+    if(ertRev!=null && ytdRev>0){
+      if(id==='income.op'){
+        const v=ytdValue(id,year,qn); if(v!=null)return ertRev*(v/ytdRev);
+      }
+      if(id==='income.net'){
+        const v=ytdValue(id,year,qn); if(v!=null)return ertRev*(v/ytdRev);
+      }
+      if(id==='income.eps'){
+        const epsQ=qSeries('income.eps').filter(x=>qYear(x)===year&&qNo(x)<=qn&&x.value!=null);
+        if(epsQ.length===qn)return epsQ.reduce((a,x)=>a+Number(x.value),0)/qn*4;
+      }
+    }
+    return null;
+  }
+  function liveSnapshot(s){
+    if(!s)return '';
+    return `<div class="card finRecoverTop">
+      <h3>Latest live financial snapshot <span class="badge good">${s?.validation?.ok?'SEC VALIDATED':'DATA WARNING'}</span></h3>
+      <div class="finRecoverGrid">
+        ${card('Revenue TTM',s.revenue_ttm_m==null?'—':'$'+(Number(s.revenue_ttm_m)/1000).toFixed(1)+'bn',s.latest_period||'')}
+        ${card('Net income TTM',s.net_income_ttm_m==null?'—':'$'+(Number(s.net_income_ttm_m)/1000).toFixed(1)+'bn','SEC XBRL')}
+        ${card('Operating cash flow TTM',s.ocf_ttm_m==null?'—':'$'+(Number(s.ocf_ttm_m)/1000).toFixed(1)+'bn','SEC XBRL')}
+        ${card('CapEx TTM',s.capex_ttm_m==null?'—':'$'+(Number(s.capex_ttm_m)/1000).toFixed(1)+'bn','FCF '+(s.fcf_ttm_m==null?'—':'$'+(Number(s.fcf_ttm_m)/1000).toFixed(1)+'bn'))}
+      </div>
+      <div class="sourcebox"><strong>Valuation anchor:</strong> TTM remains a current valuation input only. It is not presented as FY${latestCurrentYear()}. Source: ${s.source||'SEC EDGAR companyfacts + submissions'}.</div>
+    </div>`;
+  }
+
+  window.financials=function(){
+    const s=secData();
+    if(!s || !s.validation?.ok) return originalFinancials();
+
+    const rows=D[S.st];
+    if(!rows.find(x=>x[0]===S.sel))S.sel=rows[0][0];
+    const years=[...D.years];
+    const cy=latestCurrentYear();
+    const qn=latestQuarter(cy);
+    const qs=Array.from({length:qn},(_,i)=>i+1);
+    const ytdLabel=S.st==='balance'?'Latest '+cy:qn===2?'H1 '+cy:qn===3?'9M '+cy:'YTD '+cy;
+
+    const headHist=years.map((y,i)=>`<th>${y}</th>${i?'<th>YoY</th>':''}`).join('');
+    const headQ=qs.map(q=>`<th>Q${q} ${cy}<span class="finRecoverTag">SEC ACTUAL</span></th>`).join('');
+
+    const body=rows.map(r=>{
+      const id=r[0];
+      let h=`<tr class="row ${S.sel===id?'sel':''}" data-row="${id}"><td>${r[1]}</td>`;
+      years.forEach((y,i)=>{
+        h+=`<td class="hist">${displayVal(id,asAnnualValue(r,y))}</td>`;
+        if(i>0){
+          const yyv=annualYoy(r,i);
+          h+=`<td class="${yyv==null?'':yyv>=0?'pos':'neg'}">${yyv==null?'—':pct(yyv)}</td>`;
+        }
+      });
+      qs.forEach(q=>{
+        const x=qFact(id,cy,q);
+        h+=`<td class="qactual clickable" data-inspect="cy:${id}:${q}">${displayVal(id,x?.value)}<span class="finRecoverTag">${x?.derived?'DERIVED FROM SEC YTD':'SEC ACTUAL'}</span></td>`;
+      });
+      const ytd=ytdValue(id,cy,qn);
+      h+=`<td class="ytd clickable" data-inspect="cy:${id}:ytd">${displayVal(id,ytd)}<span class="finRecoverTag">${S.st==='balance'?'LATEST QUARTER-END':qn===2?'H1 ACTUAL':qn===3?'9M ACTUAL':'YTD ACTUAL'}</span></td>`;
+      const g=companyGuidance(id);
+      h+=`<td class="guidance">${g.value}<span class="finRecoverTag">${g.note}</span></td>`;
+      const c=streetConsensus(id,cy);
+      h+=`<td class="consensus">${c.value}<span class="finRecoverTag">${c.note}</span></td>`;
+      const f=ertForecast(id,cy,qn);
+      h+=`<td class="forecast">${displayVal(id,f)}<span class="finRecoverTag">ERT FY${cy}E</span></td></tr>`;
+      return h;
+    }).join('');
+
+    return `<h1>Financial Statements</h1>
+      <div class="lead">Five complete fiscal years plus current-year reported quarters, YTD progress and forward context in one statement.</div>
+      ${liveSnapshot(s)}
+      <div class="finRecoverLegend"><span class="qactual">SEC quarter actual</span><span class="ytd">YTD/H1 actual</span><span class="guidance">Company guidance</span><span class="consensus">Analyst consensus</span><span class="forecast">ERT estimate</span></div>
+      <div class="tabs">${[['income','Income Statement'],['balance','Balance Sheet'],['cashflow','Cash Flow']].map(x=>`<button data-tab="${x[0]}" class="${S.st===x[0]?'active':''}">${x[1]}</button>`).join('')}</div>
+      <div class="sourcebox"><strong>Evidence identity:</strong> SEC actuals, management guidance, Street consensus and ERT forecasts are kept separate. Missing data stays unavailable; no demo value is silently substituted.</div>
+      <div class="tw"><table class="finRecoverTable"><thead><tr><th>Line item</th>${headHist}${headQ}<th>${ytdLabel}</th><th>Company Guidance</th><th>Analyst Consensus</th><th>ERT FY${cy}E</th></tr></thead><tbody>${body}</tbody></table></div>`;
+  };
+
+  // Inspector support for current-year financial cells.
+  const baseInspector=window.inspector;
+  window.inspector=function(){
+    const k=String(S.sel||'');
+    if(k.startsWith('cy:')){
+      const parts=k.split(':'), id=parts[1], period=parts[2], row=by(id);
+      const cy=latestCurrentYear(), qn=latestQuarter(cy);
+      if(period==='guidance'){
+        const g=companyGuidance(id);
+        return specialInspector(`${row?.[1]||id} — Company Guidance`, `<div class="value warn">${g.value}</div><p>Company guidance is management-provided forward information. It is kept separate from SEC actuals, analyst consensus and ERT estimates.</p>`);
+      }
+      if(period==='forecast'){
+        const f=ertForecast(id,cy,qn);
+        return specialInspector(`${row?.[1]||id} — ERT FY${cy}E`, `<div class="value tone-model">${displayVal(id,f)}</div><p>ERT forecast is model output. It is not a reported SEC fact and not analyst consensus.</p><div class="formula">Forecast uses the current DCF/driver assumptions. Where a line is not directly modelled, the terminal leaves it unavailable rather than inventing precision.</div>`);
+      }
+      if(period==='ytd'){
+        const v=ytdValue(id,cy,qn);
+        return specialInspector(`${row?.[1]||id} — ${qn===2?'H1':qn===3?'9M':'YTD'} ${cy}`, `<div class="value">${displayVal(id,v)}</div><p>Current-year actual based on reported SEC quarterly/YTD facts.</p><div class="sourcebox">Source: SEC XBRL / latest 10-Q normalization.</div>`);
+      }
+      const q=Number(period), x=qFact(id,cy,q);
+      return specialInspector(`${row?.[1]||id} — Q${q} ${cy}`, `<div class="value">${displayVal(id,x?.value)}</div><p>${x?.derived?'Standalone quarter derived from cumulative SEC YTD facts.':'Reported SEC quarterly fact.'}</p><div class="sourcebox">Source: SEC XBRL / 10-Q normalization.</div>`);
+    }
+    return baseInspector();
+  };
+})();
+</script>
+
 </body></html>
