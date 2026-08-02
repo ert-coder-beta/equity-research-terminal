@@ -1,25 +1,21 @@
-ERT index(7) recovery build
+ERT index(7) DIRECT FIX — RELEASE CHECK
 
 Syntax:
-PASS script 0
-PASS script 1
-PASS script 2
-PASS script 3
-PASS script 4
+PASS frontend script 0
+PASS frontend script 1
+PASS frontend script 2
+PASS frontend script 3
+PASS frontend script 4
+PASS worker syntax
 
 Chromium interaction:
-PASS Overview valuation multiples present
-PASS P/E inspector formula and inputs
-PASS EV/FCF uses forward forecast FCF
-PASS Valuation forecast engine present
-PASS Report retains/adds Company & business overview
-PASS Report retains/adds Business / revenue mix
-PASS Report retains/adds Three-minute summary
-PASS Report retains/adds Valuation view
-PASS Report retains/adds Market & consensus
-PASS Report retains/adds What to watch next
-PASS Report retains/adds Chart analysis
-PASS Report retains/adds Revenue — historical + ERT forecast
-PASS Report retains/adds Forward FCF
-PASS Old LIVE TTM statement removed
+PASS Valuation navigation opens
+PASS Valuation sensitivity renders
+PASS P/E Inspector has formula
+PASS P/E Inspector has actual inputs
+PASS EV/FCF Inspector uses forecast FCF
+PASS Live consensus is shown
+PASS Demo analyst snapshot removed
+PASS Report text retained
+PASS Report charts added
 PASS no non-localStorage runtime errors
