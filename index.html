@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 0.9.3.3.1 INSPECTOR FIX</title>
+<title>ERT GOOG · Alpha 0.9.5 LIVE ENGINE.1 INSPECTOR FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -114,6 +114,25 @@ body.inspector-collapsed #showInspector{display:block}
 .report .companyOverviewGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.report .companyOverviewBox{border:1px solid #ddd;border-radius:8px;padding:12px}.report .bizMix{width:100%;border-collapse:collapse}.report .bizMix th,.report .bizMix td{padding:8px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}.report .positiveText{color:#08783f}.report .negativeText{color:#b51f34}
 @media(max-width:900px){.driverResults{grid-template-columns:repeat(2,1fr)}.report .companyOverviewGrid{grid-template-columns:1fr}}@media(max-width:650px){.driverResults{grid-template-columns:1fr}}
 </style>
+
+<style id="a095-live-css">
+.livebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;margin-bottom:12px;border:1px solid #29435a;border-radius:9px;background:#0d1925}
+.livepill{font-size:11px;padding:4px 8px;border-radius:999px;background:#15304a;color:#bfe1ff;border:1px solid #315779}
+.livepill.ok{background:#103225;color:#8fe2b2;border-color:#285e44}
+.livepill.warn{background:#392d12;color:#ffd477;border-color:#725923}
+.livepill.bad{background:#3c151b;color:#ff9daa;border-color:#73323c}
+.refreshBtn,.apiBtn{background:#17395a;color:#fff;border:1px solid #3c6d99;border-radius:7px;padding:7px 11px;cursor:pointer}
+.refreshBtn{margin-left:auto}.apiBtn{background:#142638}
+.liveDataPanel{margin:12px 0}
+.liveDataGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.liveDataGrid .card{margin:0}
+.report table{width:100%!important;max-width:100%!important;min-width:0!important;table-layout:fixed!important;border-collapse:collapse!important}
+.report table th,.report table td{background:#fff!important;color:#111!important;border:1px solid #d7dde3!important;white-space:normal!important;overflow-wrap:anywhere!important;padding:7px!important;font-size:11px!important}
+.report table th{background:#17324d!important;color:#fff!important}
+.report table tr:nth-child(even) td{background:#f5f7f9!important}
+@media(max-width:900px){.liveDataGrid{grid-template-columns:repeat(2,1fr)}.refreshBtn{margin-left:0}}
+@media(max-width:650px){.liveDataGrid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -165,7 +184,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.3.3 INTEGRATED FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5 LIVE ENGINE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 
 function overview(){
@@ -480,4 +499,180 @@ setTimeout(enhance,0);
 })();
 </script>
 
+
+<script id="a095-live-runtime">
+(function(){
+  const DEFAULT_API = 'https://YOUR-WORKER.workers.dev';
+  const live = { loaded:false, data:null, error:null };
+
+  function apiBase(){
+    return (localStorage.getItem('ertApiBase') || DEFAULT_API).replace(/\/+$/,'');
+  }
+  function configured(){ return !apiBase().includes('YOUR-WORKER'); }
+  function fmtMoney(v){ return v==null?'—':'$'+Number(v).toLocaleString('en-US',{maximumFractionDigits:2}); }
+  function fmtBn(m){ return m==null?'—':'$'+(Number(m)/1000).toFixed(1)+'bn'; }
+  function fmtPct(v){ return v==null?'—':Number(v).toFixed(1)+'%'; }
+
+  function configure(){
+    const current=configured()?apiBase():'';
+    const v=prompt('Paste your Cloudflare Worker URL (example: https://ert-live-data.yourname.workers.dev)', current);
+    if(!v)return;
+    localStorage.setItem('ertApiBase', v.trim().replace(/\/+$/,''));
+    refresh();
+  }
+
+  async function refresh(){
+    ensureBar();
+    const b=document.getElementById('ertLiveRefresh');
+    if(b){b.disabled=true;b.textContent='Refreshing live data…';}
+    setPill('ertStatus','warn','Connecting to live sources…');
+    try{
+      if(!configured()) throw new Error('Live API is not configured. Click ⚙ API and paste the Worker URL.');
+      const url=apiBase()+'/api/all?ticker=GOOG&_='+Date.now();
+      const r=await fetch(url,{cache:'no-store'});
+      const d=await r.json();
+      if(!r.ok || !d.ok) throw new Error(d.error||('HTTP '+r.status));
+      live.loaded=true;live.data=d;live.error=null;
+      apply(d);
+      if(window.render) render();
+      setTimeout(enhance,30);
+    }catch(e){
+      live.error=String(e.message||e);
+      setPill('ertStatus','bad','Refresh failed: '+live.error);
+      console.error('ERT live refresh',e);
+    }finally{
+      const x=document.getElementById('ertLiveRefresh');
+      if(x){x.disabled=false;x.textContent='↻ Refresh Live Data';}
+    }
+  }
+
+  function apply(d){
+    const m=d.market||{}, s=d.sec||{}, t=d.treasury||{}, c=d.consensus||{};
+    if(window.D){
+      if(D.market){
+        if(m.price!=null) D.market.price=m.price;
+        if(m.asof) D.market.asof=m.asof;
+        if(s.shares_m!=null) D.market.shares_m=s.shares_m;
+        if(s.net_cash_m!=null) D.market.net_cash_m=s.net_cash_m;
+        D.market.model_asof=new Date().toISOString().slice(0,10);
+      }
+      if(Array.isArray(m.history)&&m.history.length>30){
+        D.dates=m.history.map(x=>x.date);
+        D.prices=m.history.map(x=>x.close);
+      }
+      if(D.consensus && c.available){
+        D.consensus.targetMean=c.mean;
+        D.consensus.targetMedian=c.median;
+        D.consensus.targetLow=c.low;
+        D.consensus.targetHigh=c.high;
+        D.consensus.analysts=c.analysts||null;
+        D.consensus.rating=c.rating||'—';
+        D.consensus.status='LIVE';
+        D.consensus.displaySource=c.source;
+        D.consensus.asof=c.asof;
+      } else if(D.consensus){
+        D.consensus.status='UNAVAILABLE';
+        D.consensus.displaySource='No reliable live consensus returned by configured data source';
+      }
+      D.live = d;
+    }
+    if(window.S){
+      if(t.ten_year!=null) S.rf=t.ten_year;
+      if(d.erp && d.erp.value!=null) S.erp=d.erp.value;
+    }
+    setPill('ertStatus','ok','LIVE · updated '+(d.generated_at||'now'));
+    setPill('ertPrice','ok','Price '+fmtMoney(m.price)+' · '+(m.asof||''));
+    setPill('ertSEC','ok','SEC '+(s.latest_form||'')+' · '+(s.latest_period||''));
+    setPill('ertTreasury',t.ten_year!=null?'ok':'warn','US 10Y '+(t.ten_year!=null?fmtPct(t.ten_year):'unavailable'));
+    setPill('ertConsensus',c.available?'ok':'warn',c.available?'Consensus '+fmtMoney(c.mean):'Consensus unavailable');
+  }
+
+  function setPill(id,cls,text){
+    const x=document.getElementById(id); if(!x)return;
+    x.className='livepill '+cls;x.textContent=text;
+  }
+
+  function ensureBar(){
+    const a=document.getElementById('app');if(!a||document.getElementById('ertLiveBar'))return;
+    const bar=document.createElement('div');bar.className='livebar';bar.id='ertLiveBar';
+    bar.innerHTML='<span id="ertStatus" class="livepill warn">Live API not checked</span>'+
+      '<span id="ertPrice" class="livepill">Price —</span>'+
+      '<span id="ertSEC" class="livepill">SEC —</span>'+
+      '<span id="ertTreasury" class="livepill">US 10Y —</span>'+
+      '<span id="ertConsensus" class="livepill">Consensus —</span>'+
+      '<button class="apiBtn" id="ertApi">⚙ API</button>'+
+      '<button class="refreshBtn" id="ertLiveRefresh">↻ Refresh Live Data</button>';
+    a.prepend(bar);
+    document.getElementById('ertApi').onclick=configure;
+    document.getElementById('ertLiveRefresh').onclick=refresh;
+  }
+
+  function financialPanel(){
+    const a=document.getElementById('app'); if(!a||!live.data||document.getElementById('ertLiveFinancials'))return;
+    const p=(window.S&&S.page)||'';
+    if(!['overview','financials','valuation','report'].includes(p))return;
+    const s=live.data.sec||{};
+    const sec=document.createElement('section');sec.className='card liveDataPanel';sec.id='ertLiveFinancials';
+    sec.innerHTML='<h3>Latest live financial anchor</h3><div class="liveDataGrid">'+
+      '<div class="card"><div class="sub">Revenue TTM</div><div class="value">'+fmtBn(s.revenue_ttm_m)+'</div><div class="small">'+(s.latest_period||'')+'</div></div>'+
+      '<div class="card"><div class="sub">Net income TTM</div><div class="value">'+fmtBn(s.net_income_ttm_m)+'</div><div class="small">SEC XBRL</div></div>'+
+      '<div class="card"><div class="sub">Operating cash flow TTM</div><div class="value">'+fmtBn(s.ocf_ttm_m)+'</div><div class="small">SEC XBRL</div></div>'+
+      '<div class="card"><div class="sub">CapEx TTM</div><div class="value">'+fmtBn(s.capex_ttm_m)+'</div><div class="small">FCF '+fmtBn(s.fcf_ttm_m)+'</div></div>'+
+      '</div><div class="sourcebox"><b>Live valuation anchor:</b> DCF uses latest TTM FCF, latest shares and latest net-cash/debt values where available. Source: '+(s.source||'SEC EDGAR')+'.</div>';
+    const bar=document.getElementById('ertLiveBar'); if(bar)bar.after(sec); else a.prepend(sec);
+  }
+
+  // Override DCF anchor functions only when live SEC data exists.
+  const origBaseFcf = window.baseFcf;
+  const origMarketCap = window.marketCap;
+  const origWacc = window.wacc;
+  const origDcf = window.dcf;
+
+  if(typeof origBaseFcf==='function'){
+    window.baseFcf=function(){
+      const s=live.data&&live.data.sec;
+      if(s && s.fcf_ttm_m!=null && S.basis==='reported') return s.fcf_ttm_m;
+      if(s && s.revenue_ttm_m!=null && S.basis==='margin') return s.revenue_ttm_m * avg(fcfMargins())/100;
+      return origBaseFcf();
+    };
+  }
+  if(typeof origMarketCap==='function'){
+    window.marketCap=function(){
+      const s=live.data&&live.data.sec, m=live.data&&live.data.market;
+      if(s&&s.shares_m!=null&&m&&m.price!=null) return s.shares_m*m.price;
+      return origMarketCap();
+    };
+  }
+  if(typeof origWacc==='function'){
+    window.wacc=function(){
+      const s=live.data&&live.data.sec;
+      let W=origWacc();
+      if(!s||s.debt_m==null)return W;
+      let coe=S.rf+S.beta*S.erp, eq=marketCap(), debt=s.debt_m, ew=eq/(eq+debt),dw=1-ew,after=S.cod*(1-S.tax/100);
+      return {w:coe*ew+after*dw,coe,after,ew,dw,debt,eq};
+    };
+  }
+  if(typeof origDcf==='function'){
+    window.dcf=function(g=S.g,w=wacc().w,t=S.terminal){
+      const s=live.data&&live.data.sec;
+      if(!s||s.net_cash_m==null||s.shares_m==null)return origDcf(g,w,t);
+      let f=baseFcf(),pv=0,detail=[];
+      g.forEach((x,i)=>{f*=1+x/100;let df=1/Math.pow(1+w/100,i+1);pv+=f*df;detail.push({g:x,fcf:f,df,pv:f*df})});
+      let spread=w/100-t/100;if(spread<=0)return {ps:NaN,equity:NaN,ev:NaN,pv,pvt:NaN,detail,tvshare:NaN};
+      let tv=f*(1+t/100)/spread,pvt=tv/Math.pow(1+w/100,5),ev=pv+pvt,equity=ev+s.net_cash_m;
+      return {ps:equity/s.shares_m,equity,ev,pv,pvt,detail,tvshare:pvt/ev*100};
+    };
+  }
+
+  function enhance(){ ensureBar(); financialPanel(); }
+  new MutationObserver(()=>setTimeout(enhance,0)).observe(document.getElementById('app'),{childList:true,subtree:true});
+  setTimeout(()=>{
+    enhance();
+    if(configured()) refresh();
+    else setPill('ertStatus','warn','Configure live API once: ⚙ API');
+  },100);
+
+  window.ERT_REFRESH_LIVE=refresh;
+})();
+</script>
 </body></html>
