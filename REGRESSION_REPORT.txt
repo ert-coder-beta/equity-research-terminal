@@ -1,6 +1,26 @@
-PASS worker
-PASS frontend 0
-PASS frontend 1
-PASS frontend 2
-PASS frontend 3
-PASS frontend 4
+PASS Worker syntax
+PASS Frontend script 0 syntax
+PASS Frontend script 1 syntax
+PASS Frontend script 2 syntax
+PASS Frontend script 3 syntax
+PASS Frontend script 4 syntax
+PASS Frontend script 5 syntax
+PASS Frontend script 6 syntax
+PASS Frontend script 7 syntax
+PASS Frontend script 8 syntax
+PASS Frontend script 9 syntax
+PASS P/E clickable
+PASS P/E formula detail
+PASS Valuation opens
+PASS Revenue consensus
+PASS EPS consensus
+PASS Revisions visible
+PASS No demo consensus language
+PASS Market uses revenue/EPS consensus
+PASS Market no price-target demo
+PASS Report baseline retained
+PASS Report live consensus
+PASS no browser runtime errors
+PASS Financials Analyst Consensus column
+PASS Financials FY2026 Revenue consensus
+PASS Financials FY2026 EPS consensus

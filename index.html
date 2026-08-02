@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.5 ALPHA VANTAGE FREE CONSENSUS</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.8 LIVE CONSENSUS VALIDATED</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -344,8 +344,8 @@ function inspector(){
      inputs=[['Current price',money(price)],['Price as of',priceAsOf],['TTM diluted EPS',Number.isFinite(eps)?money(eps):'Unavailable'],['EPS period',s.latest_period||'—'],['Price source','Live market Worker'],['EPS source','SEC XBRL / normalized TTM']];
      basis='Trailing P/E using latest market price and latest validated TTM diluted EPS.';
    }else if(m==='PEG'){
-     let p=pe(),g=(D.consensus?.status==='LIVE'&&Number(D.consensus.epsGrowth)>0)?Number(D.consensus.epsGrowth):cagr(by('income.eps')[2]);
-     let gsrc=(D.consensus?.status==='LIVE'&&Number(D.consensus.epsGrowth)>0)?'Live analyst consensus EPS growth':'Historical 5Y diluted EPS CAGR';
+     let p=pe(),g=(['LIVE','CACHED','STALE CACHE'].includes(D.consensus?.status)&&Number(D.consensus.epsGrowth)>0)?Number(D.consensus.epsGrowth):cagr(by('income.eps')[2]);
+     let gsrc=(['LIVE','CACHED','STALE CACHE'].includes(D.consensus?.status)&&Number(D.consensus.epsGrowth)>0)?'Live analyst consensus EPS growth':'Historical 5Y diluted EPS CAGR';
      cur=Number.isFinite(p)&&g>0?p/g:NaN;
      formula=`PEG = P/E ÷ EPS growth rate<br>${Number.isFinite(p)?p.toFixed(2)+'x':'Unavailable'} ÷ ${pct(g)} = ${Number.isFinite(cur)?cur.toFixed(2):'Unavailable'}`;
      inputs=[['P/E',Number.isFinite(p)?p.toFixed(2)+'x':'Unavailable'],['EPS growth',pct(g)],['Growth definition',gsrc],['Price as of',priceAsOf],['Source','Live market + SEC / live consensus when available']];
@@ -707,9 +707,9 @@ setTimeout(enhance,0);
         const epsEst=Number(c.next_annual?.eps?.estimate);
         const lastRev=Number(last(by('income.revenue')[2]));
         const lastEps=Number(last(by('income.eps')[2]));
-        D.consensus.revenueGrowth=Number.isFinite(revEst)&&lastRev>0?(revEst/lastRev-1)*100:null;
+        D.consensus.revenueGrowth=Number.isFinite(revEst)&&lastRev>0?((revEst/1e6)/lastRev-1)*100:null;
         D.consensus.epsGrowth=Number.isFinite(epsEst)&&lastEps>0?(epsEst/lastEps-1)*100:null;
-      } else if(D.consensus){
+      } else if(D.consensus && !c.isolated){
         D.consensus.status='UNAVAILABLE';
         D.consensus.displaySource='No reliable live consensus returned by configured data source';
         D.consensus.forwardAnnual={revenue:[],eps:[]};
@@ -985,7 +985,7 @@ setTimeout(enhance,0);
   }
   function streetConsensus(id,year){
     const c=D.consensus;
-    if(c?.status!=='LIVE') return {value:'Unavailable', note:'ANALYST CONSENSUS'};
+    if(!['LIVE','CACHED','STALE CACHE'].includes(c?.status)) return {value:'Unavailable', note:'ANALYST CONSENSUS'};
     if(id==='income.revenue'){
       const r=(c.forwardAnnual?.revenue||[]).find(x=>Number(x.period)===year && String(x.data_type).toLowerCase()==='estimate');
       if(r?.estimate!=null)return {value:'$'+(Number(r.estimate)/1e9).toFixed(1)+'bn', note:'ANALYST CONSENSUS'};
@@ -1174,6 +1174,324 @@ setTimeout(enhance,0);
    let x=oldReport(),charts=reportCharts();
    return x.includes('<h2>Disclaimer</h2>')?x.replace('<h2>Disclaimer</h2>',charts+'<h2>Disclaimer</h2>'):x+charts;
  }
+})();
+</script>
+
+
+<script id="consensus-cache-ui">
+(function(){
+ const oldRender=window.render;
+ window.render=function(){
+   const out=oldRender.apply(this,arguments);
+   try{
+     const c=D.live?.consensus;
+     if(c?.available){
+       const pill=document.getElementById('ertConsensus');
+       if(pill){
+         const tag=c?.cache?.stale?'STALE CACHE':c?.cache?.hit?'CACHED':'LIVE';
+         const age=c?.cache?.age_seconds!=null?` · ${Math.floor(c.cache.age_seconds/60)}m old`:'';
+         pill.textContent=`Consensus ${tag}${age}`;
+       }
+     }
+   }catch(_e){}
+   return out;
+ }
+})();
+</script>
+
+
+<script id="ert-consensus-isolated-v27">
+(function(){
+  const CONSENSUS_STORAGE_KEY='ert_consensus_GOOG_v27';
+  const CONSENSUS_MAX_AGE=24*60*60*1000;
+
+  function workerBase(){
+    try{
+      if(typeof LIVE_API_URL==='string' && LIVE_API_URL) return LIVE_API_URL.replace(/\/api\/all.*$/,'').replace(/\/$/,'');
+    }catch(_e){}
+    try{
+      const keys=['ertApi','ERT_API_URL','ert_api_url','workerUrl'];
+      for(const k of keys){
+        const v=localStorage.getItem(k);
+        if(v && /^https?:\/\//.test(v)) return v.replace(/\/api\/all.*$/,'').replace(/\/$/,'');
+      }
+    }catch(_e){}
+    return 'https://ert-live-data.cmyukhk.workers.dev';
+  }
+
+  function readLocalConsensus(){
+    try{
+      const x=JSON.parse(localStorage.getItem(CONSENSUS_STORAGE_KEY)||'null');
+      if(!x || !x.saved_at || !x.consensus?.available) return null;
+      return x;
+    }catch(_e){ return null; }
+  }
+  function saveLocalConsensus(c){
+    try{ localStorage.setItem(CONSENSUS_STORAGE_KEY,JSON.stringify({saved_at:Date.now(),consensus:c})); }catch(_e){}
+  }
+
+  async function getConsensus(force=false){
+    const local=readLocalConsensus();
+    if(!force && local && (Date.now()-local.saved_at)<CONSENSUS_MAX_AGE){
+      return {...local.consensus, client_cache:{hit:true,age_seconds:Math.floor((Date.now()-local.saved_at)/1000),ttl_seconds:86400}};
+    }
+    const r=await fetch(workerBase()+'/api/consensus?ticker=GOOG',{cache:'no-store'});
+    const j=await r.json();
+    if(j?.consensus?.available){
+      saveLocalConsensus(j.consensus);
+      return {...j.consensus, client_cache:{hit:false,age_seconds:0,ttl_seconds:86400}};
+    }
+    // Never erase a previously successful consensus because of a temporary provider failure.
+    if(local?.consensus?.available){
+      return {...local.consensus, client_cache:{hit:true,stale:true,age_seconds:Math.floor((Date.now()-local.saved_at)/1000),ttl_seconds:86400},warning:j?.consensus?.reason||'Consensus refresh failed'};
+    }
+    return j?.consensus||{available:false,provider:'Alpha Vantage',reason:'Consensus unavailable'};
+  }
+
+  window.ERTConsensusV27={getConsensus,workerBase};
+
+  // On app startup, obtain consensus at most once per 24h on this browser.
+  window.addEventListener('load',async()=>{
+    try{
+      const c=await getConsensus(false);
+      if(window.D){
+        D.live=D.live||{};
+        D.live.consensus=c;
+        // Map Alpha Vantage annual estimates into the existing UI without inventing price targets.
+        if(c?.available){
+          D.consensus=D.consensus||{};
+          D.consensus.status=c?.client_cache?.stale?'STALE CACHE':(c?.client_cache?.hit?'CACHED':'LIVE');
+          D.consensus.displaySource='Alpha Vantage EARNINGS_ESTIMATES';
+          D.consensus.liveAnnual=c.annual||null;
+          D.consensus.liveQuarterly=c.quarterly||null;
+          D.consensus.nextAnnual=c.next_annual||null;
+          D.consensus.priceTargetAvailable=false;
+        }
+      }
+      if(typeof window.render==='function') window.render();
+    }catch(e){ console.warn('Consensus isolated fetch:',e); }
+  },{once:true});
+})();
+</script>
+
+
+<style id="ert28-css">
+.consensus28-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.consensus28-stat{border:1px solid var(--line);background:#101b27;border-radius:9px;padding:12px}
+.consensus28-stat .v{font-size:22px;font-weight:800;margin-top:5px}
+.consensus28-rev{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
+.consensus28-rev>div{border:1px solid var(--line);border-radius:8px;padding:8px}
+@media(max-width:1000px){.consensus28-grid{grid-template-columns:repeat(2,1fr)}.consensus28-rev{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.consensus28-grid,.consensus28-rev{grid-template-columns:1fr}}
+</style>
+<script id="ert28-live-consensus">
+(function(){
+ const KEY='ert28AlphaConsensusGOOG',TTL=24*60*60*1000;
+ let inFlight=null;
+ const api=()=>{try{return (localStorage.getItem('ertApiBase')||'').replace(/\/+$/,'')}catch(_e){return ''}};
+ const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'null');return x?.consensus?.available?x:null}catch(_e){return null}};
+ const save=c=>{try{localStorage.setItem(KEY,JSON.stringify({saved_at:Date.now(),consensus:c}))}catch(_e){}};
+ const validStatus=()=>['LIVE','CACHED','STALE CACHE'].includes(D.consensus?.status)&&!!D.consensus?.nextAnnual;
+ const fmtBnUSD=v=>Number.isFinite(Number(v))?'$'+(Number(v)/1e9).toFixed(1)+'bn':'Unavailable';
+ const fmtEPS=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'Unavailable';
+ const chg=(a,b)=>{a=Number(a);b=Number(b);return Number.isFinite(a)&&Number.isFinite(b)&&b!==0?(a/b-1)*100:null};
+
+ function applyConsensus(c,cache=false,stale=false){
+   if(!c?.available)return false;
+   D.live=D.live||{};D.live.consensus=c;
+   D.consensus=D.consensus||{};
+   D.consensus.status=stale?'STALE CACHE':cache?'CACHED':'LIVE';
+   D.consensus.displaySource=c.source||'Alpha Vantage EARNINGS_ESTIMATES';
+   D.consensus.provider=c.provider||'Alpha Vantage';
+   D.consensus.asof=c.asof||null;
+   D.consensus.forwardAnnual={revenue:c.annual?.revenue||[],eps:c.annual?.eps||[]};
+   D.consensus.forwardQuarterly={revenue:c.quarterly?.revenue||[],eps:c.quarterly?.eps||[]};
+   D.consensus.nextAnnual=c.next_annual||null;
+   D.consensus.revisions=c.revisions||null;
+   D.consensus.priceTargetAvailable=false;
+   D.consensus.targetMean=D.consensus.targetMedian=D.consensus.targetLow=D.consensus.targetHigh=null;
+   const r=Number(c.next_annual?.revenue?.estimate),e=Number(c.next_annual?.eps?.estimate);
+   const lr=Number(last(by('income.revenue')[2])),le=Number(last(by('income.eps')[2]));
+   D.consensus.revenueGrowth=Number.isFinite(r)&&lr>0?((r/1e6)/lr-1)*100:null;
+   D.consensus.epsGrowth=Number.isFinite(e)&&le>0?(e/le-1)*100:null;
+   const ex=c.next_annual?.eps||{};
+   D.consensus.revision7=chg(ex.estimate,ex.estimate_7d_ago);
+   D.consensus.revision30=chg(ex.estimate,ex.estimate_30d_ago);
+   D.consensus.revision60=chg(ex.estimate,ex.estimate_60d_ago);
+   D.consensus.revision90=chg(ex.estimate,ex.estimate_90d_ago);
+   return true;
+ }
+ async function load(force=false){
+   if(inFlight)return inFlight;
+   inFlight=(async()=>{
+     const old=read();
+     if(old&&!force&&Date.now()-old.saved_at<TTL){applyConsensus(old.consensus,true,false);return old.consensus}
+     if(!api()){if(old)applyConsensus(old.consensus,true,true);return old?.consensus||null}
+     try{
+       const r=await fetch(api()+'/api/consensus?ticker=GOOG',{cache:'no-store'});
+       const j=await r.json(),c=j?.consensus;
+       if(r.ok&&j?.ok&&c?.available){save(c);applyConsensus(c,false,!!c.cache?.stale);return c}
+       if(old){applyConsensus(old.consensus,true,true);return old.consensus}
+       return c||null;
+     }catch(_e){if(old){applyConsensus(old.consensus,true,true);return old.consensus}return null}
+     finally{inFlight=null}
+   })();
+   return inFlight;
+ }
+ function fy(){return Number(D.consensus?.nextAnnual?.year)||Number(D.years.at(-1))+1}
+ function cr(){return D.consensus?.nextAnnual?.revenue||null}
+ function ce(){return D.consensus?.nextAnnual?.eps||null}
+ function mini(label,val){return `<div><span class="sub">${label}</span><strong>${val}</strong></div>`}
+
+ window.ERT28={load,applyConsensus,validStatus,fy,cr,ce};
+
+ window.addEventListener('load',()=>load(false).then(()=>{try{render()}catch(_e){}}),{once:true});
+
+ const oldAnalysis=window.analysis;
+ window.analysis=function(){
+   let x=oldAnalysis();
+   const y=fy(),r=cr(),e=ce();
+   const panel=validStatus()?`<div class="card"><h3>Live analyst consensus <span class="badge purple">${D.consensus.status}</span></h3>
+     <div class="consensus28-grid">
+       <div class="consensus28-stat"><span class="sub">FY${y}E Revenue</span><div class="v">${fmtBnUSD(r?.estimate)}</div><div class="small">${r?.analyst_count??'—'} analysts</div></div>
+       <div class="consensus28-stat"><span class="sub">Revenue low / high</span><div class="v">${fmtBnUSD(r?.low)} – ${fmtBnUSD(r?.high)}</div></div>
+       <div class="consensus28-stat"><span class="sub">FY${y}E EPS</span><div class="v">${fmtEPS(e?.estimate)}</div><div class="small">${e?.analyst_count??'—'} analysts</div></div>
+       <div class="consensus28-stat"><span class="sub">EPS low / high</span><div class="v">${fmtEPS(e?.low)} – ${fmtEPS(e?.high)}</div></div>
+     </div>
+     <h4 style="margin-bottom:6px">EPS estimate revision</h4>
+     <div class="consensus28-rev">${mini('Current',fmtEPS(e?.estimate))}${mini('7d ago',fmtEPS(e?.estimate_7d_ago))}${mini('30d ago',fmtEPS(e?.estimate_30d_ago))}${mini('60d ago',fmtEPS(e?.estimate_60d_ago))}${mini('90d ago',fmtEPS(e?.estimate_90d_ago))}</div>
+     <div class="sourcebox">Source: ${D.consensus.displaySource} · as of ${D.consensus.asof||'—'}. This feed is earnings/revenue consensus; no analyst share-price target is invented.</div></div>`
+     :`<div class="card"><h3>Live analyst consensus <span class="badge watch">UNAVAILABLE</span></h3><p>No successful Alpha Vantage consensus payload is currently cached. No demo estimates are substituted.</p></div>`;
+   return x.replace(/<div class="grid two" style="margin-top:12px"><div class="card"><h3>Analyst consensus snapshot[\s\S]*?<\/div>\s*<div class="card"><h3>Upcoming catalysts & key dates<\/h3>/,
+     `<div class="grid two" style="margin-top:12px">${panel}<div class="card"><h3>Upcoming catalysts & key dates</h3>`);
+ }
+
+ const oldReport=window.report;
+ window.report=function(){
+   let x=oldReport(),y=fy(),r=cr(),e=ce();
+   const p=validStatus()
+    ?`<h2>Market & analyst consensus</h2><p>FY${y} analyst consensus is <strong>${fmtBnUSD(r?.estimate)}</strong> revenue (${r?.analyst_count??'—'} analysts) and <strong>${fmtEPS(e?.estimate)}</strong> EPS (${e?.analyst_count??'—'} analysts). ERT forecast remains a separate model output. Market-implied FCF growth is <strong>${pct(reverse())}</strong>.</p>`
+    :`<h2>Market & analyst consensus</h2><p>Live revenue/EPS analyst consensus is currently unavailable. No demo target is substituted. Market-implied FCF growth is <strong>${pct(reverse())}</strong>.</p>`;
+   return x.replace(/<h2>Market & consensus<\/h2><p>[\s\S]*?<\/p><h2>What to watch next<\/h2>/,p+'<h2>What to watch next</h2>');
+ }
+})();
+</script>
+
+
+<script id="ert28-analysis-final-fix">
+(function(){
+ const baseAnalysis=window.analysis;
+ window.analysis=function(){
+   let x=baseAnalysis();
+   if(!window.ERT28?.validStatus?.())return x;
+   const y=ERT28.fy(),r=ERT28.cr(),e=ERT28.ce();
+   const bn=v=>Number.isFinite(Number(v))?'$'+(Number(v)/1e9).toFixed(1)+'bn':'Unavailable';
+   const ep=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'Unavailable';
+   const mini=(a,b)=>`<div><span class="sub">${a}</span><strong>${b}</strong></div>`;
+   const panel=`<div class="card"><h3>Live analyst consensus <span class="badge purple">${D.consensus.status}</span></h3>
+     <div class="consensus28-grid">
+       <div class="consensus28-stat"><span class="sub">FY${y}E Revenue</span><div class="v">${bn(r?.estimate)}</div><div class="small">${r?.analyst_count??'—'} analysts</div></div>
+       <div class="consensus28-stat"><span class="sub">Revenue low / high</span><div class="v">${bn(r?.low)} – ${bn(r?.high)}</div></div>
+       <div class="consensus28-stat"><span class="sub">FY${y}E EPS</span><div class="v">${ep(e?.estimate)}</div><div class="small">${e?.analyst_count??'—'} analysts</div></div>
+       <div class="consensus28-stat"><span class="sub">EPS low / high</span><div class="v">${ep(e?.low)} – ${ep(e?.high)}</div></div>
+     </div>
+     <h4 style="margin-bottom:6px">EPS estimate revision</h4>
+     <div class="consensus28-rev">${mini('Current',ep(e?.estimate))}${mini('7d ago',ep(e?.estimate_7d_ago))}${mini('30d ago',ep(e?.estimate_30d_ago))}${mini('60d ago',ep(e?.estimate_60d_ago))}${mini('90d ago',ep(e?.estimate_90d_ago))}</div>
+     <div class="sourcebox">Source: ${D.consensus.displaySource} · as of ${D.consensus.asof||'—'}. Earnings/revenue consensus only; no analyst share-price target is invented.</div></div>`;
+   const startNeedle='<div class="grid two" style="margin-top:12px"><div class="card"><h3>Analyst consensus snapshot';
+   const nextNeedle='<div class="card"><h3>Upcoming catalysts & key dates</h3>';
+   const a=x.indexOf(startNeedle),b=a>=0?x.indexOf(nextNeedle,a):-1;
+   if(a>=0&&b>a){
+     x=x.slice(0,a)+`<div class="grid two" style="margin-top:12px">${panel}`+x.slice(b);
+   }
+   return x;
+ }
+})();
+</script>
+
+
+<script id="ert28-final-pages">
+(function(){
+ const bn=v=>Number.isFinite(Number(v))?'$'+(Number(v)/1e9).toFixed(1)+'bn':'Unavailable';
+ const ep=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'Unavailable';
+ const usable=()=>window.ERT28?.validStatus?.();
+ const fy=()=>ERT28.fy();
+ const cr=()=>ERT28.cr();
+ const ce=()=>ERT28.ce();
+
+ // Clean Analysis page: no demo consensus fields.
+ window.analysis=function(){
+   const rev=by('income.revenue')[2],cap=by('cashflow.capex')[2],rec=by('balance.receivables')[2];
+   const y=fy(),r=cr(),e=ce();
+   const streetRevGrowth=usable()?D.consensus.revenueGrowth:null;
+   const streetEpsGrowth=usable()?D.consensus.epsGrowth:null;
+   const r30=usable()?D.consensus.revision30:null,r90=usable()?D.consensus.revision90:null;
+   const consensusDetail=usable()?`
+     <div class="card"><h3>Live analyst consensus <span class="badge purple">${D.consensus.status}</span></h3>
+       <div class="consensus28-grid">
+         <div class="consensus28-stat"><span class="sub">FY${y}E Revenue</span><div class="v">${bn(r?.estimate)}</div><div class="small">${r?.analyst_count??'—'} analysts</div></div>
+         <div class="consensus28-stat"><span class="sub">Revenue low / high</span><div class="v">${bn(r?.low)} – ${bn(r?.high)}</div></div>
+         <div class="consensus28-stat"><span class="sub">FY${y}E EPS</span><div class="v">${ep(e?.estimate)}</div><div class="small">${e?.analyst_count??'—'} analysts</div></div>
+         <div class="consensus28-stat"><span class="sub">EPS low / high</span><div class="v">${ep(e?.low)} – ${ep(e?.high)}</div></div>
+       </div>
+       <h4 style="margin-bottom:6px">EPS estimate revision</h4>
+       <div class="consensus28-rev">
+         <div><span class="sub">Current</span><strong>${ep(e?.estimate)}</strong></div>
+         <div><span class="sub">7d ago</span><strong>${ep(e?.estimate_7d_ago)}</strong></div>
+         <div><span class="sub">30d ago</span><strong>${ep(e?.estimate_30d_ago)}</strong></div>
+         <div><span class="sub">60d ago</span><strong>${ep(e?.estimate_60d_ago)}</strong></div>
+         <div><span class="sub">90d ago</span><strong>${ep(e?.estimate_90d_ago)}</strong></div>
+       </div>
+       <div class="sourcebox">Source: ${D.consensus.displaySource} · as of ${D.consensus.asof||'—'}. Alpha Vantage supplies revenue/EPS estimates and revisions; it is not used here as a share-price-target source.</div>
+     </div>`:
+     `<div class="card"><h3>Live analyst consensus <span class="badge watch">UNAVAILABLE</span></h3><p>No successful consensus payload is cached. No demo values are substituted.</p></div>`;
+
+   return `<h1>Analysis</h1><div class="lead">What changed, why it matters, how it affects valuation — with live Street earnings/revenue expectations kept separate from ERT estimates.</div>
+   <div class="snap">${snap('Growth','STRONG','good','status:growth')}${snap('Margins','IMPROVING','good','status:margins')}${snap('ROIC','EXCELLENT','good','roic')}${snap('FCF quality','MIXED','watch','status:fcf')}${snap('CapEx','WATCH','watch','cashflow.capex')}${snap('Consensus',usable()?'LIVE':'UNAVAILABLE',usable()?'purple':'watch','status:consensus')}${snap('Valuation','HIGH EXPECTATIONS','bad','status:valuation')}</div>
+   <div class="grid two"><div class="card"><h3 class="pos">Positive findings</h3><div class="finding find-pos"><h4>Revenue growth improved</h4><p>Growth rose from ${pct(yy(rev,3))} to ${pct(yy(rev,4))}. Higher sales support higher future FCF.</p></div><div class="finding find-pos"><h4>Operating margin expanded</h4><p>Margin reached ${pct(opm())}. More revenue is becoming operating profit.</p></div><div class="finding find-pos" data-inspect="roic"><h4>ROIC is strong</h4><p>${pct(roic())} vs WACC ${pct(wacc().w)}. Strong value-creation spread.</p></div></div>
+   <div class="card"><h3 class="warn">Risks and questions</h3><div class="finding find-risk" data-row="cashflow.capex"><h4>CapEx jumped</h4><p>CapEx increased ${pct(yy(cap,4))}. It may support AI growth but weighs on near-term FCF.</p></div><div class="finding find-risk"><h4>FCF lagged earnings</h4><p>Net income grew faster than FCF because capital spending increased materially.</p></div><div class="finding find-risk" data-row="balance.receivables"><h4>Receivables need monitoring</h4><p>Receivables grew ${pct(yy(rec,4))}; compare with revenue growth to monitor collection quality.</p></div></div></div>
+   <div class="card" style="margin-top:12px"><h3>ERT vs Street vs Market-implied expectations</h3>
+     <div class="compare head"><span>Metric</span><span>Latest actual</span><span>ERT base</span><span>Street consensus</span><span>Market implied</span></div>
+     ${cmp('Revenue growth',pct(yy(rev,4)),pct(S.drvRev[0]),usable()?pct(streetRevGrowth):'Unavailable','—')}
+     ${cmp('EPS growth',pct(yy(by('income.eps')[2],4)),'Model not explicit',usable()?pct(streetEpsGrowth):'Unavailable','—')}
+     ${cmp('FCF growth',pct(yy(D.years.map((_,i)=>reportedFcf(i)),4)),pct(fiveYCagrForecast()),'Not provided by this feed',pct(reverse()))}
+     ${cmp('Operating margin',pct(opm()),pct(S.drvOcf[0]-S.drvCap[0]),'Not provided by this feed','—')}
+     ${cmp('CapEx',fmt(last(cap))+'m',dcf()?.detail?.[0]?.capex!=null?fmt(dcf().detail[0].capex)+'m':'Unavailable','Not provided by this feed','—')}
+     <div class="finding find-risk" style="margin-top:10px"><h4>Expectation gap</h4><p>Revenue and EPS Street estimates come from Alpha Vantage. FCF, operating-margin and CapEx consensus are left unavailable because this feed does not provide them. ERT forecast remains separate.</p></div>
+   </div>
+   <div class="grid two" style="margin-top:12px">${consensusDetail}
+     <div class="card"><h3>Upcoming catalysts & key dates</h3>${D.events.map(e=>`<div class="event"><div class="eventTop"><strong>${e.date} · ${e.title}</strong><span class="impact">${e.impact}</span></div><div class="small">${e.status}</div><p style="margin-bottom:5px">${e.watch}</p><div class="metricDesc">Source: ${e.source}</div></div>`).join('')}</div>
+   </div>`;
+ };
+
+ function marketChart28(ds,p,s20,s50,s200,fv){
+   const W=1000,H=390,pad=58,vals=[...p,...s20.filter(Number.isFinite),...s50.filter(Number.isFinite),...s200.filter(Number.isFinite),fv].filter(Number.isFinite);
+   const mn=Math.floor(Math.min(...vals)/10)*10,mx=Math.ceil(Math.max(...vals)/10)*10;
+   const x=i=>pad+i*(W-2*pad)/(p.length-1),y=v=>H-pad-(v-mn)/(mx-mn||1)*(H-2*pad);
+   const path=(a,cls)=>{let d='',st=false;a.forEach((v,i)=>{if(!Number.isFinite(v))return;d+=(st?'L':'M')+x(i)+','+y(v)+' ';st=true});return `<path class="${cls}" d="${d}"/>`};
+   const end=p.length-1,idx=[0,.25,.5,.75,1].map(q=>Math.min(end,Math.round(end*q))),ticks=[mn,mn+(mx-mn)*.25,mn+(mx-mn)*.5,mn+(mx-mn)*.75,mx];
+   return `<div class="chart marketMainChart" style="height:390px"><svg viewBox="0 0 ${W} ${H}">
+     <line class="axis" x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}"/><line class="axis" x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}"/>
+     ${ticks.map(t=>`<text x="${pad-8}" y="${y(t)+4}" text-anchor="end" fill="#99adbf" font-size="11">$${t.toFixed(0)}</text><line class="axis" opacity=".22" x1="${pad}" y1="${y(t)}" x2="${W-pad}" y2="${y(t)}"/>`).join('')}
+     ${path(p,'priceLine')}${path(s20,'sma20')}${path(s50,'sma50')}${path(s200,'sma200')}<path class="fair" d="M${pad},${y(fv)} L${W-pad},${y(fv)}"/>
+     ${idx.map(i=>`<text x="${x(i)}" y="${H-22}" text-anchor="middle" fill="#99adbf" font-size="10">${ds[i].slice(0,7)}</text>`).join('')}
+     <circle cx="${x(end)}" cy="${y(p[end])}" r="5" fill="var(--blue)"/><text x="${x(end)-8}" y="${y(p[end])-9}" text-anchor="end" fill="#fff" font-size="10">${money(p[end])}</text>
+     <text x="${W-pad-5}" y="${y(fv)-7}" text-anchor="end" fill="var(--green)" font-size="10">DCF ${money(fv)}</text>
+   </svg></div>`;
+ }
+
+ window.market=function(){
+   const ps=D.prices,dates=D.dates,s20s=smaSeries(ps,20),s50s=smaSeries(ps,50),s200s=smaSeries(ps,200),rsis=rsiSeries(ps),fv=dcf().ps;
+   const s20=sma(ps,20),s50=sma(ps,50),s200=sma(ps,200),rs=rsi(ps),trend=D.market.price>s20&&s20>s50&&s50>s200?'Bullish alignment':'Mixed';
+   const y=fy(),r=cr(),e=ce();
+   const streetCard=usable()?card(`Street FY${y}E Revenue`,bn(r?.estimate),`${r?.analyst_count??'—'} analysts · Alpha Vantage`):card('Analyst consensus','Unavailable','No demo price target used','warn');
+   return `<h1>Market & Price Context</h1><div class="lead">Price trend, fair value, moving averages and momentum. Analyst consensus is shown as earnings/revenue expectations, not as an invented price target.</div>
+     <div class="grid market5">${card('Current price',money(D.market.price),'Market close · '+D.market.asof)}${card('DCF fair value',money(fv),'Base DCF · '+D.market.model_asof,D.market.price>fv?'neg':'pos')}${streetCard}${card('RSI (14)',rs.toFixed(1),rs>70?'Momentum · near overbought':rs<30?'Momentum · near oversold':'Momentum · neutral')}${card('Trend',trend,`Price ${D.market.price>s20?'>':'<'} SMA20 ${s20>s50?'>':'<'} SMA50 ${s50>s200?'>':'<'} SMA200`,trend.includes('Bullish')?'pos':'warn')}</div>
+     <div class="card" style="margin-top:12px"><h3>Street earnings / revenue expectations</h3>${usable()?list([[`FY${y}E Revenue`,bn(r?.estimate)],[`Revenue low / high`,bn(r?.low)+' / '+bn(r?.high)],[`Revenue analysts`,String(r?.analyst_count??'—')],[`FY${y}E EPS`,ep(e?.estimate)],[`EPS low / high`,ep(e?.low)+' / '+ep(e?.high)],[`EPS analysts`,String(e?.analyst_count??'—')],['Source',D.consensus.displaySource]]):'<p>Unavailable — no demo consensus is substituted.</p>'}</div>
+     <div class="grid k3" style="margin-top:12px">${card('SMA20',money(s20),`Short-term (~1 month) · price ${(D.market.price/s20-1)*100>=0?'+':''}${((D.market.price/s20-1)*100).toFixed(1)}% vs SMA`)}${card('SMA50',money(s50),`Medium-term (~2–3 months) · price ${(D.market.price/s50-1)*100>=0?'+':''}${((D.market.price/s50-1)*100).toFixed(1)}% vs SMA`)}${card('SMA200',money(s200),`Long-term (~9–10 months) · price ${(D.market.price/s200-1)*100>=0?'+':''}${((D.market.price/s200-1)*100).toFixed(1)}% vs SMA`)}</div>
+     <div class="card" style="margin-top:12px"><h3>Price, moving averages and DCF fair value</h3>${marketChart28(dates,ps,s20s,s50s,s200s,fv)}<div class="legend"><span><i style="background:var(--blue)"></i>Price</span><span><i style="background:var(--amber)"></i>SMA20</span><span><i style="background:var(--purple)"></i>SMA50</span><span><i style="background:var(--cyan)"></i>SMA200</span><span><i style="background:var(--green)"></i>DCF fair value</span></div></div>
+     <div class="card" style="margin-top:12px"><h3>RSI (14) — momentum</h3>${rsiChart(dates,rsis)}<div class="finding ${rs>70?'find-risk':'find-pos'}"><h4>What does this mean?</h4><p>RSI compares recent gains with recent losses. It is not a valuation measure or automatic buy/sell signal.</p></div></div>`;
+ };
 })();
 </script>
 
