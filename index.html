@@ -1021,7 +1021,187 @@ setTimeout(enhance,0);
 
   // Update version label.
   const oldLayout=window.appLayout;
-  window.appLayout=function(content){return oldLayout(content).replace(/Alpha 1\.0 DATA-VALIDATED CORE/g,'Alpha 1.1 INTEGRATED RESEARCH')};
+  window.appLayout=function(content){return oldLayout(content).replace(/Alpha 1\.0 DATA-VALIDATED CORE/g,'Alpha 1.2 STABLE CORE')};
+})();
+</script>
+
+
+<style id="alpha12-stable-css">
+/* Alpha 1.2 stabilisation: localise new-feature layout and prevent overflow */
+.market5{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.market5 .card{min-width:0;overflow:hidden}
+.market5 .value{font-size:clamp(22px,2vw,34px)!important;overflow-wrap:anywhere}
+.market5 .value.warn{font-size:clamp(18px,1.7vw,28px)!important}
+.finSnapshot .liveDataGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.finSnapshot .liveDataGrid .card{min-width:0!important;overflow:hidden!important}
+.finSnapshot .liveDataGrid .value{font-size:clamp(22px,2vw,34px)!important}
+.reportKpi{min-width:0;overflow:hidden}
+.reportKpi b{font-size:clamp(18px,1.8vw,28px)!important;overflow-wrap:anywhere}
+.reportChart svg text{font-family:Inter,Segoe UI,Arial,sans-serif}
+.axisLabel{font-size:11px;fill:#506274}
+.gridLine{stroke:#d9e2e9;stroke-width:1}
+.pointLabel{font-size:9px;fill:#34495e}
+@media(max-width:1100px){.market5{grid-template-columns:repeat(3,minmax(0,1fr))!important}.finSnapshot .liveDataGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.market5,.finSnapshot .liveDataGrid{grid-template-columns:1fr!important}}
+</style>
+<script id="alpha12-stable-runtime">
+(function(){
+  const isFiniteNum=v=>Number.isFinite(Number(v));
+  const sec=()=>D.live?.sec?.validation?.ok?D.live.sec:null;
+  const mkt=()=>D.live?.market||null;
+
+  function previousCloseChange(){
+    const m=mkt(),hist=m?.history||[];
+    if(!hist.length)return {abs:null,pct:null,prev:null};
+    const current=Number(D.market.price);
+    let closes=hist.map(x=>({d:x.date||x.asof||'',c:Number(x.close)})).filter(x=>Number.isFinite(x.c));
+    if(!closes.length)return {abs:null,pct:null,prev:null};
+    const curDate=String(D.market.asof||'').slice(0,10);
+    const prior=closes.filter(x=>!curDate||String(x.d).slice(0,10)<curDate).at(-1) || closes.at(-2);
+    if(!prior||!Number.isFinite(current)||!Number.isFinite(prior.c)||prior.c===0)return {abs:null,pct:null,prev:null};
+    const abs=current-prior.c,pctv=abs/prior.c*100;
+    return {abs,pct:pctv,prev:prior.c};
+  }
+  function livePriceCard(){
+    const c=previousCloseChange(),cls=c.pct==null?'':c.pct>0?'pos':c.pct<0?'neg':'',arrow=c.pct==null?'':c.pct>0?'▲ ':c.pct<0?'▼ ':'';
+    return `<div class="card"><div class="muted">Current price</div><div class="value">${money(D.market.price)}</div>${c.pct==null?'':`<div class="${cls}" style="font-weight:700;margin-top:6px">${arrow}${c.abs>=0?'+':''}$${Math.abs(c.abs).toFixed(2)} (${c.pct>=0?'+':''}${c.pct.toFixed(2)}%) vs previous close</div>`}<div class="muted">Market close · ${D.market.asof}</div></div>`;
+  }
+
+  // DCF guard: never let NaN propagate into existing features.
+  const baseDcf=window.dcf;
+  window.dcf=function(){
+    const r=baseDcf.apply(this,arguments)||{};
+    const required=['ps','equity','ev'];
+    if(required.some(k=>!isFiniteNum(r[k]))){
+      return {...r,ps:NaN,equity:NaN,ev:NaN,error:'DCF inputs incomplete or invalid'};
+    }
+    return r;
+  };
+
+  // Rating guard.
+  const baseRating=window.rating;
+  window.rating=function(){
+    const r=baseRating();
+    for(const k of Object.keys(r)){
+      if(typeof r[k]==='number'&&!Number.isFinite(r[k]))r[k]=0;
+    }
+    if(!Number.isFinite(r.overall))r.overall=0;
+    return r;
+  };
+
+  // Fix Financials annual rendering using current live annual years rather than old fixed row arrays.
+  window.financials=function(){
+    const s=sec();
+    const years=s?.annual?.years || D.years || [];
+    const annualMode=(S.finView||'annual')==='annual';
+    const tabs=`<div class="finViewTabs"><button data-finview="annual" class="${annualMode?'active':''}">Annual + TTM</button><button data-finview="quarterly" class="${!annualMode?'active':''}">Quarterly</button></div>
+    <div class="tabs">${[['income','Income Statement'],['balance','Balance Sheet'],['cashflow','Cash Flow']].map(x=>`<button data-tab="${x[0]}" class="${S.st===x[0]?'active':''}">${x[1]}</button>`).join('')}</div>`;
+    if(!s)return `<h1>Financial Statements</h1><div class="lead">Validated SEC data required.</div>${tabs}<div class="finding find-risk"><p>Live SEC financials are unavailable.</p></div>`;
+
+    const defs={
+      income:[
+        ['revenue','Revenues',false],['cost','Cost of revenues',false],['rnd','Research and development',false],['sales','Sales and marketing',false],['gna','General and administrative',false],['op','Income from operations',false],['pretax','Income before income taxes',false],['tax','Provision for income taxes',false],['net','Net income',false],['eps','Diluted EPS',true],['shares','Diluted weighted average shares',false]
+      ],
+      cashflow:[['ocf','Operating cash flow',false],['capex','CapEx',false],['fcf','Free cash flow',false]],
+      balance:[['cash','Cash & equivalents',false],['marketable','Marketable securities',false],['debt','Debt',false],['net_cash','Net cash',false]]
+    };
+    const src=s.annual||{};
+    const arrFor=k=>Array.isArray(src[k])?src[k]:[];
+    const val=(k,y)=>arrFor(k).find(x=>Number(x.year)===Number(y))?.value ?? null;
+    const fmtCell=(v,isEPS)=>v==null?'—':isEPS?Number(v).toFixed(2):fmt(v,1);
+    const yoyv=(a,b)=>a!=null&&b!=null&&Number(a)!==0?(Number(b)/Number(a)-1)*100:null;
+    const ttmMap={
+      revenue:s.revenue_ttm_m,cost:s.income_ttm?.cost_of_revenue,rnd:s.income_ttm?.research_and_development,sales:s.income_ttm?.sales_and_marketing,gna:s.income_ttm?.general_and_administrative,op:s.income_ttm?.operating_income,pretax:s.income_ttm?.pretax_income,tax:s.income_ttm?.income_tax,net:s.income_ttm?.net_income,eps:s.income_ttm?.diluted_eps,shares:s.shares_m,ocf:s.ocf_ttm_m,capex:s.capex_ttm_m,fcf:s.fcf_ttm_m,cash:s.cash_m,marketable:s.marketable_m,debt:s.debt_m,net_cash:s.net_cash_m
+    };
+
+    let body='';
+    if(annualMode){
+      const rows=(defs[S.st]||[]).map(([k,label,isEPS])=>{
+        const values=years.map(y=>val(k,y));
+        let cells='';
+        years.forEach((y,i)=>{
+          cells+=`<td>${fmtCell(values[i],isEPS)}</td>`;
+          if(i>0){const yyv=yoyv(values[i-1],values[i]);cells+=`<td class="${yyv==null?'':yyv>=0?'pos':'neg'}">${yyv==null?'—':pct(yyv)}</td>`}
+        });
+        const first=values.find(v=>v!=null),last=[...values].reverse().find(v=>v!=null);
+        const n=Math.max(1,values.filter(v=>v!=null).length-1);
+        const cg=first!=null&&last!=null&&Number(first)>0?((Math.pow(Number(last)/Number(first),1/n)-1)*100):null;
+        return `<tr data-row="${S.st}.${k}"><td>${label}</td>${cells}<td class="currentCol">${fmtCell(ttmMap[k],isEPS)}</td><td>${cg==null?'—':pct(cg)}</td></tr>`;
+      }).join('');
+      const heads=years.map((y,i)=>`<th>${y}</th>${i?'<th>YoY</th>':''}`).join('');
+      body=`<div class="tw"><table><thead><tr><th>Line item</th>${heads}<th class="currentHead">${S.st==='balance'?'Latest':'TTM '+(s.latest_period||'')}</th><th>5Y CAGR</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    } else {
+      const q=s.quarterly||{};
+      const qDefs=S.st==='income'?[['revenue','Revenues'],['op','Operating income'],['net','Net income'],['eps','Diluted EPS']]:S.st==='cashflow'?[['ocf','Operating cash flow'],['capex','CapEx'],['fcf','Free cash flow']]:[['cash','Cash & equivalents'],['marketable','Marketable securities'],['debt','Debt'],['net_cash','Net cash']];
+      const group=S.st==='income'?'income':S.st==='cashflow'?'cashflow':'balance';
+      const all=qDefs.flatMap(([k])=>q[group]?.[k]||[]);
+      const periods=[...new Set(all.map(x=>x.period))].sort().slice(-6);
+      const label=p=>all.find(x=>x.period===p)?.label||p;
+      const rows=qDefs.map(([k,n])=>`<tr><td>${n}</td>${periods.map(p=>{const x=(q[group]?.[k]||[]).find(z=>z.period===p);return `<td>${x?.value==null?'—':k==='eps'?Number(x.value).toFixed(2):fmt(x.value,1)}${x?.derived?'<span class="metricDesc">derived</span>':''}</td>`}).join('')}</tr>`).join('');
+      body=`<div class="sourcebox"><strong>Quarterly:</strong> standalone quarters derived from SEC YTD facts where necessary; Q4 = FY − 9M YTD. Balance Sheet values are point-in-time.</div><div class="tw"><table><thead><tr><th>Line item</th>${periods.map(p=>`<th>${label(p)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+    return `<h1>Financial Statements</h1><div class="lead">Five complete fiscal years, latest TTM and quarterly context from one validated SEC dataset.</div>${tabs}${body}`;
+  };
+
+  // Fix Market page current-price change and consensus overflow.
+  const stableMarket=window.market;
+  window.market=function(){
+    let out=stableMarket();
+    out=out.replace(/<div class="card"><div class="muted">Current price<\/div>[\s\S]*?<\/div>(?=<div class="card">)/,livePriceCard());
+    out=out.replace(/<div class="value warn">Unavailable<\/div>/g,'<div class="value warn" style="font-size:clamp(18px,1.6vw,28px);overflow-wrap:anywhere">Unavailable</div>');
+    return out;
+  };
+
+  // Report rebuilt as visual + written analysis; all charts get axes/ticks/data labels.
+  function svgLine(years,series,labels,units,colors){
+    const W=700,H=310,L=62,R=58,T=25,B=48;
+    const leftVals=series[0].filter(Number.isFinite),rightVals=(series[1]||[]).filter(Number.isFinite);
+    const lmax=Math.max(...leftVals,1)*1.15,lmin=Math.min(0,...leftVals);
+    const rmax=rightVals.length?Math.max(...rightVals,1)*1.15:1,rmin=Math.min(0,...rightVals);
+    const x=i=>L+i*(W-L-R)/Math.max(1,years.length-1);
+    const yl=v=>H-B-(v-lmin)/(lmax-lmin||1)*(H-T-B);
+    const yr=v=>H-B-(v-rmin)/(rmax-rmin||1)*(H-T-B);
+    let grid='',ticks=4;
+    for(let i=0;i<=ticks;i++){const yy=T+i*(H-T-B)/ticks,val=lmax-(lmax-lmin)*i/ticks;grid+=`<line class="gridLine" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="axisLabel" x="${L-8}" y="${yy+4}" text-anchor="end">${val.toFixed(units[0]==='%'?0:1)}</text>`}
+    const draw=(a,j,yf)=>{let d='',st=false,pts='';a.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=x(i),yy=yf(v);d+=(st?'L':'M')+xx+','+yy+' ';st=true;pts+=`<circle cx="${xx}" cy="${yy}" r="4" fill="${colors[j]}"/><text class="pointLabel" x="${xx}" y="${yy-8}" text-anchor="middle">${units[j]==='%'?v.toFixed(1)+'%':units[j]==='$'? '$'+v.toFixed(2):v.toFixed(1)}</text>`});return `<path d="${d}" fill="none" stroke="${colors[j]}" stroke-width="3"/>${pts}`};
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:280px">${grid}<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#8193a4"/>${draw(series[0],0,yl)}${series[1]?draw(series[1],1,yr):''}${years.map((y,i)=>`<text class="axisLabel" x="${x(i)}" y="${H-18}" text-anchor="middle">${y}</text>`).join('')}<text class="axisLabel" transform="translate(15 ${H/2}) rotate(-90)" text-anchor="middle">${labels[0]} (${units[0]})</text>${series[1]?`<text class="axisLabel" transform="translate(${W-10} ${H/2}) rotate(90)" text-anchor="middle">${labels[1]} (${units[1]})</text>`:''}</svg>`;
+  }
+  function svgBars(years,series,labels,unit,colors){
+    const W=700,H=310,L=62,R=25,T=25,B=48,vals=series.flat().filter(v=>Number.isFinite(v)&&v>=0),mx=Math.max(...vals,1)*1.15,bw=(W-L-R)/years.length;
+    let grid='';for(let i=0;i<=4;i++){const yy=T+i*(H-T-B)/4,val=mx*(1-i/4);grid+=`<line class="gridLine" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="axisLabel" x="${L-8}" y="${yy+4}" text-anchor="end">${val.toFixed(0)}</text>`}
+    let bars='';series.forEach((a,j)=>a.forEach((v,i)=>{if(!Number.isFinite(v))return;const ww=bw/(series.length+1),xx=L+i*bw+j*ww+8,hh=v/mx*(H-T-B),yy=H-B-hh;bars+=`<rect x="${xx}" y="${yy}" width="${Math.max(5,ww-10)}" height="${hh}" rx="3" fill="${colors[j]}"/><text class="pointLabel" x="${xx+(ww-10)/2}" y="${yy-6}" text-anchor="middle">${v.toFixed(1)}</text>`}));
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:280px">${grid}<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#8193a4"/>${bars}${years.map((y,i)=>`<text class="axisLabel" x="${L+i*bw+bw/2}" y="${H-18}" text-anchor="middle">${y}</text>`).join('')}<text class="axisLabel" transform="translate(15 ${H/2}) rotate(-90)" text-anchor="middle">${unit}</text></svg>`;
+  }
+  window.report=function(){
+    const s=sec(),R=rating(),dc=dcf(),fv=dc.ps,price=Number(D.market.price),mos=Number.isFinite(fv)&&price>0?(fv/price-1)*100:null,yrs=s?.annual?.years||D.years;
+    const arr=k=>(s?.annual?.[k]||[]).map(x=>Number(x.value));
+    const rev=arr('revenue'),eps=arr('eps'),op=arr('op'),ocf=arr('ocf'),cap=arr('capex'),fcf=arr('fcf');
+    const opm5=op.map((v,i)=>rev[i]>0?v/rev[i]*100:null),fcfm=fcf.map((v,i)=>rev[i]>0?v/rev[i]*100:null);
+    const revBn=rev.map(v=>v/1000),ocfBn=ocf.map(v=>v/1000),capBn=cap.map(v=>v/1000),fcfBn=fcf.map(v=>v/1000);
+    const latestRevGrowth=rev.length>1?(rev.at(-1)/rev.at(-2)-1)*100:null,latestEPSGrowth=eps.length>1?(eps.at(-1)/eps.at(-2)-1)*100:null;
+    const kpi=(n,v,c='')=>`<div class="reportKpi"><span>${n}</span><b class="${c}">${v}</b></div>`;
+    return `<div class="noPrint actions"><button class="btn primary" onclick="window.print()">Print / Save PDF</button></div><div class="report">
+      <div class="reportHero"><h1>Alphabet Inc. (GOOG)</h1><p>Equity Research Terminal · live market + validated SEC financials</p><div class="reportKpis">${kpi('Current price',money(price))}${kpi('Daily change',(()=>{const c=previousCloseChange();return c.pct==null?'—':(c.pct>=0?'+':'')+c.pct.toFixed(2)+'%'} )(),previousCloseChange().pct>=0?'reportPos':'reportNeg')}${kpi('DCF fair value',Number.isFinite(fv)?money(fv):'Unavailable',mos>=0?'reportPos':'reportNeg')}${kpi('Upside / downside',mos==null?'—':pct(mos),mos>=0?'reportPos':'reportNeg')}${kpi('P/E TTM',Number.isFinite(pe())?pe().toFixed(2)+'x':'—')}${kpi('ERT rating',R.overall.toFixed(1)+'/5','reportWarn')}</div></div>
+      <div class="reportBody">
+        <div class="reportSection"><h2>Executive summary</h2><p>Alphabet combines a strong advertising franchise with YouTube and Google Cloud growth. The key current tension is capital intensity: infrastructure investment supports AI and cloud capacity but depresses near-term free cash flow. The valuation conclusion depends on whether future revenue growth and cash conversion justify the market price.</p></div>
+        <div class="reportStrengths"><div class="reportStrength"><h3>Strengths</h3><p>Search distribution, YouTube scale, Cloud/AI opportunity, strong cash generation and balance-sheet capacity.</p></div><div class="reportRisk"><h3>Risks</h3><p>AI/search disruption, regulation, heavy infrastructure CapEx, cloud competition and high valuation expectations.</p></div></div>
+        <div class="reportSection"><h2>Five-year financial performance</h2><div class="reportCharts"><div class="reportChart"><h3>Revenue & diluted EPS</h3>${svgLine(yrs,[revBn,eps],['Revenue','Diluted EPS'],['USD bn','$'],['#3478d4','#7a4fc4'])}<p><strong>Interpretation:</strong> Latest annual revenue growth is ${latestRevGrowth==null?'—':latestRevGrowth.toFixed(1)+'%'} and diluted EPS growth is ${latestEPSGrowth==null?'—':latestEPSGrowth.toFixed(1)+'%'}. Revenue shows the scale of the business; EPS shows how much of that growth reaches each diluted share.</p></div><div class="reportChart"><h3>Operating margin & FCF margin</h3>${svgLine(yrs,[opm5,fcfm],['Operating margin','FCF margin'],['%','%'],['#17865c','#d18a00'])}<p><strong>Interpretation:</strong> Operating margin measures core operating profitability; FCF margin incorporates cash conversion and current capital spending. A widening gap between them can signal heavier investment intensity.</p></div></div></div>
+        <div class="reportSection"><h2>Cash generation & investment</h2><div class="reportCharts"><div class="reportChart"><h3>OCF / CapEx / FCF</h3>${svgBars(yrs,[ocfBn,capBn,fcfBn],['OCF','CapEx','FCF'],'USD bn',['#16865d','#d58a12','#3978c5'])}<p><strong>Interpretation:</strong> FCF = operating cash flow − CapEx. Rising CapEx can reduce near-term FCF even when operating cash generation remains strong. Maintenance/growth/AI CapEx is not separately estimated unless disclosed by Alphabet.</p></div><div class="reportChart"><h3>DCF valuation</h3>${Number.isFinite(fv)?`<p>Base fair value: <strong>${money(fv)}</strong><br>Current price: <strong>${money(price)}</strong><br>Implied upside/downside: <strong class="${mos>=0?'reportPos':'reportNeg'}">${pct(mos)}</strong></p><p>The DCF uses validated latest TTM FCF, latest shares and net cash/debt, plus editable forecast assumptions. WACC and terminal growth remain model assumptions rather than reported facts.</p>`:`<div class="reportRisk"><h3>DCF unavailable</h3><p>${dc.error||'One or more required valuation inputs are invalid or unavailable.'}</p></div>`}</div></div></div>
+        <div class="reportSection"><h2>Investment scorecard</h2><div class="reportGrid">${[['Moat',R.moat],['Business quality',R.quality],['Growth',R.growth],['Financial health',R.fin],['Capital allocation',R.capital],['Valuation',R.val]].map(x=>`<div class="reportScore"><strong>${x[0]}</strong><span style="float:right">${Number(x[1]).toFixed(1)}/5</span><div class="bar"><i style="width:${Math.max(0,Math.min(100,Number(x[1])/5*100))}%;background:${x[1]>=4?'#16865d':x[1]>=3?'#d18a00':'#c83f50'}"></i></div></div>`).join('')}</div></div>
+        <div class="reportSection"><h2>Market expectations & valuation</h2><p>Current P/E is <strong>${Number.isFinite(pe())?pe().toFixed(2)+'x':'Unavailable'}</strong>. Analyst price-target consensus is <strong>${D.consensus?.status==='LIVE'?money(D.consensus.targetMean):'Unavailable'}</strong>; no demo target is used when a reliable live source is not connected.</p></div>
+        <div class="reportSection"><h2>What to watch next</h2><div class="reportTimeline">${(D.events||[]).map(e=>`<div class="reportEvent"><strong>${e.date} · ${e.title}</strong><div>${e.watch}</div></div>`).join('')}</div></div>
+        <div class="reportSection"><h2>Conclusion</h2><p>The business-quality case remains separate from the valuation case. The terminal should be used to test whether the assumptions required by the current share price are supported by revenue growth, margins, cash conversion and capital intensity.</p></div>
+        <div class="reportSection"><h2>Sources & methodology</h2><p>Financial statements: SEC EDGAR companyfacts/submissions. Latest SEC period: ${s?.latest_period||'—'}. Latest complete annual history: ${(s?.annual?.years||[]).join(' → ')||'—'}. Market data: configured Worker source, as of ${D.market.asof}. Derived ratios and DCF are calculated from this shared validated dataset.</p></div>
+      </div></div>`;
+  };
+
+  // Preserve bindings after replacement renders.
+  const prevBind=window.bind;
+  window.bind=function(){prevBind();document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});};
+
+  // Version bump
+  const layout12=window.appLayout;
+  window.appLayout=function(content){return layout12(content).replace(/Alpha 1\.1 INTEGRATED RESEARCH/g,'Alpha 1.2 STABLE CORE')};
 })();
 </script>
 
