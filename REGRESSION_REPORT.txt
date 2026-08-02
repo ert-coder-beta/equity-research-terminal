@@ -1,26 +1,25 @@
-ERT Alpha 1.4.4 LAYOUT + COLOR FIX
+ERT Alpha 1.4.6 FULL-NAV TESTED
 
-Scope: CSS/layout only. No valuation, financial, market, consensus, or Worker logic changed.
+ACTUAL CHROMIUM CLICK TEST:
+PASS overview -> Alphabet Inc. (GOOG)
+PASS financials -> Financial Statements
+PASS analysis -> Financial Analysis
+PASS valuation -> Valuation Studio
+PASS market -> Market & Price Context
+PASS research -> Research Notes
+PASS report -> Alphabet Inc. (GOOG)
+PASS disclaimer -> Disclaimer
+PASS valuation forecast engine
+PASS valuation sensitivity
+PASS no runtime page errors (excluding sandbox localStorage security)
 
-Fixed:
-- Text escaping cards/viewport.
-- Forecast table inputs/columns overflowing beside the Inspector.
-- Dark-theme text unintentionally turning white on light surfaces or becoming unreadable.
-- Report explicitly keeps dark text on white background.
-- Main content/Inspector width balance tightened.
-- Responsive fallback hides Inspector on narrower screens instead of crushing the centre content.
-- Horizontal page overflow blocked; only table wrappers can scroll horizontally when genuinely necessary.
-
+SYNTAX:
 PASS frontend_0
 PASS frontend_1
 PASS frontend_2
 PASS frontend_3
 PASS frontend_4
 PASS frontend_5
+PASS frontend_6
+PASS frontend_7
 PASS worker
-PASS Global horizontal overflow blocked
-PASS Cards force min-width 0
-PASS Dark-theme text explicitly restored
-PASS Report light-theme text explicitly preserved
-PASS Forecast table fixed-layout
-PASS Inspector collapses below 1050px
