@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.4.1 REFRESH FIX</title>
+<title>ERT GOOG · Alpha 1.4.2 VALUATION RECOVERY</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -1042,7 +1042,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.1 REFRESH FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.2 VALUATION RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1477,7 +1477,7 @@ setTimeout(enhance,0);
   }
 
   function layout14(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.1 REFRESH FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.2 VALUATION RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
   }
 
   window.render14=function(){
@@ -1488,6 +1488,237 @@ setTimeout(enhance,0);
   };
   window.render=render14;
   setTimeout(()=>{try{render14()}catch(e){console.error(e)}},0);
+})();
+</script>
+
+
+<style id="alpha142-css">
+.valStatus142{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;border:1px solid #2b5d47;background:#103225;color:#8fe2b2}
+.valWarn142{border-color:#6f5620;background:#2d2613;color:#ffd86a}
+</style>
+<script id="alpha142-runtime">
+(function(){
+  const s142=()=>D.live?.sec?.validation?.ok?D.live.sec:null;
+  const num142=v=>Number.isFinite(Number(v))?Number(v):null;
+
+  // Read annual values directly from the validated live SEC object.
+  // This avoids D.years/D.* becoming a stale dependency after a refresh failure.
+  function annualPair142(key){
+    const s=s142(),arr=s?.annual?.[key]||[];
+    return arr.filter(x=>x&&x.value!=null).map(x=>({year:Number(x.year),value:Number(x.value)})).sort((a,b)=>a.year-b.year);
+  }
+  function lastAnnual142(key){
+    const a=annualPair142(key); return a.length?a.at(-1):null;
+  }
+  function median142(a){
+    const x=a.filter(Number.isFinite).sort((a,b)=>a-b); if(!x.length)return null;
+    const m=Math.floor(x.length/2); return x.length%2?x[m]:(x[m-1]+x[m])/2;
+  }
+  function annualGrowthMedian142(key){
+    const a=annualPair142(key),g=[];
+    for(let i=1;i<a.length;i++) if(a[i-1].value>0) g.push((a[i].value/a[i-1].value-1)*100);
+    return median142(g);
+  }
+  function annualRatioMedian142(numKey,denKey){
+    const n=annualPair142(numKey),d=annualPair142(denKey),dm=new Map(d.map(x=>[x.year,x.value])),r=[];
+    n.forEach(x=>{const den=dm.get(x.year);if(den>0)r.push(x.value/den*100)});
+    return median142(r);
+  }
+
+  // Standalone quarterly series may be incomplete. Build YTD only when complete,
+  // otherwise fall back to validated TTM/annual anchors instead of killing valuation.
+  function qSeries142(g,k){ return s142()?.quarterly?.[g]?.[k]||[]; }
+  function qYear142(x){ return Number(x?.year||String(x?.period||'').slice(0,4)); }
+  function qNo142(x){ return Number(x?.q||String(x?.label||'').match(/Q([1-4])/)?.[1]); }
+  function latestQuarter142(){
+    const s=s142(),y=Number(String(s?.latest_period||'').slice(0,4));
+    const q=qSeries142('income','revenue').filter(x=>qYear142(x)===y&&x.value!=null).map(qNo142).filter(Number.isFinite);
+    return q.length?Math.max(...q):null;
+  }
+  function ytd142(g,k,year,n){
+    if(!year||!n)return null;
+    let total=0;
+    for(let q=1;q<=n;q++){
+      const x=qSeries142(g,k).find(z=>qYear142(z)===year&&qNo142(z)===q&&z.value!=null);
+      if(!x)return null;
+      total+=Number(x.value);
+    }
+    return total;
+  }
+
+  function base142(){
+    const s=s142(); if(!s)return {ok:false,error:'Validated SEC data unavailable'};
+    const latest10k=Number(s.latest_10k?.year||lastAnnual142('revenue')?.year);
+    const currentYear=Number(String(s.latest_period||'').slice(0,4)) || latest10k+1;
+    const qn=latestQuarter142();
+
+    const currentYtdRev=ytd142('income','revenue',currentYear,qn);
+    const priorYtdRev=ytd142('income','revenue',currentYear-1,qn);
+    const ttmRev=num142(s.revenue_ttm_m);
+    const fyRev=lastAnnual142('revenue')?.value;
+
+    // Revenue growth anchor priority:
+    // 1) comparable YTD YoY
+    // 2) TTM vs last FY
+    // 3) median annual growth
+    let rev1=null,revSource='';
+    if(currentYtdRev>0&&priorYtdRev>0){
+      rev1=(currentYtdRev/priorYtdRev-1)*100;
+      revSource=`${qn===1?'Q1':qn===2?'H1':'9M'} ${currentYear} YoY actual`;
+    }else if(ttmRev>0&&fyRev>0){
+      rev1=(ttmRev/fyRev-1)*100;
+      revSource='TTM revenue vs latest complete FY fallback';
+    }else{
+      rev1=annualGrowthMedian142('revenue');
+      revSource='5Y median revenue growth fallback';
+    }
+
+    const histRev=annualGrowthMedian142('revenue');
+    const terminal=Number(S.terminal);
+    const rev5=Math.max(terminal+2, Math.min(
+      Number.isFinite(rev1)?rev1:(histRev??8),
+      Number.isFinite(histRev)?histRev:8
+    ));
+
+    // Margin anchors: current YTD if complete; otherwise validated TTM; otherwise 5Y median.
+    const currentYtdOcf=ytd142('cashflow','ocf',currentYear,qn);
+    const currentYtdCap=ytd142('cashflow','capex',currentYear,qn);
+    let ocf1=null,cap1=null,ocfSource='',capSource='';
+    if(currentYtdRev>0&&currentYtdOcf!=null){
+      ocf1=currentYtdOcf/currentYtdRev*100; ocfSource='Current YTD OCF / Revenue';
+    }else if(num142(s.ocf_ttm_m)!=null&&ttmRev>0){
+      ocf1=Number(s.ocf_ttm_m)/ttmRev*100; ocfSource='TTM OCF / Revenue fallback';
+    }else{
+      ocf1=annualRatioMedian142('ocf','revenue'); ocfSource='5Y median OCF margin fallback';
+    }
+    if(currentYtdRev>0&&currentYtdCap!=null){
+      cap1=currentYtdCap/currentYtdRev*100; capSource='Current YTD CapEx / Revenue';
+    }else if(num142(s.capex_ttm_m)!=null&&ttmRev>0){
+      cap1=Number(s.capex_ttm_m)/ttmRev*100; capSource='TTM CapEx / Revenue fallback';
+    }else{
+      cap1=annualRatioMedian142('capex','revenue'); capSource='5Y median CapEx intensity fallback';
+    }
+
+    const ocf5=annualRatioMedian142('ocf','revenue');
+    const cap5=annualRatioMedian142('capex','revenue');
+
+    if(![rev1,rev5,ocf1,cap1,ocf5,cap5,fyRev].every(Number.isFinite))
+      return {ok:false,error:'Insufficient validated forecast anchors',detail:{rev1,rev5,ocf1,cap1,ocf5,cap5,fyRev}};
+
+    const lerp=(a,b,i)=>a+(b-a)*i/4;
+    return {
+      ok:true,currentYear,latest10k,qn,fyRev,
+      rev:[0,1,2,3,4].map(i=>+lerp(rev1,rev5,i).toFixed(1)),
+      ocf:[0,1,2,3,4].map(i=>+lerp(ocf1,ocf5,i).toFixed(1)),
+      cap:[0,1,2,3,4].map(i=>+lerp(cap1,cap5,i).toFixed(1)),
+      method:{rev1,rev5,ocf1,ocf5,cap1,cap5,revSource,ocfSource,capSource}
+    };
+  }
+
+  function ensureDrivers142(force=false){
+    const b=base142();
+    S.base142=b;
+    if(!b.ok)return b;
+    const key=[s142()?.latest_period,b.rev.join(','),b.ocf.join(','),b.cap.join(','),S.terminal].join('|');
+    if(force||S._base142key!==key){
+      S._base142key=key;
+      // Re-anchor Base only. Custom remains user-owned.
+      if(S.drvScenario!=='Custom'){
+        S.drvRev=[...b.rev];S.drvOcf=[...b.ocf];S.drvCap=[...b.cap];S.drvScenario='Base';
+      }
+    }
+    return b;
+  }
+
+  function forecast142(){
+    const b=ensureDrivers142(),out=[];
+    if(!b.ok)return {ok:false,error:b.error,detail:b.detail||null,rows:[]};
+    let revenue=Number(b.fyRev);
+    for(let i=0;i<5;i++){
+      const rg=Number(S.drvRev?.[i]),om=Number(S.drvOcf?.[i]),ci=Number(S.drvCap?.[i]);
+      if(![rg,om,ci].every(Number.isFinite))return {ok:false,error:'Forecast driver contains invalid value',rows:out};
+      revenue*=1+rg/100;
+      const ocf=revenue*om/100,capex=revenue*ci/100,fcf=ocf-capex;
+      out.push({year:b.currentYear+i,revenue,revenueGrowth:rg,ocfMargin:om,capexIntensity:ci,ocf,capex,fcf,fcfMargin:(om-ci)});
+    }
+    return {ok:true,rows:out,base:b};
+  }
+
+  window.dcf=function(g=S.g,w=wacc().w,t=S.terminal){
+    const s=s142(),f=forecast142();
+    if(!s)return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:[],tvshare:NaN,error:'Validated SEC data unavailable'};
+    if(!f.ok)return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:f.rows||[],tvshare:NaN,error:f.error};
+    const shares=num142(s.shares_m),netCash=num142(s.net_cash_m);
+    if(!(shares>0)||netCash==null)return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:f.rows,tvshare:NaN,error:'Validated shares or net cash unavailable'};
+    w=Number(w);t=Number(t);
+    if(!Number.isFinite(w)||!Number.isFinite(t)||w<=t)return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:f.rows,tvshare:NaN,error:'WACC must be greater than terminal growth'};
+    let pv=0;
+    f.rows.forEach((r,i)=>{r.df=1/Math.pow(1+w/100,i+1);r.pv=r.fcf*r.df;pv+=r.pv});
+    const last=f.rows.at(-1),tv=last.fcf*(1+t/100)/(w/100-t/100),pvt=tv/Math.pow(1+w/100,5),ev=pv+pvt,equity=ev+netCash;
+    return {ps:equity/shares,equity,ev,pv,pvt,detail:f.rows,tvshare:pvt/ev*100,anchor:`FY${f.base.latest10k} actual → FY${f.base.currentYear}E–FY${f.base.currentYear+4}E`,method:f.base.method};
+  };
+
+  // Prevent rating NaN from a valuation failure.
+  window.rating=function(){
+    const d=dcf();
+    let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1;
+    const val=Number.isFinite(d.ps)&&Number(D.market.price)>0?Math.max(1,Math.min(5,3+(d.ps/D.market.price-1)*4)):null;
+    const risk=3.4;
+    const weights={moat:.18,quality:.18,growth:.13,fin:.14,capital:.12,val:.17,risk:.08};
+    const parts={moat,quality,growth,fin,capital,risk};
+    let score=0,wt=0;
+    for(const [k,v] of Object.entries(parts)){score+=v*weights[k];wt+=weights[k]}
+    if(val!=null){score+=val*weights.val;wt+=weights.val}
+    return {moat,quality,growth,fin,capital,val:val??0,risk,overall:wt?score/wt:0,valuationAvailable:val!=null};
+  };
+
+  // Replace only valuation page; other pages remain as 1.4.1.
+  window.valuation142=function(){
+    const b=ensureDrivers142(),W=wacc(),R=dcf(),rows=R.detail||[];
+    const yrs=b.ok?[0,1,2,3,4].map(i=>b.currentYear+i):[2026,2027,2028,2029,2030];
+    const mos=Number.isFinite(R.ps)&&Number(D.market.price)>0?(R.ps/D.market.price-1)*100:null;
+    const status=b.ok?'<span class="valStatus142">FORECAST INPUTS VALID</span>':'<span class="valStatus142 valWarn142">FORECAST INPUTS INCOMPLETE</span>';
+    return `<h1>Valuation Studio</h1><div class="lead">DCF uses one validated forecast chain. If quarterly data is incomplete, it falls back to validated TTM/annual anchors instead of failing.</div>
+      <div style="margin-bottom:10px">${status}</div>
+      <div class="grid two">
+        <div class="card"><h3>WACC <span class="value tone-model">${pct(W.w)}</span></h3>${list([['Risk-free rate',pct(S.rf)],['Beta',S.beta.toFixed(2)],['Equity risk premium',pct(S.erp)],['Pre-tax cost of debt',pct(S.cod)],['Tax rate',pct(S.tax)]])}</div>
+        <div class="card"><h3>Terminal growth</h3><label class="sub">Selected long-run growth (%)<input id="terminal" value="${S.terminal}" style="width:100%;margin-top:5px;background:#0a121b;color:#fff;border:1px solid var(--line);padding:10px;border-radius:7px"></label>${list([['Selected',pct(S.terminal)],['WACC − g',pct(W.w-S.terminal)],['Terminal value share of PV',Number.isFinite(R.tvshare)?pct(R.tvshare):'Unavailable']])}</div>
+      </div>
+      <div class="card driverWrap14" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers</h3>
+        ${b.ok?`<div class="sourcebox"><strong>Base methodology:</strong><br>
+          FY${yrs[0]}E Revenue growth: ${pct(b.method.rev1)} · ${b.method.revSource}<br>
+          FY${yrs[0]}E OCF margin: ${pct(b.method.ocf1)} · ${b.method.ocfSource}<br>
+          FY${yrs[0]}E CapEx/Revenue: ${pct(b.method.cap1)} · ${b.method.capSource}<br>
+          Later years normalise toward 5Y historical anchors. This fallback hierarchy is explicit; missing quarterly data no longer makes the DCF disappear.</div>`
+          :`<div class="finding find-risk"><h4>Forecast unavailable</h4><p>${b.error}</p></div>`}
+        <div class="driverBtns"><button data-scenario="Bear" class="${S.drvScenario==='Bear'?'active':''}">Bear</button><button data-scenario="Base" class="${S.drvScenario==='Base'?'active':''}">Base</button><button data-scenario="Bull" class="${S.drvScenario==='Bull'?'active':''}">Bull</button><button data-scenario="Custom" class="${S.drvScenario==='Custom'?'active':''}">Custom</button><button id="resetDrivers142">Reset to Base</button></div>
+        <table class="driverTable14"><thead><tr><th>Driver</th>${yrs.map(y=>`<th>FY${y}E</th>`).join('')}</tr></thead><tbody>
+          <tr><td><strong>Revenue growth %</strong></td>${(S.drvRev||[]).map((v,i)=>`<td><input data-driver142="rev" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td><strong>OCF margin %</strong></td>${(S.drvOcf||[]).map((v,i)=>`<td><input data-driver142="ocf" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td><strong>CapEx / Revenue %</strong></td>${(S.drvCap||[]).map((v,i)=>`<td><input data-driver142="cap" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td><strong>→ FCF margin %</strong></td>${(S.drvOcf||[]).map((v,i)=>`<td><strong class="tone-pos">${Number.isFinite(Number(v)-Number(S.drvCap?.[i]))?(Number(v)-Number(S.drvCap[i])).toFixed(1)+'%':'—'}</strong></td>`).join('')}</tr>
+        </tbody></table>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><h3>DCF Result</h3>${list([['Forecast anchor',R.anchor||'—'],['Equity value',Number.isFinite(R.equity)?fmt(R.equity)+'m':'Unavailable'],['Intrinsic value',Number.isFinite(R.ps)?money(R.ps)+'/share':'Unavailable'],['Current price',money(D.market.price)+'/share'],['Margin of safety',mos==null?'—':pct(mos)]])}${R.error?`<div class="finding find-risk"><p>${R.error}</p></div>`:''}</div>
+        <div class="card"><h3>Forecast output</h3>${rows.length?list(rows.map(r=>['FY'+r.year+'E FCF',fmt(r.fcf)+'m'])):'<div class="muted">No forecast rows available.</div>'}</div>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>${sensitivity([1.5,2,2.5,3,3.5])}</div>`;
+  };
+
+  // Route valuation to the recovery page without touching the other 1.4.1 pages.
+  const oldRender142=window.render14||window.render;
+  window.render=function(){
+    if(S.page!=='valuation') return oldRender142();
+    ensureDrivers142();
+    app.innerHTML=layout14(valuation142());
+    bind14();
+    document.querySelectorAll('[data-driver142]').forEach(i=>i.addEventListener('change',e=>{
+      const idx=+e.target.dataset.i,v=parseFloat(e.target.value);if(!Number.isFinite(v))return;
+      const k=e.target.dataset.driver142;if(k==='rev')S.drvRev[idx]=v;if(k==='ocf')S.drvOcf[idx]=v;if(k==='cap')S.drvCap[idx]=v;S.drvScenario='Custom';render();
+    }));
+    document.getElementById('resetDrivers142')?.addEventListener('click',()=>{const b=ensureDrivers142(true);if(b.ok){S.drvRev=[...b.rev];S.drvOcf=[...b.ocf];S.drvCap=[...b.cap];S.drvScenario='Base'}render()});
+  };
 })();
 </script>
 
