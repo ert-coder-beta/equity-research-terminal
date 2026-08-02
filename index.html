@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 0.9.5.2 LIVE FINANCIALS.1 INSPECTOR FIX</title>
+<title>ERT GOOG · Alpha 0.9.8 LIVE NORMALISED.1 INSPECTOR FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -144,12 +144,12 @@ rf:4.3,beta:1.05,erp:4.18,cod:4.4,tax:16.4,terminal:2.5,g:[11,9,8,7,6],maint:28,
 const app=document.getElementById('app');
 const rows=()=>[...D.income,...D.balance,...D.cashflow],by=id=>rows().find(x=>x[0]===id);
 const last=a=>a[a.length-1],fmt=(v,d=1)=>v==null?'—':new Intl.NumberFormat('en-US',{maximumFractionDigits:d}).format(v);
-const money=v=>'$'+Number(v).toFixed(2),pct=v=>Number(v).toFixed(1)+'%',avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+const money=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'—',pct=v=>Number.isFinite(Number(v))?Number(v).toFixed(1)+'%':'—',avg=a=>{let b=(a||[]).filter(v=>Number.isFinite(Number(v)));return b.length?b.reduce((x,y)=>x+Number(y),0)/b.length:NaN};
 const med=a=>{let b=[...a].sort((x,y)=>x-y),m=Math.floor(b.length/2);return b.length%2?b[m]:(b[m-1]+b[m])/2};
-const yy=(a,i)=>i===0||a[i-1]===0?null:(a[i]/a[i-1]-1)*100,cagr=a=>(Math.pow(a[a.length-1]/a[0],1/(a.length-1))-1)*100;
+const yy=(a,i)=>{if(i===0)return null;let p=Number(a[i-1]),c=Number(a[i]);return Number.isFinite(p)&&Number.isFinite(c)&&p!==0?(c/p-1)*100:null},cagr=a=>{let b=(a||[]).map(Number);if(b.length<2||b.some(v=>!Number.isFinite(v)||v<=0))return NaN;return (Math.pow(b.at(-1)/b[0],1/(b.length-1))-1)*100};
 const page=id=>id.startsWith('income')?50:id.startsWith('balance')?49:53;
-function reportedFcf(i=4){return by('cashflow.ocf')[2][i]-by('cashflow.capex')[2][i]}
-function fcfMargins(){return D.years.map((_,i)=>reportedFcf(i)/by('income.revenue')[2][i]*100)}
+function reportedFcf(i=D.years.length-1){let o=Number(by('cashflow.ocf')[2][i]),c=Number(by('cashflow.capex')[2][i]);return Number.isFinite(o)&&Number.isFinite(c)?o-c:NaN}
+function fcfMargins(){return D.years.map((_,i)=>{let f=reportedFcf(i),r=Number(by('income.revenue')[2][i]);return Number.isFinite(f)&&Number.isFinite(r)&&r!==0?f/r*100:NaN})}
 function baseFcf(){return S.basis==='reported'?reportedFcf():S.basis==='sbc'?reportedFcf()-last(by('cashflow.sbc')[2]):S.basis==='owner'?last(by('cashflow.ocf')[2])-last(by('cashflow.capex')[2])*S.maint/100-last(by('cashflow.sbc')[2]):last(by('income.revenue')[2])*avg(fcfMargins())/100}
 function marketCap(){return D.market.price*D.market.shares_m}
 function wacc(){let coe=S.rf+S.beta*S.erp, debt=last(by('balance.long_debt')[2]),eq=marketCap(),ew=eq/(eq+debt),dw=1-ew,after=S.cod*(1-S.tax/100);return {w:coe*ew+after*dw,coe,after,ew,dw,debt,eq}}
@@ -174,9 +174,9 @@ function dcf(g=S.g,w=wacc().w,t=S.terminal){
 function reverse(){let lo=-20,hi=50;for(let i=0;i<100;i++){let m=(lo+hi)/2;if(dcf([m,m,m,m,m]).ps<D.market.price)lo=m;else hi=m}return(lo+hi)/2}
 function opm(){return last(by('income.op')[2])/last(by('income.revenue')[2])*100}
 function roic(){let nopat=last(by('income.op')[2])*(1-S.tax/100),ic=last(by('balance.equity')[2])+last(by('balance.long_debt')[2])-last(by('balance.cash')[2])-last(by('balance.market')[2]);return nopat/ic*100}
-function pe(){return D.market.price/last(by('income.eps')[2])}
+function pe(){let e=Number(last(by('income.eps')[2]));return e>0?D.market.price/e:NaN}
 function ev(){return marketCap()+last(by('balance.long_debt')[2])-last(by('balance.cash')[2])-last(by('balance.market')[2])}
-function evSales(){return ev()/last(by('income.revenue')[2])}function evEbit(){return ev()/last(by('income.op')[2])}function evFcf(){return ev()/reportedFcf()}function peg(){return pe()/cagr(by('income.net')[2])}
+function evSales(){let x=Number(last(by('income.revenue')[2]));return x>0?ev()/x:NaN}function evEbit(){let x=Number(last(by('income.op')[2]));return x>0?ev()/x:NaN}function evFcf(){let x=reportedFcf();return x>0?ev()/x:NaN}function peg(){let g=cagr(by('income.net')[2]),p=pe();return Number.isFinite(p)&&Number.isFinite(g)&&g>0?p/g:NaN}
 function smaSeries(a,n){return a.map((_,i)=>i<n-1?null:avg(a.slice(i-n+1,i+1)))}function sma(a,n){let s=smaSeries(a,n).filter(x=>x!=null);return s[s.length-1]}
 function rsiSeries(a,n=14){let out=a.map(()=>null);for(let i=n;i<a.length;i++){let g=0,l=0;for(let j=i-n+1;j<=i;j++){let d=a[j]-a[j-1];d>=0?g+=d:l-=d}let rs=(g/n)/(l/n||1e-9);out[i]=100-100/(1+rs)}return out}function rsi(a){let s=rsiSeries(a).filter(x=>x!=null);return s[s.length-1]}
 function fiveYCagrForecast(){let f=1;S.g.forEach(x=>f*=1+x/100);return (Math.pow(f,1/5)-1)*100}
@@ -184,7 +184,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5.2 LIVE FINANCIALS</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.8 LIVE NORMALISED</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 
 function overview(){
@@ -224,7 +224,7 @@ function valuation(){
  ${waInput('Risk-free rate (%)','rf',S.rf,'wacc:rf')}${waInput('Beta','beta',S.beta,'wacc:beta')}${waInput('Equity risk premium (%)','erp',S.erp,'wacc:erp')}${waInput('Pre-tax cost of debt (%)','cod',S.cod,'wacc:debt')}${waInput('Tax rate (%)','tax',S.tax,'wacc:tax')}<label class="clickable" data-inspect="wacc:weights">Equity / debt weights<input value="${(W.ew*100).toFixed(2)}% / ${(W.dw*100).toFixed(2)}%" disabled></label></div>
  <div class="formula clickable" data-inspect="wacc">Cost of equity = ${pct(S.rf)} + ${S.beta.toFixed(2)} × ${pct(S.erp)} = ${pct(W.coe)}<br>After-tax cost of debt = ${pct(S.cod)} × (1-${pct(S.tax)}) = ${pct(W.after)}<br>Equity weight ${(W.ew*100).toFixed(2)}% · Debt weight ${(W.dw*100).toFixed(2)}%<br><strong>WACC = ${pct(W.w)}</strong></div></div>
  <div class="card"><h3>Terminal growth assumption</h3><label class="sub clickable" data-inspect="terminal">Selected long-run growth (%)<input id="terminal" value="${S.terminal}" style="width:100%;margin-top:5px;background:#0a121b;color:#fff;border:1px solid var(--line);padding:10px;border-radius:7px"></label><div class="value tone-model clickable" data-inspect="terminal">${pct(S.terminal)}</div><div class="small">Growth after the explicit 5-year forecast. Editable independently from WACC.</div>${list([['Conservative reference','2.0%'],['Base reference','2.5%'],['Optimistic reference','3.0%'],['WACC − g spread',pct(W.w-S.terminal)],['Terminal value share of PV',pct(R.tvshare)]])}<div class="finding ${R.tvshare>70?'find-risk':'find-pos'} clickable" data-inspect="terminal"><h4>Model dependency: ${R.tvshare>70?'HIGH':'MODERATE'}</h4><p>${pct(R.tvshare)} of present value comes from terminal value, so small WACC/g changes can materially move fair value.</p></div></div></div>
- <div class="card" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers</h3><p>Build the forecast from operating drivers. Changing any driver updates the DCF immediately.</p>
+ <div class="card" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers</h3><p>Build the forecast from operating drivers. Changing any driver updates the DCF immediately.</p><div class="sourcebox"><b>Base scenario anchor:</b> after Live Refresh, Base is re-anchored to the latest SEC annual revenue growth, OCF margin and CapEx intensity, blended with recent history. Bear/Bull are spreads around that live Base; Custom preserves your manual inputs.</div>
  <div class="driverBtns"><button data-scenario="Bear" class="${S.drvScenario==='Bear'?'active':''}">Bear</button><button data-scenario="Base" class="${S.drvScenario==='Base'?'active':''}">Base</button><button data-scenario="Bull" class="${S.drvScenario==='Bull'?'active':''}">Bull</button><button data-scenario="Custom" class="${S.drvScenario==='Custom'?'active':''}">Custom</button><button id="resetDrivers">Reset to Base</button></div>
  <table class="driverTable"><thead><tr><th>Driver</th>${[1,2,3,4,5].map(x=>`<th>Y${x}</th>`).join('')}</tr></thead><tbody>
  <tr><td class="clickable" data-inspect="driver:revenue"><strong>Revenue growth %</strong></td>${S.drvRev.map((v,i)=>`<td><input inputmode="decimal" data-driver="rev" data-i="${i}" value="${v}"></td>`).join('')}</tr>
@@ -390,8 +390,8 @@ function bind(){
  document.querySelectorAll('[data-g]').forEach(i=>i.onchange=e=>{S.g[+e.target.dataset.g]=+e.target.value;render()});
 
  document.querySelectorAll('[data-driver]').forEach(i=>i.addEventListener('input',e=>{let idx=+e.target.dataset.i,v=parseFloat(e.target.value);if(!isFinite(v))return;let k=e.target.dataset.driver;if(k==='rev')S.drvRev[idx]=v;if(k==='ocf')S.drvOcf[idx]=v;if(k==='cap')S.drvCap[idx]=v;S.drvScenario='Custom';clearTimeout(window.__drvTimer);window.__drvTimer=setTimeout(render,180)}));
- document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{let k=b.dataset.scenario,p=k==='Bear'?[[8,7,6,5,4],[34,34,34.5,35,35],[17,16,15,14,13]]:k==='Bull'?[[14,13,12,10,9],[39,39.5,40,40,40],[14,13,12,11,10]]:[[11,10,9,8,7],[37,37,37.2,37.3,37.5],[15,14,13,12,11]];if(k!=='Custom'){S.drvRev=[...p[0]];S.drvOcf=[...p[1]];S.drvCap=[...p[2]];}S.drvScenario=k;render()});
- document.getElementById('resetDrivers')?.addEventListener('click',()=>{S.drvRev=[11,10,9,8,7];S.drvOcf=[37,37,37.2,37.3,37.5];S.drvCap=[15,14,13,12,11];S.drvScenario='Base';render()});
+ document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{let k=b.dataset.scenario,base=S.liveBaseDrivers||{rev:[11,10,9,8,7],ocf:[37,37,37.2,37.3,37.5],cap:[15,14,13,12,11]},p=k==='Bear'?[base.rev.map(x=>+(x-3).toFixed(1)),base.ocf.map(x=>+(x-2).toFixed(1)),base.cap.map(x=>+(x+2).toFixed(1))]:k==='Bull'?[base.rev.map(x=>+(x+3).toFixed(1)),base.ocf.map(x=>+(x+2).toFixed(1)),base.cap.map(x=>+Math.max(0,x-1).toFixed(1))]:[base.rev,base.ocf,base.cap];if(k!=='Custom'){S.drvRev=[...p[0]];S.drvOcf=[...p[1]];S.drvCap=[...p[2]];}S.drvScenario=k;render()});
+ document.getElementById('resetDrivers')?.addEventListener('click',()=>{let b=S.liveBaseDrivers||{rev:[11,10,9,8,7],ocf:[37,37,37.2,37.3,37.5],cap:[15,14,13,12,11]};S.drvRev=[...b.rev];S.drvOcf=[...b.ocf];S.drvCap=[...b.cap];S.drvScenario='Base';render()});
 
  document.getElementById('save')?.addEventListener('click',()=>{localStorage.setItem('ert07notes',document.getElementById('notes').value);document.getElementById('save').textContent='Saved'});
  let r=document.getElementById('res'),w=document.getElementById('work');if(r&&w&&S.show&&window.innerWidth>767){let drag=false;r.onmousedown=()=>drag=true;window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(!drag)return;let b=w.getBoundingClientRect(),right=Math.max(290,Math.min(620,b.right-e.clientX));w.style.gridTemplateColumns=`minmax(560px,1fr) 6px ${right}px`};r.ondblclick=()=>w.style.gridTemplateColumns='minmax(560px,1fr) 6px 360px'}
@@ -573,6 +573,25 @@ setTimeout(enhance,0);
       if(evv!=null&&fcf[y]>0)series['EV/FCF'].push(evv/fcf[y]);
     });
     D.historicalMultiples=series;
+    // Re-anchor Base forecast drivers to live fundamentals. Forecasts remain assumptions, but their starting point is current data.
+    const valid=a=>(a||[]).map(Number).filter(Number.isFinite);
+    const revVals=years.map(y=>maps.revenue?.[y]);
+    const revGrowth=years.slice(1).map((y,i)=>{let p=Number(revVals[i]),c=Number(revVals[i+1]);return p>0&&c>0?(c/p-1)*100:null}).filter(Number.isFinite);
+    const ocfMargins=years.map(y=>{let r=Number(maps.revenue?.[y]),o=Number(maps.ocf?.[y]);return r>0&&Number.isFinite(o)?o/r*100:null}).filter(Number.isFinite);
+    const capMargins=years.map(y=>{let r=Number(maps.revenue?.[y]),c=Number(maps.capex?.[y]);return r>0&&Number.isFinite(c)?c/r*100:null}).filter(Number.isFinite);
+    const latestRev=revGrowth.at(-1), histRev=avg(revGrowth.slice(-3));
+    const latestOcf=ocfMargins.at(-1), histOcf=avg(ocfMargins.slice(-3));
+    const latestCap=capMargins.at(-1), histCap=avg(capMargins.slice(-3));
+    if(Number.isFinite(latestRev)&&Number.isFinite(histRev)&&Number.isFinite(latestOcf)&&Number.isFinite(histOcf)&&Number.isFinite(latestCap)&&Number.isFinite(histCap)){
+      const r1=Math.max(-5,Math.min(30,0.55*latestRev+0.45*histRev));
+      const r5=Math.max(2,Math.min(r1,r1*0.60));
+      const o1=0.60*latestOcf+0.40*histOcf, o5=0.45*latestOcf+0.55*histOcf;
+      const c1=0.70*latestCap+0.30*histCap, c5=0.40*latestCap+0.60*histCap;
+      const lerp=(a,b,i)=>a+(b-a)*(i/4);
+      const base={rev:[0,1,2,3,4].map(i=>+lerp(r1,r5,i).toFixed(1)),ocf:[0,1,2,3,4].map(i=>+lerp(o1,o5,i).toFixed(1)),cap:[0,1,2,3,4].map(i=>+lerp(c1,c5,i).toFixed(1))};
+      S.liveBaseDrivers=base;
+      if(S.drvScenario!=='Custom'){S.drvRev=[...base.rev];S.drvOcf=[...base.ocf];S.drvCap=[...base.cap];S.drvScenario='Base';}
+    }
   }
   function apply(d){
     const m=d.market||{}, s=d.sec||{}, t=d.treasury||{}, c=d.consensus||{};
@@ -724,7 +743,7 @@ setTimeout(enhance,0);
     const sec=document.createElement('section');sec.className='card liveDataPanel';sec.id='ertLiveStatements';
     sec.innerHTML=`<h2>LIVE Financial Statements — latest SEC TTM</h2>
       <div class="sourcebox"><strong>Latest filing:</strong> ${s.latest_form||'—'} · period ${s.latest_period||'—'} · Source: ${s.source||'SEC EDGAR'}<br>
-      <strong>Important:</strong> the older FY2020–FY2024 table below remains historical context. This LIVE table is the current valuation anchor.</div>
+      <strong>Annual history:</strong> the table below is synchronised to the latest five complete SEC fiscal years when available. TTM remains a separate current valuation anchor.</div>
       <h3>Income statement — TTM</h3>
       <table class="ert-table"><thead><tr><th>Line item</th><th>TTM</th><th>Period</th><th>Status</th></tr></thead><tbody>
       ${rows.map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]==null?'Unavailable':(r[2]==='eps'?Number(r[1]).toFixed(2):fmtBn(r[1]))}</strong></td><td>${s.latest_period||'—'}</td><td>${r[1]==null?'Not mapped from SEC XBRL':'LIVE SEC'}</td></tr>`).join('')}
