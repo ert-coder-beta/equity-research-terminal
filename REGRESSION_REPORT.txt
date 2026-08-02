@@ -1,21 +1,6 @@
-ERT index(7) DIRECT FIX — RELEASE CHECK
-
-Syntax:
-PASS frontend script 0
-PASS frontend script 1
-PASS frontend script 2
-PASS frontend script 3
-PASS frontend script 4
-PASS worker syntax
-
-Chromium interaction:
-PASS Valuation navigation opens
-PASS Valuation sensitivity renders
-PASS P/E Inspector has formula
-PASS P/E Inspector has actual inputs
-PASS EV/FCF Inspector uses forecast FCF
-PASS Live consensus is shown
-PASS Demo analyst snapshot removed
-PASS Report text retained
-PASS Report charts added
-PASS no non-localStorage runtime errors
+PASS worker
+PASS frontend 0
+PASS frontend 1
+PASS frontend 2
+PASS frontend 3
+PASS frontend 4
