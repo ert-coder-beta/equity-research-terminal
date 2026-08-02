@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 0.9.5.1 LIVE REFRESH FIX.1 INSPECTOR FIX</title>
+<title>ERT GOOG · Alpha 0.9.5.2 LIVE FINANCIALS.1 INSPECTOR FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -184,12 +184,12 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5.1 LIVE REFRESH FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5.2 LIVE FINANCIALS</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 
 function overview(){
  let v=dcf().ps,mos=(v/D.market.price-1)*100,rev=reverse(),R=rating(),mults=[['P/E',pe(),D.historicalMultiples['P/E']],['PEG',peg(),D.historicalMultiples.PEG],['EV/Sales',evSales(),D.historicalMultiples['EV/Sales']],['EV/EBIT',evEbit(),D.historicalMultiples['EV/EBIT']],['EV/FCF',evFcf(),D.historicalMultiples['EV/FCF']]];
- return `<h1>Alphabet Inc. (GOOG)</h1><div class="lead">30-second answer: is GOOG worth deeper research?</div><div class="notice">Fixed test data. Consensus and events are labelled demo placeholders until a live/licensed provider is connected.</div>
+ return `<h1>Alphabet Inc. (GOOG)</h1><div class="lead">30-second answer: is GOOG worth deeper research?</div><div class="notice">Historical tables may include older fixed periods. LIVE SEC/market data appears in dedicated current-data panels; unavailable sources are labelled explicitly.</div>
  <div class="grid k4">${card('Current price',money(D.market.price),'USD/share · '+D.market.asof)}${card('Base fair value',money(v),'USD/share · model '+D.market.model_asof,mos>=0?'pos':'neg')}${card('Upside / downside',pct(mos),'Fair value vs current price',mos>=0?'pos':'neg')}${card('ERT rating',`<span class="stars">${star(R.overall)}</span>`,R.overall.toFixed(1)+' / 5')}</div>
  <div class="grid two" style="margin-top:12px"><div class="card"><h3>Investment profile</h3>${ratingLine('Moat / competitive advantage',R.moat,'Wide moat potential')}${ratingLine('Business quality',R.quality,'Excellent')}${ratingLine('Growth',R.growth,'Strong')}${ratingLine('Financial health',R.fin,'Excellent')}${ratingLine('Capital allocation',R.capital,'Strong')}${ratingLine('Valuation',R.val,R.val<3?'Less attractive':'Attractive')}${ratingLine('Risk',R.risk,'Moderate')}<div class="finding find-pos" style="margin-top:10px"><h4>Overall interpretation</h4><p>High-quality, strong-moat business. Current valuation is the main constraint under the base DCF assumptions.</p></div></div>
  <div class="card"><h3>Market expectations</h3><div class="value purple">${pct(rev)}</div><div class="sub">Market-implied 5Y FCF growth (Reverse DCF)</div>${list([['Our base-case 5Y FCF CAGR',pct(fiveYCagrForecast())],['Historical 5Y FCF CAGR',pct(cagr(D.years.map((_,i)=>reportedFcf(i))))],['Market-implied growth',pct(rev)],['Market-required 5Y FCF multiple',(Math.pow(1+rev/100,5)).toFixed(2)+'×']])}<div class="finding find-risk"><h4>What does this mean?</h4><p>The current price requires materially faster FCF growth than our base forecast. This is the expectation gap to investigate.</p></div></div></div>
@@ -675,7 +675,44 @@ setTimeout(enhance,0);
     };
   }
 
-  function enhance(){ ensureBar(); financialPanel(); }
+  
+  function liveFinancialStatements(){
+    const a=document.getElementById('app'); if(!a||!live.data||document.getElementById('ertLiveStatements'))return;
+    const p=(typeof S!=='undefined'&&S.page)||'';
+    if(p!=='financials')return;
+    const s=live.data.sec||{}, I=s.income_ttm||{}, C=s.cashflow_ttm||{};
+    const rows=[
+      ['Revenues',I.revenue],
+      ['Cost of revenues',I.cost_of_revenue],
+      ['Research and development',I.research_and_development],
+      ['Sales and marketing',I.sales_and_marketing],
+      ['General and administrative',I.general_and_administrative],
+      ['Income from operations',I.operating_income],
+      ['Income before income taxes',I.pretax_income],
+      ['Provision for income taxes',I.income_tax],
+      ['Net income',I.net_income],
+      ['Diluted EPS',I.diluted_eps,'eps']
+    ];
+    const sec=document.createElement('section');sec.className='card liveDataPanel';sec.id='ertLiveStatements';
+    sec.innerHTML=`<h2>LIVE Financial Statements — latest SEC TTM</h2>
+      <div class="sourcebox"><strong>Latest filing:</strong> ${s.latest_form||'—'} · period ${s.latest_period||'—'} · Source: ${s.source||'SEC EDGAR'}<br>
+      <strong>Important:</strong> the older FY2020–FY2024 table below remains historical context. This LIVE table is the current valuation anchor.</div>
+      <h3>Income statement — TTM</h3>
+      <table class="ert-table"><thead><tr><th>Line item</th><th>TTM</th><th>Period</th><th>Status</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]==null?'Unavailable':(r[2]==='eps'?Number(r[1]).toFixed(2):fmtBn(r[1]))}</strong></td><td>${s.latest_period||'—'}</td><td>${r[1]==null?'Not mapped from SEC XBRL':'LIVE SEC'}</td></tr>`).join('')}
+      </tbody></table>
+      <h3 style="margin-top:16px">Cash flow — TTM</h3>
+      <div class="liveDataGrid">
+        <div class="card"><div class="sub">Operating cash flow</div><div class="value">${fmtBn(C.operating_cash_flow)}</div></div>
+        <div class="card"><div class="sub">CapEx</div><div class="value">${fmtBn(C.capex)}</div></div>
+        <div class="card"><div class="sub">Free cash flow</div><div class="value">${fmtBn(C.free_cash_flow)}</div></div>
+        <div class="card"><div class="sub">Net cash</div><div class="value">${fmtBn(s.net_cash_m)}</div></div>
+      </div>`;
+    const lead=[...a.querySelectorAll('h1')].find(x=>/financial statements/i.test(x.textContent));
+    if(lead) lead.parentNode.insertBefore(sec,lead.nextSibling.nextSibling); else a.prepend(sec);
+  }
+
+  function enhance(){ ensureBar(); financialPanel(); liveFinancialStatements(); }
   new MutationObserver(()=>setTimeout(enhance,0)).observe(document.getElementById('app'),{childList:true,subtree:true});
   setTimeout(()=>{
     enhance();
