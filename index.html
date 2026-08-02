@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.4.3 VALUATION CLICK FIX</title>
+<title>ERT GOOG · Alpha 1.4.4 LAYOUT + COLOR FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -133,6 +133,177 @@ body.inspector-collapsed #showInspector{display:block}
 @media(max-width:900px){.liveDataGrid{grid-template-columns:repeat(2,1fr)}.refreshBtn{margin-left:0}}
 @media(max-width:650px){.liveDataGrid{grid-template-columns:1fr}}
 </style>
+
+<style id="alpha144-layout-color-fix">
+/* === GLOBAL CONTAINMENT === */
+html,body,#app,.app,.shell,.main,.work,.content,.card,.report14,.reportSec14,.reportChart14,.reportKpi14,
+.driverWrap14,.driverTable14,.consensusBox14,.analysisForecast14,.af14,.trendTile13,.finSnapshotGrid,
+.market5,.grid,.tw,table,thead,tbody,tr,td,th{
+  box-sizing:border-box;
+}
+body,#app,.app,.shell,.main,.work,.content{
+  max-width:100%;
+  min-width:0;
+}
+.content{
+  overflow-x:hidden;
+}
+.card,.reportSec14,.reportChart14,.reportKpi14,.af14,.trendTile13,.consensusBox14>div{
+  min-width:0 !important;
+  overflow:hidden;
+}
+.card *,.reportSec14 *,.reportChart14 *,.reportKpi14 *,.af14 *,.trendTile13 *,.consensusBox14 *{
+  min-width:0;
+}
+
+/* === STOP TEXT ESCAPING CARDS === */
+.value,.lead,.small,.sub,.muted,.metricDesc,.sourcebox,.finding,p,h1,h2,h3,h4,strong,span,td,th,label,button{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.value{
+  line-height:1.08;
+  max-width:100%;
+}
+.small,.sub,.muted,.metricDesc,.sourcebox{
+  max-width:100%;
+}
+
+/* === DARK THEME TEXT RESTORATION === */
+body,#app,.app,.main,.content,.card,.driverWrap14,.af14,.trendTile13,.consensusBox14>div{
+  color:#eef5fc !important;
+}
+h1,h2,h3,h4,strong,.brand,.nav button,.tabs button,.finMode14 button,.driverBtns button{
+  color:#ffffff !important;
+}
+.lead,.sub,.small,.muted,.metricDesc,.tag,.sourcebox,label{
+  color:#9fc2de !important;
+}
+td,th{
+  color:#eef5fc !important;
+}
+.pos,.tone-pos{color:#58e6a0 !important}
+.neg,.tone-neg{color:#ff6b81 !important}
+.warn,.tone-watch,.amber{color:#ffd166 !important}
+.purple,.tone-model{color:#bd9cff !important}
+
+/* Form controls were inheriting white text inconsistently */
+input,select,textarea{
+  color:#ffffff !important;
+  background:#0a121b !important;
+}
+
+/* === REPORT IS THE ONLY LIGHT SURFACE === */
+.report14,.report14 .reportBody14,.report14 .reportSec14,.report14 .reportChart14,
+.report14 .reportKpi14,.report14 .reportGood14,.report14 .reportRisk14,
+.report14 .bizTable14 td{
+  color:#17222d !important;
+}
+.report14 h1,.report14 h2,.report14 h3,.report14 h4,.report14 strong,.report14 p,.report14 span,.report14 td,.report14 label{
+  color:#17222d !important;
+}
+.report14 .reportHero14,
+.report14 .reportHero14 h1,
+.report14 .reportHero14 p,
+.report14 .reportHero14 span{
+  color:#ffffff !important;
+}
+.report14 .good{color:#087b43 !important}
+.report14 .bad{color:#b71f38 !important}
+.report14 .amber{color:#a36a00 !important}
+.report14 .purple{color:#6944b5 !important}
+.report14 .bizTable14 th{
+  color:#ffffff !important;
+}
+
+/* === TABLES FIT VIEWPORT === */
+.tw{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto;
+  scrollbar-gutter:stable;
+}
+table{
+  width:100%;
+  max-width:100%;
+}
+.driverTable14{
+  table-layout:fixed !important;
+  width:100% !important;
+}
+.driverTable14 th:first-child,.driverTable14 td:first-child{
+  width:17% !important;
+}
+.driverTable14 th:not(:first-child),.driverTable14 td:not(:first-child){
+  width:auto !important;
+}
+.driverTable14 input{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  font-size:13px !important;
+  padding:8px 6px !important;
+}
+
+/* === GRID SAFETY === */
+.grid,.market5,.analysisForecast14,.reportKpis14,.reportCharts14,.reportTwo14,.bizGrid14,.consensusBox14{
+  max-width:100%;
+}
+.k4{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
+.k3{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+.two{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+.market5{grid-template-columns:repeat(5,minmax(0,1fr)) !important}
+.analysisForecast14{grid-template-columns:repeat(5,minmax(0,1fr)) !important}
+
+/* === LARGE VALUES SHRINK INSTEAD OF OVERFLOW === */
+.k4 .value,.k3 .value,.market5 .value,.analysisForecast14 .value,.reportKpis14 b{
+  font-size:clamp(18px,1.65vw,32px) !important;
+}
+.consensusUnavailable{
+  font-size:clamp(16px,1.35vw,24px) !important;
+}
+
+/* === INSPECTOR WIDTH / MAIN CONTENT BALANCE === */
+.work{
+  grid-template-columns:minmax(0,1fr) minmax(310px,27vw) !important;
+}
+.work.inspectorCollapsed{
+  grid-template-columns:minmax(0,1fr) !important;
+}
+.inspector{
+  min-width:0 !important;
+  max-width:100% !important;
+  overflow-x:hidden !important;
+}
+.inspector .value{
+  font-size:clamp(22px,2vw,34px) !important;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+@media (max-width:1400px){
+  .market5,.analysisForecast14{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+  .k4{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .work{grid-template-columns:minmax(0,1fr) minmax(300px,30vw) !important}
+}
+@media (max-width:1050px){
+  .work{grid-template-columns:minmax(0,1fr) !important}
+  .inspector{display:none !important}
+  .two,.k3,.market5,.analysisForecast14,.reportCharts14,.reportTwo14,.bizGrid14,.consensusBox14{
+    grid-template-columns:1fr !important;
+  }
+  .k4{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+}
+@media (max-width:680px){
+  .k4,.reportKpis14{grid-template-columns:1fr !important}
+  .content{padding-left:12px !important;padding-right:12px !important}
+}
+
+/* === PREVENT HORIZONTAL PAGE SCROLL === */
+html,body{
+  overflow-x:hidden !important;
+}
+</style>
+
 </head>
 <body>
 <div id="app"></div>
@@ -1042,7 +1213,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.3 VALUATION CLICK FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.4 LAYOUT + COLOR FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1477,7 +1648,7 @@ setTimeout(enhance,0);
   }
 
   function layout14(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.3 VALUATION CLICK FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.4 LAYOUT + COLOR FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
   }
 
   window.render14=function(){

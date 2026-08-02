@@ -1,14 +1,15 @@
-ERT Alpha 1.4.3 VALUATION CLICK FIX
+ERT Alpha 1.4.4 LAYOUT + COLOR FIX
 
-Root cause:
-Alpha 1.4.2 defined the recovery valuation page in a new IIFE, then overrode window.render and called layout14()/bind14().
-Those functions are private to the earlier Alpha 1.4 IIFE, so clicking Valuation could throw a ReferenceError before the page rendered.
+Scope: CSS/layout only. No valuation, financial, market, consensus, or Worker logic changed.
 
-Fix:
-- Keep navigation/render/layout entirely inside the working Alpha 1.4 renderer.
-- Export only valuation142.
-- Alpha 1.4 page map uses window.valuation142 when available.
-- No cross-scope calls to layout14 or bind14.
+Fixed:
+- Text escaping cards/viewport.
+- Forecast table inputs/columns overflowing beside the Inspector.
+- Dark-theme text unintentionally turning white on light surfaces or becoming unreadable.
+- Report explicitly keeps dark text on white background.
+- Main content/Inspector width balance tightened.
+- Responsive fallback hides Inspector on narrower screens instead of crushing the centre content.
+- Horizontal page overflow blocked; only table wrappers can scroll horizontally when genuinely necessary.
 
 PASS frontend_0
 PASS frontend_1
@@ -17,7 +18,9 @@ PASS frontend_3
 PASS frontend_4
 PASS frontend_5
 PASS worker
-PASS Alpha14 routes valuation through exported recovery renderer
-PASS Recovery valuation exported globally
-PASS Broken cross-IIFE render override removed
-PASS No cross-IIFE bind14 call in recovery layer
+PASS Global horizontal overflow blocked
+PASS Cards force min-width 0
+PASS Dark-theme text explicitly restored
+PASS Report light-theme text explicitly preserved
+PASS Forecast table fixed-layout
+PASS Inspector collapses below 1050px
