@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 0.9.5 LIVE ENGINE.1 INSPECTOR FIX</title>
+<title>ERT GOOG · Alpha 0.9.5.1 LIVE REFRESH FIX.1 INSPECTOR FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -184,7 +184,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5 LIVE ENGINE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.5.1 LIVE REFRESH FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 
 function overview(){
@@ -518,6 +518,7 @@ setTimeout(enhance,0);
     const v=prompt('Paste your Cloudflare Worker URL (example: https://ert-live-data.yourname.workers.dev)', current);
     if(!v)return;
     localStorage.setItem('ertApiBase', v.trim().replace(/\/+$/,''));
+    setPill('ertStatus','ok','API saved · '+apiBase());
     refresh();
   }
 
@@ -535,7 +536,7 @@ setTimeout(enhance,0);
       live.loaded=true;live.data=d;live.error=null;
       apply(d);
       if(window.render) render();
-      setTimeout(enhance,30);
+      setTimeout(()=>{ enhance(); restoreStatus(d); },30);
     }catch(e){
       live.error=String(e.message||e);
       setPill('ertStatus','bad','Refresh failed: '+live.error);
@@ -548,7 +549,7 @@ setTimeout(enhance,0);
 
   function apply(d){
     const m=d.market||{}, s=d.sec||{}, t=d.treasury||{}, c=d.consensus||{};
-    if(window.D){
+    if(typeof D!=='undefined'){
       if(D.market){
         if(m.price!=null) D.market.price=m.price;
         if(m.asof) D.market.asof=m.asof;
@@ -576,7 +577,7 @@ setTimeout(enhance,0);
       }
       D.live = d;
     }
-    if(window.S){
+    if(typeof S!=='undefined'){
       if(t.ten_year!=null) S.rf=t.ten_year;
       if(d.erp && d.erp.value!=null) S.erp=d.erp.value;
     }
@@ -590,6 +591,16 @@ setTimeout(enhance,0);
   function setPill(id,cls,text){
     const x=document.getElementById(id); if(!x)return;
     x.className='livepill '+cls;x.textContent=text;
+  }
+
+  function restoreStatus(d){
+    if(!d)return;
+    const m=d.market||{},s=d.sec||{},t=d.treasury||{},c=d.consensus||{};
+    setPill('ertStatus','ok','LIVE · updated '+(d.generated_at||'now'));
+    setPill('ertPrice','ok','Price '+fmtMoney(m.price)+' · '+(m.asof||''));
+    setPill('ertSEC','ok','SEC '+(s.latest_form||'')+' · '+(s.latest_period||''));
+    setPill('ertTreasury',t.ten_year!=null?'ok':'warn','US 10Y '+(t.ten_year!=null?fmtPct(t.ten_year):'unavailable'));
+    setPill('ertConsensus',c.available?'ok':'warn',c.available?'Consensus '+fmtMoney(c.mean):'Consensus unavailable');
   }
 
   function ensureBar(){
@@ -609,7 +620,7 @@ setTimeout(enhance,0);
 
   function financialPanel(){
     const a=document.getElementById('app'); if(!a||!live.data||document.getElementById('ertLiveFinancials'))return;
-    const p=(window.S&&S.page)||'';
+    const p=(typeof S!=='undefined'&&S.page)||'';
     if(!['overview','financials','valuation','report'].includes(p))return;
     const s=live.data.sec||{};
     const sec=document.createElement('section');sec.className='card liveDataPanel';sec.id='ertLiveFinancials';
