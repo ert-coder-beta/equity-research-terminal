@@ -1,21 +1,15 @@
-ERT Alpha 1.4.2 VALUATION RECOVERY
+ERT Alpha 1.4.3 VALUATION CLICK FIX
 
-Root problem addressed:
-The 1.4 forecast/DCF depended too strongly on complete current-year quarterly series and on frontend D.* annual state. A failed or incomplete refresh could therefore make the whole valuation chain unavailable.
+Root cause:
+Alpha 1.4.2 defined the recovery valuation page in a new IIFE, then overrode window.render and called layout14()/bind14().
+Those functions are private to the earlier Alpha 1.4 IIFE, so clicking Valuation could throw a ReferenceError before the page rendered.
 
-Recovery rules:
-1. Annual anchors are read directly from the validated live SEC annual object.
-2. FY1 Revenue growth priority:
-   comparable current YTD YoY -> TTM vs latest FY fallback -> 5Y median fallback.
-3. FY1 OCF margin priority:
-   current YTD OCF/Revenue -> TTM OCF/Revenue fallback -> 5Y median fallback.
-4. FY1 CapEx intensity priority:
-   current YTD CapEx/Revenue -> TTM CapEx/Revenue fallback -> 5Y median fallback.
-5. DCF only blocks when genuinely required validated inputs (shares/net cash/WACC) are unavailable.
-6. Rating no longer becomes NaN if valuation is unavailable.
-7. This recovery layer only replaces the Valuation page/DCF path; Financials, Analysis, Market and Report from 1.4.1 are left intact.
+Fix:
+- Keep navigation/render/layout entirely inside the working Alpha 1.4 renderer.
+- Export only valuation142.
+- Alpha 1.4 page map uses window.valuation142 when available.
+- No cross-scope calls to layout14 or bind14.
 
-Checks:
 PASS frontend_0
 PASS frontend_1
 PASS frontend_2
@@ -23,3 +17,7 @@ PASS frontend_3
 PASS frontend_4
 PASS frontend_5
 PASS worker
+PASS Alpha14 routes valuation through exported recovery renderer
+PASS Recovery valuation exported globally
+PASS Broken cross-IIFE render override removed
+PASS No cross-IIFE bind14 call in recovery layer

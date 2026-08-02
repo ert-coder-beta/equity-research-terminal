@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.4.2 VALUATION RECOVERY</title>
+<title>ERT GOOG · Alpha 1.4.3 VALUATION CLICK FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -1042,7 +1042,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.2 VALUATION RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.3 VALUATION CLICK FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1477,12 +1477,12 @@ setTimeout(enhance,0);
   }
 
   function layout14(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.2 VALUATION RECOVERY</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.3 VALUATION CLICK FIX</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
   }
 
   window.render14=function(){
     buildBase14();
-    const P={overview:overview14,financials:financials14,analysis:analysis14,valuation:valuation14,market:market14,research,report:report14,disclaimer};
+    const P={overview:overview14,financials:financials14,analysis:analysis14,valuation:(window.valuation142||valuation14),market:market14,research,report:report14,disclaimer};
     app.innerHTML=layout14(P[S.page]());
     bind14();
   };
@@ -1706,19 +1706,10 @@ setTimeout(enhance,0);
       <div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>${sensitivity([1.5,2,2.5,3,3.5])}</div>`;
   };
 
-  // Route valuation to the recovery page without touching the other 1.4.1 pages.
-  const oldRender142=window.render14||window.render;
-  window.render=function(){
-    if(S.page!=='valuation') return oldRender142();
-    ensureDrivers142();
-    app.innerHTML=layout14(valuation142());
-    bind14();
-    document.querySelectorAll('[data-driver142]').forEach(i=>i.addEventListener('change',e=>{
-      const idx=+e.target.dataset.i,v=parseFloat(e.target.value);if(!Number.isFinite(v))return;
-      const k=e.target.dataset.driver142;if(k==='rev')S.drvRev[idx]=v;if(k==='ocf')S.drvOcf[idx]=v;if(k==='cap')S.drvCap[idx]=v;S.drvScenario='Custom';render();
-    }));
-    document.getElementById('resetDrivers142')?.addEventListener('click',()=>{const b=ensureDrivers142(true);if(b.ok){S.drvRev=[...b.rev];S.drvOcf=[...b.ocf];S.drvCap=[...b.cap];S.drvScenario='Base'}render()});
-  };
+  // Export the recovery valuation renderer.
+  // Navigation remains owned by Alpha 1.4's existing render14/layout14/bind14 closure.
+  // This prevents cross-IIFE scope errors when clicking Valuation.
+  window.valuation142=valuation142;
 })();
 </script>
 
