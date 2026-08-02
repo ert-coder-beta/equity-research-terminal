@@ -1,7 +1,12 @@
-ERT GOOG Full Feature Test Build
+ERT GOOG Alpha 0.9.2 TEST
 
-Replace the repository root index.html with this file.
+Key fixes in this build:
+- Inspector Hide expands main workspace.
+- Removed need for top assumption-audit boxes; ERP drill-down is in right inspector.
+- ERP default updated to 4.18% and inspector explains the implied-return chain without inventing an unsourced 8.63%.
+- Report now contains Company/Sector, business mix, strengths and risks inside the printable white report.
+- Market page layout enlarged/rebalanced.
+- Main market chart includes a visible consensus reference/legend; consensus remains explicitly DEMO until a live/licensed provider is connected.
+- Mobile sidebar behaviour from the base build retained.
 
-Included: complete financial statement structures, frozen column/header, resizable Evidence Inspector, analysis, capital allocation, DCF, reverse DCF, multiples, RSI/SMA, notes, report export and disclaimer.
-
-Important: financial and market data are fixed test data. Live SEC and price updates are not connected yet.
+Upload: replace repository index.html with this index.html, commit and push.
