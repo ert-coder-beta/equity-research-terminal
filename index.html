@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ERT GOOG Alpha 0.9 TEST</title>
+<title>ERT GOOG · Alpha 0.9.1 FIX</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -46,6 +46,24 @@ body.inspector-collapsed .inspector{display:none!important}
 body.inspector-collapsed main{max-width:none!important}
 #showInspector{display:none;position:fixed;right:14px;top:58px;z-index:50;background:#132235;color:#fff;border:1px solid #36506a;border-radius:8px;padding:9px 12px;cursor:pointer}
 body.inspector-collapsed #showInspector{display:block}
+
+.alpha091{margin-top:14px}
+.a091-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.a091-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.a091-box{border:1px solid #294057;border-radius:10px;padding:14px;background:#101b27}
+.a091-box h3{margin:0 0 10px}
+.a091-table{width:100%;border-collapse:collapse;font-size:13px}
+.a091-table th,.a091-table td{border-bottom:1px solid #2a3d50;padding:8px;text-align:left;vertical-align:top}
+.a091-input{width:100%;box-sizing:border-box;background:#08131e;color:#fff;border:1px solid #36506a;border-radius:7px;padding:8px}
+.a091-select{width:100%;background:#08131e;color:#fff;border:1px solid #36506a;border-radius:7px;padding:9px}
+.a091-kpi{font-size:24px;font-weight:800}
+.a091-good{color:#59d99b}.a091-bad{color:#ff6578}.a091-warn{color:#ffc54d}.a091-purple{color:#ad7cff}.a091-blue{color:#6ea8ff}
+.a091-note{margin-top:10px;padding:11px;border-left:4px solid #ffc54d;background:#241f0d;border-radius:7px}
+.a091-source{font-size:12px;color:#9dc9ed}
+.a091-band{height:16px;background:linear-gradient(90deg,#23374a,#334d65);border-radius:10px;position:relative;margin:8px 0}
+.a091-band:before{content:"";position:absolute;left:28%;right:20%;top:0;bottom:0;background:rgba(173,124,255,.28);border-radius:10px}
+.a091-marker{position:absolute;top:-4px;width:3px;height:24px;background:#ffc54d}
+@media(max-width:900px){.a091-grid,.a091-grid3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -81,7 +99,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9 TEST</div><button id="showInspector">Evidence / Context</button></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work" id="work"><section class="content">${content}</section><div class="res" id="res"></div>${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 0.9.1 FIX</div><button id="showInspector">Evidence / Context</button></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work" id="work"><section class="content">${content}</section><div class="res" id="res"></div>${inspector()}</div><div class="footer">Reference only. Not investment advice. Fixed test data unless explicitly labelled otherwise.</div></main></div></div>`}
 
 function overview(){
  let v=dcf().ps,mos=(v/D.market.price-1)*100,rev=reverse(),R=rating(),mults=[['P/E',pe(),D.historicalMultiples['P/E']],['PEG',peg(),D.historicalMultiples.PEG],['EV/Sales',evSales(),D.historicalMultiples['EV/Sales']],['EV/EBIT',evEbit(),D.historicalMultiples['EV/EBIT']],['EV/FCF',evFcf(),D.historicalMultiples['EV/FCF']]];
@@ -187,4 +205,187 @@ function bind(){
 }
 render();
 </script>
-</body></html>
+<script>
+(function(){
+const A09={
+  consensus:{mean:216,median:214,low:180,high:250,n:"Demo",asof:"Demo placeholder"},
+  fcfHist:[23.5,26.0,21.2,22.6,20.8],
+  capex:{y2023:32251,y2024:52535,rev2024:350018},
+  erp:{selected:4.18,rf:4.45,expected:8.63,date:"2026-07-01"},
+  tg:{selected:2.5,low:2.0,high:3.0},
+};
+function app(){return document.getElementById('app')}
+function card(title,body,id){
+ const s=document.createElement('section'); s.className='card alpha091'; if(id)s.id=id;
+ s.innerHTML='<h2>'+title+'</h2>'+body; return s;
+}
+function inspector(title,body){
+ const el=document.querySelector('.inspector')||document.getElementById('inspector');
+ if(!el)return;
+ const content=el.querySelector('.inspector-content')||el.querySelector('[id*=inspectorContent]')||el;
+ const header=el.querySelector('header,.inspector-head');
+ let target=content;
+ if(target===el && header){
+   [...el.children].forEach((c,i)=>{if(c!==header && i>0)c.remove()});
+   target=document.createElement('div'); el.appendChild(target);
+ }
+ target.innerHTML='<div style="padding:14px"><h2>'+title+'</h2>'+body+'</div>';
+}
+function clickable(root){
+ root.querySelectorAll('[data-a091]').forEach(x=>x.onclick=()=>{
+  const k=x.dataset.a091;
+  if(k==='erp') inspector('Equity risk premium — 4.18%',
+   `<p><b>Why 4.18%?</b> It is an implied market premium, not a chosen round number.</p>
+    <p>S&amp;P 500 price + expected shareholder cash flows are used to solve for the market's implied required equity return. In this benchmark:</p>
+    <div class="row"><span>Implied expected equity return</span><b>8.63%</b></div>
+    <div class="row"><span>Less risk-free rate</span><b>4.45%</b></div>
+    <div class="row"><span>= Implied ERP</span><b class="a091-blue">4.18%</b></div>
+    <p>If ERP were 1%, 5% or 10%, the discount rate would not be the implied rate that reconciles the benchmark market price with the assumed cash flows.</p>
+    <div class="a091-note"><b>Selected method:</b> Damodaran / NYU Stern US implied ERP, trailing-12-month adjusted payout benchmark. <b>Benchmark date:</b> 1 Jul 2026. The selected model input remains editable.</div>
+    <p class="a091-source">Source to connect live: Aswath Damodaran / NYU Stern implied ERP dataset. Alternative ERP methodologies should be shown as context rather than silently substituted.</p>`);
+  if(k==='tg') inspector('Terminal growth — 2.5%',
+   `<p><b>Why 2.5%?</b> Terminal growth represents perpetual nominal growth after the explicit forecast. It is anchored to mature long-run nominal economic growth, not Alphabet's recent double-digit growth.</p>
+    <div class="row"><span>Conservative scenario</span><b>2.0%</b></div>
+    <div class="row"><span>Selected base case</span><b class="a091-blue">2.5%</b></div>
+    <div class="row"><span>Optimistic scenario</span><b>3.0%</b></div>
+    <p><b>Why not 5–10%?</b> A company cannot plausibly outgrow the nominal economy forever without eventually becoming an implausibly large share of it.</p>
+    <p><b>Why not 0%?</b> That is a deliberately conservative nominal no-growth scenario rather than the default mature-company assumption.</p>
+    <div class="a091-note">Production version must show the actual inflation / long-run real-growth benchmarks, source, as-of date and the selected-model override separately.</div>`);
+  if(k==='fcf') inspector('FCF margin — why 22.8%?',
+   `<p><b>Formula:</b> FCF margin = (Operating cash flow − CapEx) ÷ Revenue.</p>
+    <table class="a091-table"><tr><th>FY</th><th>FCF margin</th></tr>
+    <tr><td>2020</td><td>23.5%</td></tr><tr><td>2021</td><td>26.0%</td></tr><tr><td>2022</td><td>21.2%</td></tr><tr><td>2023</td><td>22.6%</td></tr><tr><td>2024</td><td>20.8%</td></tr></table>
+    <p>Arithmetic 5Y average ≈ <b>22.8%</b>. This is a historical anchor, not a claim that 22.8% is the correct future margin.</p>
+    <div class="row"><span>2024 CapEx</span><b>$52,535m</b></div><div class="row"><span>2024 CapEx / revenue</span><b>15.0%</b></div>
+    <div class="a091-note">Alphabet does not separately disclose a precise maintenance/growth/one-off CapEx split in this prototype. Do not invent one. Use driver scenarios and label estimates explicitly.</div>`);
+  if(k==='consensus') inspector('Analyst consensus price target — DEMO',
+   `<p>This is a <b>demo placeholder</b>, not live analyst consensus.</p>
+    <div class="row"><span>Mean</span><b>$216</b></div><div class="row"><span>Median</span><b>$214</b></div>
+    <div class="row"><span>Low</span><b>$180</b></div><div class="row"><span>High</span><b>$250</b></div>
+    <p>Consensus target is typically a collection of analysts' forward price targets. It is not the same thing as DCF intrinsic value.</p>
+    <div class="a091-note">Production requirement: licensed/live provider, analyst count, source, as-of date and target distribution.</div>`);
+  if(k==='business') inspector('Alphabet business / revenue mix',
+   `<p>Alphabet's economics are driven by several revenue streams rather than one homogeneous “technology” business.</p>
+    <p><b>Google Search & other:</b> core advertising cash engine; risk from AI/search behaviour and antitrust.</p>
+    <p><b>YouTube:</b> advertising plus subscriptions; risk from creator/platform competition.</p>
+    <p><b>Subscriptions / platforms / devices:</b> diversification; hardware/platform economics vary.</p>
+    <p><b>Google Cloud:</b> cloud + AI growth engine; requires substantial infrastructure investment and competes with AWS/Azure.</p>
+    <p><b>Other Bets:</b> option value with material uncertainty and losses.</p>
+    <div class="a091-note">Exact revenue/profit contribution must come from Alphabet filings. If a line is not separately disclosed, show “not separately disclosed” rather than estimate it as fact.</div>`);
+ });
+}
+function enhanceValuation(){
+ const m=app(); if(!m||document.getElementById('a091-fcfengine'))return;
+ // Correct visible ERP test input where identifiable.
+ [...m.querySelectorAll('input')].forEach(i=>{
+   const p=(i.previousElementSibling?.textContent||'')+' '+(i.parentElement?.textContent||'');
+   if(/equity risk premium/i.test(p) && (i.value==='4.8'||i.value==='4.80')) i.value='4.18';
+ });
+ // Add explicit assumption reasoning next to WACC/TG.
+ const assumptions=card('Assumption audit — click every driver',`
+ <div class="a091-grid3">
+  <div class="a091-box" data-a091="erp"><div class="a091-source">ERP</div><div class="a091-kpi a091-blue">4.18%</div><b>Why this number?</b><p>8.63% implied equity return − 4.45% risk-free = 4.18%.</p><span class="a091-source">Damodaran / NYU Stern · 2026-07-01 · editable</span></div>
+  <div class="a091-box" data-a091="tg"><div class="a091-source">Terminal growth</div><div class="a091-kpi a091-blue">2.5%</div><b>Why this number?</b><p>Mature perpetual nominal-growth base case; 2.0–3.0% scenario range.</p><span class="a091-source">Benchmark framework · editable</span></div>
+  <div class="a091-box" data-a091="fcf"><div class="a091-source">Historical FCF margin anchor</div><div class="a091-kpi a091-blue">22.8%</div><b>Why this number?</b><p>Arithmetic average of FY2020–FY2024 FCF margins.</p><span class="a091-source">Click for CapEx effect</span></div>
+ </div>`, 'a091-assumptions');
+ m.prepend(assumptions);
+
+ const body=`
+ <p>This replaces the simplistic “pick 22.8% + type FCF growth” logic with explicit, editable forecast drivers.</p>
+ <label>Forecast method</label>
+ <select class="a091-select" id="a091-method"><option>Driver-based FCF</option><option>Custom FCF margin</option><option>Reported FCF growth</option><option>Historical FCF margin</option><option>Consensus-based (demo only)</option></select>
+ <h3>Driver-based forecast</h3>
+ <table class="a091-table"><thead><tr><th>Driver</th><th>Y1</th><th>Y2</th><th>Y3</th><th>Y4</th><th>Y5</th></tr></thead><tbody>
+ <tr><td>Revenue growth %</td>${[11,10,9,8,7].map((v,i)=>`<td><input class="a091-input drv rev" data-y="${i}" value="${v}" type="number" step=".1"></td>`).join('')}</tr>
+ <tr><td>OCF margin %</td>${[37,37,37.2,37.3,37.5].map((v,i)=>`<td><input class="a091-input drv ocf" data-y="${i}" value="${v}" type="number" step=".1"></td>`).join('')}</tr>
+ <tr><td>CapEx / Revenue %</td>${[15,14,13,12,11].map((v,i)=>`<td><input class="a091-input drv cap" data-y="${i}" value="${v}" type="number" step=".1"></td>`).join('')}</tr>
+ <tr><td><b>FCF margin %</b></td>${[0,1,2,3,4].map(i=>`<td><b class="a091-good fm" data-y="${i}">—</b></td>`).join('')}</tr>
+ </tbody></table>
+ <div class="a091-grid" style="margin-top:12px">
+  <div class="a091-box"><h3>CapEx classification</h3>
+   <div class="row"><span>Maintenance</span><b>Not separately disclosed</b></div>
+   <div class="row"><span>Growth</span><b>Not separately disclosed</b></div>
+   <div class="row"><span>One-off / exceptional</span><b>Identify from evidence</b></div>
+   <div class="row"><span>Unclassified</span><b>Do not invent precision</b></div>
+  </div>
+  <div class="a091-box"><h3>Historical anchor</h3>
+   <div class="row"><span>2023 CapEx</span><b>$32,251m</b></div>
+   <div class="row"><span>2024 CapEx</span><b>$52,535m</b></div>
+   <div class="row"><span>2024 CapEx / revenue</span><b>15.0%</b></div>
+   <div class="row"><span>5Y avg FCF margin</span><b data-a091="fcf">22.8%</b></div>
+  </div>
+ </div>
+ <div class="a091-note"><b>Model rule:</b> Custom FCF Margin and Custom FCF Growth must be mutually exclusive. In Driver mode, FCF margin = OCF margin − CapEx/revenue. Changes should feed the DCF calculation engine.</div>`;
+ const eng=card('FCF Forecast Engine — editable drivers',body,'a091-fcfengine');
+ m.appendChild(eng);
+ function calc(){[0,1,2,3,4].forEach(i=>{let o=+eng.querySelector(`.ocf[data-y="${i}"]`).value,c=+eng.querySelector(`.cap[data-y="${i}"]`).value;eng.querySelector(`.fm[data-y="${i}"]`).textContent=(o-c).toFixed(1)+'%';});}
+ eng.querySelectorAll('.drv').forEach(x=>x.oninput=calc); calc(); clickable(m);
+}
+function enhanceMarket(){
+ const m=app(); if(!m||document.getElementById('a091-consensus'))return;
+ const c=card('Analyst consensus price context — DEMO placeholder',`
+ <div class="a091-grid3">
+  <div class="a091-box" data-a091="consensus"><span class="a091-source">Consensus mean target</span><div class="a091-kpi a091-purple">$216.00</div><p>+12.4% vs $192.13 current price</p></div>
+  <div class="a091-box"><span class="a091-source">Median target</span><div class="a091-kpi">$214.00</div><p>Low $180 · High $250</p></div>
+  <div class="a091-box"><span class="a091-source">Status</span><div class="a091-kpi a091-warn">DEMO</div><p>No live/licensed consensus provider connected.</p></div>
+ </div>
+ <h3>Price target range vs current price / ERT DCF</h3>
+ <div style="position:relative;padding:8px 0 22px"><div class="a091-band"><span class="a091-marker" style="left:34%" title="ERT DCF $130.26"></span><span class="a091-marker" style="left:58%;background:#6ea8ff" title="Current $192.13"></span><span class="a091-marker" style="left:68%;background:#ad7cff" title="Consensus mean $216"></span></div>
+ <div class="a091-source">ERT DCF $130.26 &nbsp;&nbsp; | &nbsp;&nbsp; Target low $180 &nbsp;&nbsp; | &nbsp;&nbsp; Current $192.13 &nbsp;&nbsp; | &nbsp;&nbsp; Consensus mean $216 &nbsp;&nbsp; | &nbsp;&nbsp; Target high $250</div></div>
+ <div class="a091-note">Production chart requirement: add Consensus Mean line and Low–High target band to the main dated price chart; show provider, analyst count and as-of date. This demo does not pretend $216 is live.</div>`, 'a091-consensus');
+ const first=m.querySelector('.card'); if(first) first.after(c); else m.prepend(c); clickable(m);
+}
+function enhanceReport(){
+ const m=app(); if(!m||document.getElementById('a091-company'))return;
+ const c=card('Company & business overview',`
+ <div class="a091-grid">
+  <div class="a091-box" data-a091="business"><h3>Alphabet Inc. (GOOG)</h3>
+   <p>Parent company of Google. Core economics come from advertising, subscriptions/platforms/devices, Google Cloud and smaller Other Bets.</p>
+   <div class="row"><span>Sector / industry</span><b>Interactive media / internet services*</b></div>
+   <div class="row"><span>Primary cash engine</span><b>Google advertising</b></div>
+   <div class="row"><span>Major growth engine</span><b>Google Cloud / AI</b></div>
+   <p class="a091-source">*Classification depends on the market-data taxonomy used in production.</p>
+  </div>
+  <div class="a091-box"><h3>Strengths vs weaknesses</h3>
+   <p class="a091-good"><b>Strengths:</b> Search distribution, YouTube scale, Cloud/AI opportunity, cash generation, balance sheet.</p>
+   <p class="a091-bad"><b>Risks:</b> ad dependence, AI/search disruption, regulation, heavy infrastructure CapEx, Cloud competition, Other Bets uncertainty.</p>
+  </div>
+ </div>
+ <h3>Business / revenue mix</h3>
+ <table class="a091-table"><tr><th>Business</th><th>Economic role</th><th>Contribution</th><th>Main opportunity</th><th>Main downside</th></tr>
+ <tr data-a091="business"><td><b>Google Search & other</b></td><td>Core ad cash engine</td><td>Use filing-derived revenue</td><td>Commercial intent + AI monetisation</td><td>AI behaviour shift / antitrust</td></tr>
+ <tr data-a091="business"><td><b>YouTube</b></td><td>Ads + subscriptions</td><td>Use disclosed categories</td><td>Video / creator ecosystem</td><td>Platform competition</td></tr>
+ <tr data-a091="business"><td><b>Subscriptions / platforms / devices</b></td><td>Diversification</td><td>Use filing-derived revenue</td><td>Recurring subscriptions</td><td>Mixed hardware/platform economics</td></tr>
+ <tr data-a091="business"><td><b>Google Cloud</b></td><td>Cloud + AI growth engine</td><td>Revenue + segment profit where disclosed</td><td>Enterprise AI / cloud</td><td>CapEx + AWS/Azure competition</td></tr>
+ <tr data-a091="business"><td><b>Other Bets</b></td><td>Long-duration optionality</td><td>Separately disclosed segment where available</td><td>Waymo / new businesses</td><td>Losses / uncertain payoff</td></tr></table>
+ <div class="a091-note">No invented segment percentages: production build must populate exact contribution, 5Y trend and profitability from Alphabet filings and label anything not separately disclosed.</div>`, 'a091-company');
+ const first=m.querySelector('.card'); if(first)m.insertBefore(c,first);else m.prepend(c); clickable(m);
+}
+function enhanceAnalysis(){
+ const m=app(); if(!m||document.getElementById('a091-analysis'))return;
+ const c=card('Expectation gap — 5Y context',`
+ <table class="a091-table"><tr><th>Metric</th><th>Latest actual</th><th>Historical context</th><th>ERT base</th><th>Consensus*</th><th>Market implied</th></tr>
+ <tr><td>Revenue growth</td><td>13.9%</td><td>Inspect 5Y annual series</td><td>11.2%</td><td class="a091-purple">12.5%</td><td>—</td></tr>
+ <tr><td>EPS growth</td><td>38.6%</td><td>Inspect 5Y annual series</td><td>13.8%</td><td class="a091-purple">15.1%</td><td>—</td></tr>
+ <tr><td>FCF growth</td><td>4.7%</td><td>5Y FCF CAGR 14.2%</td><td>8.2%</td><td class="a091-purple">13.2%</td><td class="a091-warn">20.9%</td></tr>
+ <tr><td>Operating margin</td><td>32.1%</td><td>Compare with 5Y range</td><td>32.5%</td><td class="a091-purple">33.1%</td><td>—</td></tr>
+ <tr><td>CapEx</td><td>$52,535m</td><td>2023 $32,251m</td><td>$54,000m</td><td class="a091-purple">$57,000m</td><td>—</td></tr></table>
+ <p class="a091-source">*Consensus values remain demo placeholders until a live/licensed provider is connected.</p>`, 'a091-analysis');
+ m.appendChild(c); clickable(m);
+}
+function enhance(){
+ try{
+  const p=(S&&S.page)||'';
+  if(p==='valuation')enhanceValuation();
+  if(p==='market')enhanceMarket();
+  if(p==='report')enhanceReport();
+  if(p==='analysis')enhanceAnalysis();
+ }catch(e){console.error('Alpha091 enhancer',e)}
+}
+const oldRender=window.render;
+if(typeof oldRender==='function'){
+ window.render=function(){oldRender.apply(this,arguments);setTimeout(enhance,0)}
+}
+setTimeout(enhance,0);
+})();
+</script></body></html>
