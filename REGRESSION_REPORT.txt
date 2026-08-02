@@ -1,25 +1,15 @@
-ERT Alpha 1.3.1 REGRESSION-SAFE
+ERT Alpha 1.4 FORWARD RESEARCH — RELEASE CHECKS
 
-This build is rebased on Alpha 1.0 DATA-VALIDATED CORE, where the validated-live valuation flow was still working.
-The later DOM/string insertion approach that caused nested cards has been removed.
-
-Regression checks run against a deterministic live-data fixture:
-PASS Overview renders Latest Financial Snapshot exactly as a normal section.
-PASS Overview renders current price daily change.
-PASS Overview does not render NaN.
-PASS Financials renders FY2025.
-PASS Financials renders a separate TTM 2026-06-30 column.
-PASS Market renders daily change and responsive Consensus Unavailable.
-PASS Valuation page renders DCF Result without NaN.
-PASS DCF returns a finite per-share value in the regression fixture.
-PASS Report renders Executive Summary, charts, written interpretation and Sources & Methodology.
-PASS Report does not render NaN.
-PASS All frontend JavaScript blocks pass node --check.
-PASS Worker JavaScript passes node --check.
-
-Architecture rule:
-New feature code is routed through explicit page render functions. It no longer injects KPI/financial cards into existing DOM fragments, which was the cause of the Alpha 1.1/1.2 layout regression.
-
-Deployment:
-For the current live setup, update GitHub index.html first.
-The Worker included in this ZIP is the same Alpha 1.1 quarterly-capable Worker; redeploy it only if your currently deployed Worker is older.
+PASS frontend_script_0
+PASS frontend_script_1
+PASS frontend_script_2
+PASS frontend_script_3
+PASS frontend_script_4
+PASS worker
+PASS No TTM column in Alpha14 annual statement
+PASS Current-year Actual/Guidance/ERT columns
+PASS Forecast years are FY labels
+PASS Business overview restored in Report
+PASS Report KPI text CSS explicit
+PASS Business Quant Worker adapter
+PASS No demo price target in Alpha14 Market

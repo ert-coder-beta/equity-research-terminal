@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.3.1 REGRESSION-SAFE</title>
+<title>ERT GOOG · Alpha 1.4 FORWARD RESEARCH</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -613,18 +613,20 @@ setTimeout(enhance,0);
         D.prices=m.history.map(x=>x.close);
       }
       if(D.consensus && c.available){
-        D.consensus.targetMean=c.mean;
-        D.consensus.targetMedian=c.median;
-        D.consensus.targetLow=c.low;
-        D.consensus.targetHigh=c.high;
-        D.consensus.analysts=c.analysts||null;
-        D.consensus.rating=c.rating||'—';
         D.consensus.status='LIVE';
-        D.consensus.displaySource=c.source;
-        D.consensus.asof=c.asof;
+        D.consensus.displaySource=c.source||c.provider||'Live consensus provider';
+        D.consensus.asof=c.asof||null;
+        D.consensus.kind=c.kind||'forward_estimates';
+        D.consensus.forwardAnnual=c.annual||null;
+        D.consensus.forwardQuarterly=c.quarterly||null;
+        D.consensus.nextAnnual=c.next_annual||null;
+        D.consensus.targetMean=null;D.consensus.targetMedian=null;D.consensus.targetLow=null;D.consensus.targetHigh=null;
+        D.consensus.rating='—';D.consensus.analysts=null;
       } else if(D.consensus){
         D.consensus.status='UNAVAILABLE';
-        D.consensus.displaySource='No reliable live consensus returned by configured data source';
+        D.consensus.displaySource=c.source||'No reliable live consensus returned by configured data source';
+        D.consensus.asof=null;D.consensus.forwardAnnual=null;D.consensus.forwardQuarterly=null;D.consensus.nextAnnual=null;
+        D.consensus.targetMean=null;D.consensus.targetMedian=null;D.consensus.targetLow=null;D.consensus.targetHigh=null;
       }
       D.live = d;
       if(secOK)syncAnnualSEC(s);
@@ -637,7 +639,7 @@ setTimeout(enhance,0);
     setPill('ertPrice','ok','Price '+fmtMoney(m.price)+' · '+(m.asof||''));
     setPill('ertSEC',secOK?'ok':'bad',(secOK?'DATA OK · ':'DATA WARNING · ')+(s.latest_form||'SEC')+' · '+(s.latest_period||''));
     setPill('ertTreasury',t.ten_year!=null?'ok':'warn','US 10Y '+(t.ten_year!=null?fmtPct(t.ten_year):'unavailable'));
-    setPill('ertConsensus',c.available?'ok':'warn',c.available?'Consensus '+fmtMoney(c.mean):'Consensus unavailable');
+    setPill('ertConsensus',c.available?'ok':'warn',c.available?'Consensus LIVE · '+(c.provider||'provider'):'Consensus unavailable');
   }
 
   function setPill(id,cls,text){
@@ -1040,7 +1042,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.3.1 REGRESSION-SAFE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4 FORWARD RESEARCH</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1049,6 +1051,443 @@ setTimeout(enhance,0);
   };
   bind=bind13;
   setTimeout(()=>{try{render()}catch(e){console.error(e)}},0);
+})();
+</script>
+
+
+<style id="alpha14-css">
+.driverWrap14{overflow:hidden}
+.driverTable14{width:100%;table-layout:fixed;border-collapse:collapse}
+.driverTable14 th:first-child,.driverTable14 td:first-child{width:18%}
+.driverTable14 th,.driverTable14 td{padding:8px 6px;border-bottom:1px solid var(--line);min-width:0}
+.driverTable14 input{width:100%;min-width:0;box-sizing:border-box;background:#0a121b;color:#fff;border:1px solid #2b4b65;border-radius:7px;padding:9px 7px}
+.forecastNote14{display:block;font-size:10px;color:#9ab1c4;margin-top:4px}
+.finMode14{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.finMode14 button{border:1px solid var(--line);background:#0a121b;color:#a8bfd2;padding:8px 11px;border-radius:8px}
+.finMode14 button.active{background:#1d344a;color:#fff}
+.actual14{background:#10293d!important}.forecast14{background:#211d36!important}.guidance14{background:#2d2613!important}
+.dataKind14{display:block;font-size:9px;margin-top:3px;color:#9ab1c4}
+.analysisForecast14{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.af14{border:1px solid var(--line);border-radius:10px;padding:12px;background:#0e1924;min-width:0}
+.af14 .split{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.af14 .split div{border-top:1px solid var(--line);padding-top:7px}
+.af14 .a{font-size:17px;font-weight:800}.af14 .e{font-size:17px;font-weight:800;color:#bd9cff}
+.consensusBox14{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.consensusBox14>div{border:1px solid var(--line);border-radius:9px;padding:10px;background:#101b26}
+.report14{background:#f5f8fb;color:#17222d;border-radius:12px;overflow:hidden}
+.reportHero14{background:linear-gradient(135deg,#102a40,#1b4667);padding:26px;color:white}
+.reportHero14 h1,.reportHero14 p{color:white}
+.reportKpis14{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:15px}
+.reportKpi14{background:#fff;border:1px solid #d7e0e8;border-radius:10px;padding:11px;min-width:0;color:#17222d!important}
+.reportKpi14 *{color:#17222d!important}
+.reportKpi14 .good{color:#087b43!important}.reportKpi14 .bad{color:#b71f38!important}.reportKpi14 .amber{color:#a36a00!important}
+.reportBody14{padding:22px}
+.reportSec14{background:#fff;border:1px solid #d8e1e8;border-radius:12px;padding:16px;margin-top:14px}
+.reportTwo14{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.reportGood14{background:#edf8f2;border-left:5px solid #1c9a5e;border-radius:8px;padding:13px}
+.reportRisk14{background:#fff0f1;border-left:5px solid #d23e50;border-radius:8px;padding:13px}
+.reportCharts14{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.reportChart14{border:1px solid #dce5ec;border-radius:9px;padding:11px}
+.bizGrid14{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.bizTable14{width:100%;border-collapse:collapse}.bizTable14 th,.bizTable14 td{padding:9px;border-bottom:1px solid #dce4ea;text-align:left;vertical-align:top}
+.bizTable14 th{background:#17324a;color:white}
+.rgrid14{stroke:#d8e2e9;stroke-width:1}.raxis14{fill:#536676;font-size:10px}.rpoint14{fill:#34495e;font-size:9px}
+@media(max-width:1100px){.analysisForecast14{grid-template-columns:repeat(3,1fr)}.reportKpis14{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.analysisForecast14,.reportKpis14,.reportTwo14,.reportCharts14,.bizGrid14,.consensusBox14{grid-template-columns:1fr}.driverTable14{font-size:11px}}
+@media print{.report14{-webkit-print-color-adjust:exact;print-color-adjust:exact}.side,.inspector,.livebar,.actions,.top{display:none!important}.work{grid-template-columns:1fr!important}.content{max-width:none!important}}
+</style>
+
+<script id="alpha14-runtime">
+(function(){
+  S.finView=S.finView==='quarterly'?'current':(S.finView||'annual');
+  const sec14=()=>D.live?.sec?.validation?.ok?D.live.sec:null;
+  const safe14=v=>Number.isFinite(Number(v))?Number(v):null;
+  const cy14=()=>Number(String(sec14()?.latest_period||new Date().getUTCFullYear()).slice(0,4));
+  const fy14=()=>D.years.at(-1);
+  const qSeries14=(g,k)=>sec14()?.quarterly?.[g]?.[k]||[];
+  const qFor14=(g,k,year,q)=>qSeries14(g,k).find(x=>Number(x.year||String(x.period).slice(0,4))===year&&Number(x.q||String(x.label||'').match(/Q([1-4])/)?.[1])===q)||null;
+  const qCount14=()=>{
+    const y=cy14(),qs=qSeries14('income','revenue').filter(x=>Number(x.year||String(x.period).slice(0,4))===y).map(x=>Number(x.q||String(x.label).match(/Q([1-4])/)?.[1])).filter(Number.isFinite);
+    return qs.length?Math.max(...qs):Math.max(1,Math.min(4,Math.ceil((new Date().getUTCMonth()+1)/3)));
+  };
+  const sumQ14=(g,k,year,n=qCount14())=>{
+    let vals=[];for(let q=1;q<=n;q++){const x=qFor14(g,k,year,q);if(x?.value==null)return null;vals.push(Number(x.value))}
+    return vals.reduce((a,b)=>a+b,0);
+  };
+  const annualVals14=id=>by(id)?.[2]?.map(Number)||[];
+  const annualLast14=id=>annualVals14(id).at(-1);
+  const annualMedGrowth14=id=>{
+    const a=annualVals14(id),g=[];for(let i=1;i<a.length;i++)if(a[i-1]>0&&Number.isFinite(a[i]))g.push((a[i]/a[i-1]-1)*100);
+    return g.length?med(g):null;
+  };
+  const ratioHist14=(numId,denId)=>D.years.map((_,i)=>{const n=annualVals14(numId)[i],d=annualVals14(denId)[i];return d>0?n/d*100:null}).filter(Number.isFinite);
+
+  function currentYtd14(g,k,year=cy14()){
+    return sumQ14(g,k,year,qCount14());
+  }
+  function priorComparable14(g,k){
+    return sumQ14(g,k,cy14()-1,qCount14());
+  }
+
+  function buildBase14(force=false){
+    const s=sec14();if(!s)return;
+    const key=`${s.latest_period}|${qCount14()}|${fy14()}|${S.terminal}`;
+    if(!force&&S._base14key===key)return;
+    S._base14key=key;
+
+    const ytdRev=currentYtd14('income','revenue'),priorRev=priorComparable14('income','revenue');
+    const revY1=ytdRev>0&&priorRev>0?(ytdRev/priorRev-1)*100:annualMedGrowth14('income.revenue');
+    const histRev=annualMedGrowth14('income.revenue');
+    const y5Floor=S.terminal+2.0;
+    const revY5=Math.max(y5Floor,Math.min(Number.isFinite(revY1)?revY1:histRev||8,Number.isFinite(histRev)?histRev:8));
+
+    const ytdOcf=currentYtd14('cashflow','ocf'),ytdCap=currentYtd14('cashflow','capex');
+    const ocfY1=ytdRev>0&&ytdOcf!=null?ytdOcf/ytdRev*100:med(ratioHist14('cashflow.ocf','income.revenue'));
+    const capY1=ytdRev>0&&ytdCap!=null?ytdCap/ytdRev*100:med(ratioHist14('cashflow.capex','income.revenue'));
+    const ocfY5=med(ratioHist14('cashflow.ocf','income.revenue'));
+    const capY5=med(ratioHist14('cashflow.capex','income.revenue'));
+    const lerp=(a,b,i)=>a+(b-a)*i/4;
+    const base={
+      rev:[0,1,2,3,4].map(i=>+lerp(revY1,revY5,i).toFixed(1)),
+      ocf:[0,1,2,3,4].map(i=>+lerp(ocfY1,ocfY5,i).toFixed(1)),
+      cap:[0,1,2,3,4].map(i=>+lerp(capY1,capY5,i).toFixed(1))
+    };
+    S.liveBaseDrivers14=base;
+    S.baseMethod14={
+      currentYear:cy14(),latestQuarter:qCount14(),ytdRev,priorRev,revY1,histRev,revY5,y5Floor,
+      ytdOcf,ytdCap,ocfY1,capY1,ocfY5,capY5
+    };
+    if(S.drvScenario!=='Custom'){
+      S.drvRev=[...base.rev];S.drvOcf=[...base.ocf];S.drvCap=[...base.cap];S.drvScenario='Base';
+    }
+  }
+
+  function forecastYears14(){const y=cy14();return [0,1,2,3,4].map(i=>y+i)}
+  function forecastDetail14(){
+    buildBase14();
+    let rev=annualLast14('income.revenue'),out=[];
+    for(let i=0;i<5;i++){
+      rev*=1+Number(S.drvRev[i])/100;
+      const ocf=rev*Number(S.drvOcf[i])/100,capex=rev*Number(S.drvCap[i])/100,fcf=ocf-capex;
+      out.push({year:forecastYears14()[i],revenue:rev,revenueGrowth:Number(S.drvRev[i]),ocfMargin:Number(S.drvOcf[i]),capexIntensity:Number(S.drvCap[i]),ocf,capex,fcf,fcfMargin:(ocf-capex)/rev*100});
+    }
+    return out;
+  }
+
+  function currentYearEstimate14(){
+    buildBase14();
+    const s=sec14(),f=forecastDetail14()[0],y=cy14(),n=qCount14();
+    const h1Rev=currentYtd14('income','revenue'),h1Op=currentYtd14('income','op'),h1Net=currentYtd14('income','net');
+    const opMargin=h1Rev>0&&h1Op!=null?h1Op/h1Rev:null,netMargin=h1Rev>0&&h1Net!=null?h1Net/h1Rev:null;
+    const op=f.revenue*(opMargin??(annualLast14('income.op')/annualLast14('income.revenue')));
+    const net=f.revenue*(netMargin??(annualLast14('income.net')/annualLast14('income.revenue')));
+    const shares=Number(s?.shares_m||D.market.shares_m);
+    return {year:y,quarters:n,revenue:f.revenue,op,net,eps:shares>0?net/shares:null,ocf:f.ocf,capex:f.capex,fcf:f.fcf,opMargin:op/f.revenue*100,fcfMargin:f.fcf/f.revenue*100};
+  }
+
+  // DCF is now a forward fiscal-year model: FY2026E–FY2030E, not an ambiguous TTM growth chain.
+  window.dcf=function(g=S.g,w=wacc().w,t=S.terminal){
+    const s=sec14();if(!s?.shares_m||s.net_cash_m==null)return {ps:NaN,equity:NaN,ev:NaN,pv:NaN,pvt:NaN,detail:[],tvshare:NaN,error:'Validated shares/net cash unavailable'};
+    buildBase14();
+    const detail=forecastDetail14();let pv=0;
+    for(let i=0;i<detail.length;i++){const df=1/Math.pow(1+w/100,i+1);detail[i].df=df;detail[i].pv=detail[i].fcf*df;pv+=detail[i].pv}
+    const last=detail.at(-1),spread=w/100-t/100;if(!(spread>0))return {ps:NaN,equity:NaN,ev:NaN,pv,pvt:NaN,detail,tvshare:NaN,error:'WACC must exceed terminal growth'};
+    const tv=last.fcf*(1+t/100)/spread,pvt=tv/Math.pow(1+w/100,5),evv=pv+pvt,equity=evv+Number(s.net_cash_m);
+    return {ps:equity/Number(s.shares_m),equity,ev:evv,pv,pvt,detail,tvshare:pvt/evv*100,anchor:`FY${fy14()} actual → FY${cy14()}E–FY${cy14()+4}E`};
+  };
+
+  // Live ratios: keep TTM inside valuation/ratio calculations only.
+  window.pe=function(){const s=sec14(),eps=Number(s?.income_ttm?.diluted_eps);return eps>0?Number(D.market.price)/eps:NaN};
+  function ev14(){const s=sec14();return Number(D.market.price)*Number(s?.shares_m||D.market.shares_m)+Number(s?.debt_m||0)-Number(s?.cash_and_investments_m||0)}
+  window.evSales=function(){const s=sec14(),x=Number(s?.revenue_ttm_m);return x>0?ev14()/x:NaN};
+  window.evEbit=function(){const s=sec14(),x=Number(s?.income_ttm?.operating_income);return x>0?ev14()/x:NaN};
+  window.evFcf=function(){const s=sec14(),x=Number(s?.fcf_ttm_m);return x>0?ev14()/x:NaN};
+  window.peg=function(){const p=pe(),g=annualMedGrowth14('income.eps');return p>0&&g>0?p/g:NaN};
+
+  function guidance14(metric){
+    const g=D.live?.guidance;
+    if(!g?.available)return {text:'Not provided / not connected',source:g?.source||'No quantitative guidance adapter'};
+    const v=g.metrics?.[metric];
+    if(v==null)return {text:'Not quantitatively guided',source:g.source||'Company guidance'};
+    return {text:typeof v==='number'?fmt(v,2):String(v),source:g.source||'Company guidance'};
+  }
+
+  function street14(metric,year=cy14()){
+    const c=D.consensus;if(c?.status!=='LIVE')return null;
+    const arr=metric==='revenue'?c.forwardAnnual?.revenue:c.forwardAnnual?.eps;
+    const r=(arr||[]).find(x=>Number(x.period)===Number(year)&&String(x.data_type).toLowerCase()==='estimate');
+    return r||null;
+  }
+
+  function metricForecast14(id){
+    const e=currentYearEstimate14();
+    const map={
+      'income.revenue':e.revenue,'income.op':e.op,'income.net':e.net,'income.eps':e.eps,
+      'cashflow.ocf':e.ocf,'cashflow.capex':e.capex,'cashflow.fcf':e.fcf
+    };
+    return map[id]??null;
+  }
+
+  function currentYearRow14(id,label,g,k,isEPS=false){
+    const y=cy14(),n=qCount14(),qs=[];
+    for(let q=1;q<=n;q++)qs.push(qFor14(g,k,y,q));
+    const ytd=S.st==='balance'?(qs.at(-1)?.value??null):qs.every(x=>x?.value!=null)?qs.reduce((a,x)=>a+Number(x.value),0):null;
+    const ginfo=guidance14(id),est=metricForecast14(id);
+    return `<tr>
+      <td>${label}</td>
+      ${qs.map(x=>`<td class="actual14 clickable" data-inspect="cy:${id}:${x?.q||''}">${x?.value==null?'—':isEPS?Number(x.value).toFixed(2):fmt(x.value,2)}<span class="dataKind14">${x?.derived?'DERIVED FROM SEC YTD':'SEC ACTUAL'}</span></td>`).join('')}
+      <td class="actual14 clickable" data-inspect="cy:${id}:ytd">${ytd==null?'—':isEPS?Number(ytd).toFixed(2):fmt(ytd,2)}<span class="dataKind14">${S.st==='balance'?'LATEST QUARTER-END':'YTD ACTUAL'}</span></td>
+      <td class="guidance14 clickable" data-inspect="cy:${id}:guidance">${ginfo.text}<span class="dataKind14">COMPANY GUIDANCE</span></td>
+      <td class="forecast14 clickable" data-inspect="cy:${id}:forecast">${est==null?'Not modelled':isEPS?Number(est).toFixed(2):fmt(est,2)}<span class="dataKind14">ERT FY${y}E</span></td>
+    </tr>`;
+  }
+
+  function financials14(){
+    buildBase14();
+    const s=sec14(),mode=S.finView||'annual';
+    const controls=`<div class="finMode14"><button data-finview="annual" class="${mode==='annual'?'active':''}">Annual History</button><button data-finview="current" class="${mode==='current'?'active':''}">${cy14()} Current Year</button><button data-finview="historyq" class="${mode==='historyq'?'active':''}">Historical Quarters</button></div>
+    <div class="tabs">${[['income','Income Statement'],['balance','Balance Sheet'],['cashflow','Cash Flow']].map(x=>`<button data-tab="${x[0]}" class="${S.st===x[0]?'active':''}">${x[1]}</button>`).join('')}</div>`;
+    if(!s)return `<h1>Financial Statements</h1>${controls}<div class="finding find-risk">Validated live SEC data unavailable.</div>`;
+
+    if(mode==='annual'){
+      const R=D[S.st],years=D.years;
+      const rows=R.map(r=>`<tr class="row" data-row="${r[0]}"><td>${r[1]}</td>${r[2].map((v,i)=>`<td>${fmt(v,2)}</td>${i?`<td class="${yy(r[2],i)==null?'':yy(r[2],i)>=0?'pos':'neg'}">${yy(r[2],i)==null?'—':pct(yy(r[2],i))}</td>`:''}`).join('')}<td>${Number.isFinite(cagr(r[2]))?pct(cagr(r[2])):'—'}</td></tr>`).join('');
+      return `<h1>Financial Statements</h1><div class="lead">Historical fiscal years only. Current-year actuals and forecasts are kept separate so they cannot be mistaken for a completed FY.</div>${controls}<div class="tw"><table><thead><tr><th>Line item</th>${years.map((y,i)=>`<th>${y}</th>${i?'<th>YoY</th>':''}`).join('')}<th>5Y CAGR</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+
+    if(mode==='current'){
+      const y=cy14(),n=qCount14(),periodLabel=n===1?'Q1':n===2?'H1':n===3?'9M':'FY';
+      const defs=S.st==='income'?[
+        ['income.revenue','Revenues','income','revenue',false],
+        ['income.op','Income from operations','income','op',false],
+        ['income.net','Net income','income','net',false],
+        ['income.eps','Diluted EPS','income','eps',true]
+      ]:S.st==='cashflow'?[
+        ['cashflow.ocf','Operating cash flow','cashflow','ocf',false],
+        ['cashflow.capex','CapEx','cashflow','capex',false],
+        ['cashflow.fcf','Free cash flow','cashflow','fcf',false]
+      ]:[
+        ['balance.cash','Cash & equivalents','balance','cash',false],
+        ['balance.market','Marketable securities','balance','marketable',false],
+        ['balance.long_debt','Debt','balance','debt',false],
+        ['balance.net_cash','Net cash','balance','net_cash',false]
+      ];
+      const qs=[...Array(n)].map((_,i)=>i+1);
+      const rows=defs.map(x=>currentYearRow14(...x)).join('');
+      return `<h1>Financial Statements — ${y} Current Year</h1><div class="lead">Actual SEC quarters → current YTD → company guidance → ERT full-year estimate. TTM is intentionally excluded from this statement view.</div>${controls}
+      <div class="sourcebox"><strong>ERT FY${y}E:</strong> Revenue/OCF/CapEx are generated from the same Base forecast used by the DCF. Operating income, net income and EPS use current YTD margins/run-rate. Items not modelled are labelled rather than invented.</div>
+      <div class="tw"><table><thead><tr><th>Line item</th>${qs.map(q=>`<th>Q${q} ${y}<span class="dataKind14">ACTUAL</span></th>`).join('')}<th>${periodLabel} ${y}<span class="dataKind14">ACTUAL TOTAL</span></th><th>Company Guidance</th><th>ERT FY${y}E</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+
+    // Historical quarters
+    const defs=S.st==='income'?[
+      ['Revenues','income','revenue',false],['Income from operations','income','op',false],['Net income','income','net',false],['Diluted EPS','income','eps',true]
+    ]:S.st==='cashflow'?[
+      ['Operating cash flow','cashflow','ocf',false],['CapEx','cashflow','capex',false],['Free cash flow','cashflow','fcf',false]
+    ]:[
+      ['Cash & equivalents','balance','cash',false],['Marketable securities','balance','marketable',false],['Debt','balance','debt',false],['Net cash','balance','net_cash',false]
+    ];
+    const all=defs.flatMap(x=>qSeries14(x[1],x[2]));
+    const periods=[...new Set(all.map(x=>x.period))].sort().slice(-6);
+    const label=p=>all.find(x=>x.period===p)?.label||p;
+    const rows=defs.map(([name,g,k,isEPS])=>`<tr><td>${name}</td>${periods.map(p=>{const x=qSeries14(g,k).find(z=>z.period===p);return `<td>${x?.value==null?'—':isEPS?Number(x.value).toFixed(2):fmt(x.value,2)}<span class="dataKind14">${x?.derived?'DERIVED':'SEC'}</span></td>`}).join('')}</tr>`).join('');
+    return `<h1>Financial Statements — Historical Quarters</h1><div class="lead">Use this for quarter-by-quarter history. The default current-year view is kept separate for clarity.</div>${controls}<div class="tw"><table><thead><tr><th>Line item</th>${periods.map(p=>`<th>${label(p)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function forecastMetric14(k){
+    const e=currentYearEstimate14(),prevFcf=reportedFcf(D.years.length-1),prevEps=annualLast14('income.eps');
+    if(k==='revenue')return {actual:yy(annualVals14('income.revenue'),D.years.length-1),forecast:S.drvRev[0],unit:'%'};
+    if(k==='eps')return {actual:yy(annualVals14('income.eps'),D.years.length-1),forecast:prevEps>0?(e.eps/prevEps-1)*100:null,unit:'%'};
+    if(k==='fcf')return {actual:prevFcf>0?(reportedFcf(D.years.length-1)/reportedFcf(D.years.length-2)-1)*100:null,forecast:prevFcf>0?(e.fcf/prevFcf-1)*100:null,unit:'%'};
+    if(k==='opm')return {actual:annualLast14('income.op')/annualLast14('income.revenue')*100,forecast:e.opMargin,unit:'%'};
+    return {actual:annualLast14('cashflow.capex'),forecast:e.capex,unit:'USDm'};
+  }
+
+  function analysis14(){
+    buildBase14();
+    const rev=annualVals14('income.revenue'),cap=annualVals14('cashflow.capex'),R=rating(),streetR=street14('revenue'),streetE=street14('eps'),e=currentYearEstimate14();
+    const tiles=[['revenue','Revenue growth'],['eps','EPS growth'],['fcf','FCF growth'],['opm','Operating margin'],['capex','CapEx']].map(([k,n])=>{
+      const m=forecastMetric14(k);
+      const f=v=>v==null?'—':k==='capex'?fmt(v)+'m':pct(v);
+      return `<div class="af14 clickable" data-inspect="trend14:${k}"><strong>${n}</strong><div class="split"><div><span class="sub">FY${fy14()}A</span><span class="a">${f(m.actual)}</span></div><div><span class="sub">FY${cy14()}E</span><span class="e">${f(m.forecast)}</span></div></div><span class="forecastNote14">Click for 5Y actual + forecast bridge</span></div>`;
+    }).join('');
+    const streetRevenue=streetR?.estimate!=null?'$'+(streetR.estimate/1e9).toFixed(1)+'bn':'Unavailable';
+    const streetEps=streetE?.estimate!=null?'$'+Number(streetE.estimate).toFixed(2):'Unavailable';
+    return `<h1>Financial Analysis</h1><div class="lead">Historical evidence, current-year run-rate and forward expectations are kept visually distinct.</div>
+      <div class="grid two">
+        <div class="card"><h3>Positive findings</h3><div class="finding find-pos"><h4>Revenue trend</h4><p>FY${fy14()} revenue growth was ${pct(yy(rev,rev.length-1))}; ERT FY${cy14()}E uses ${pct(S.drvRev[0])}.</p></div><div class="finding find-pos"><h4>ROIC vs WACC</h4><p>ROIC ${pct(roic())} vs WACC ${pct(wacc().w)}.</p></div></div>
+        <div class="card"><h3>Key questions</h3><div class="finding find-risk"><h4>CapEx intensity</h4><p>FY${fy14()} CapEx was ${fmt(cap.at(-1))}m. ERT FY${cy14()}E is ${fmt(e.capex)}m, derived from the Base CapEx/revenue assumption.</p></div><div class="finding find-risk"><h4>Forecast gap</h4><p>Compare ERT Base with Street consensus where available; do not treat consensus as company guidance.</p></div></div>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Five-year operating trends + FY${cy14()}E forecast</h3><div class="analysisForecast14">${tiles}</div></div>
+      <div class="card" style="margin-top:12px"><h3>ERT vs Street forward estimates</h3><div class="consensusBox14">
+        <div><span class="sub">Street FY${cy14()} Revenue</span><div class="value purple">${streetRevenue}</div><div class="small">${D.consensus?.status==='LIVE'?'Business Quant live estimate':'Consensus unavailable'}</div></div>
+        <div><span class="sub">Street FY${cy14()} EPS</span><div class="value purple">${streetEps}</div><div class="small">${D.consensus?.status==='LIVE'?'Business Quant live estimate':'Consensus unavailable'}</div></div>
+      </div>${D.consensus?.status==='LIVE'?`<div class="sourcebox">Source: ${D.consensus.displaySource} · as of ${D.consensus.asof||'—'}. Street estimates are external forecasts, not company guidance.</div>`:`<div class="sourcebox">Add BUSINESS_QUANT_API_KEY to the Cloudflare Worker to enable live Revenue/EPS consensus.</div>`}</div>`;
+  }
+
+  function valuation14(){
+    buildBase14();
+    const W=wacc(),R=dcf(),mos=Number.isFinite(R.ps)?(R.ps/D.market.price-1)*100:null,d=R.detail||[],yrs=forecastYears14();
+    const bm=S.baseMethod14||{},streetR=street14('revenue'),streetE=street14('eps');
+    const base=S.liveBaseDrivers14||{rev:S.drvRev,ocf:S.drvOcf,cap:S.drvCap};
+    return `<h1>Valuation Studio</h1><div class="lead">The explicit forecast is now FY${yrs[0]}E–FY${yrs.at(-1)}E. Base assumptions are traceable to current YTD actuals and historical normalisation.</div>
+      <div class="grid two">
+        <div class="card"><h3>WACC <span class="value tone-model">${pct(W.w)}</span></h3>${list([['Risk-free rate',pct(S.rf)],['Beta',S.beta.toFixed(2)],['Equity risk premium',pct(S.erp)],['Pre-tax cost of debt',pct(S.cod)],['Tax rate',pct(S.tax)]])}</div>
+        <div class="card"><h3>Terminal growth</h3><label class="sub">Selected long-run growth (%)<input id="terminal" value="${S.terminal}" style="width:100%;margin-top:5px;background:#0a121b;color:#fff;border:1px solid var(--line);padding:10px;border-radius:7px"></label>${list([['Selected',pct(S.terminal)],['WACC − g',pct(W.w-S.terminal)],['Terminal value share of PV',pct(R.tvshare)]])}</div>
+      </div>
+      <div class="card driverWrap14" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers</h3>
+        <div class="sourcebox"><strong>Base methodology — no hidden blend:</strong><br>
+        FY${yrs[0]}E Revenue growth = latest ${qCount14()===1?'Q1':qCount14()===2?'H1':'9M'} YoY actual (${pct(bm.revY1)}). Y2–Y5 normalise in a straight line toward ${pct(bm.revY5)}; the Y5 floor is terminal g + 2.0pp.<br>
+        FY${yrs[0]}E OCF margin = current YTD OCF / Revenue (${pct(bm.ocfY1)}), normalising to the 5Y median (${pct(bm.ocfY5)}).<br>
+        FY${yrs[0]}E CapEx/Revenue = current YTD CapEx / Revenue (${pct(bm.capY1)}), normalising to the 5Y median (${pct(bm.capY5)}).<br>
+        Company guidance is shown separately and does not silently overwrite ERT assumptions.</div>
+        <div class="driverBtns"><button data-scenario="Bear" class="${S.drvScenario==='Bear'?'active':''}">Bear</button><button data-scenario="Base" class="${S.drvScenario==='Base'?'active':''}">Base</button><button data-scenario="Bull" class="${S.drvScenario==='Bull'?'active':''}">Bull</button><button data-scenario="Custom" class="${S.drvScenario==='Custom'?'active':''}">Custom</button><button id="resetDrivers14">Reset to Base</button></div>
+        <table class="driverTable14"><thead><tr><th>Driver</th>${yrs.map(y=>`<th>FY${y}E</th>`).join('')}</tr></thead><tbody>
+          <tr><td class="clickable" data-inspect="driver14:revenue"><strong>Revenue growth %</strong></td>${S.drvRev.map((v,i)=>`<td><input data-driver14="rev" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td class="clickable" data-inspect="driver14:ocf"><strong>OCF margin %</strong></td>${S.drvOcf.map((v,i)=>`<td><input data-driver14="ocf" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td class="clickable" data-inspect="driver14:capex"><strong>CapEx / Revenue %</strong></td>${S.drvCap.map((v,i)=>`<td><input data-driver14="cap" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+          <tr><td><strong>→ FCF margin %</strong></td>${S.drvOcf.map((v,i)=>`<td><strong class="tone-pos">${(v-S.drvCap[i]).toFixed(1)}%</strong></td>`).join('')}</tr>
+        </tbody></table>
+        <div class="driverResults">${card('Scenario',S.drvScenario,'Bear / Base / Bull / Custom')}${card(`FY${yrs[0]}E Revenue`,fmt(d[0]?.revenue)+'m','Calculated from FY'+fy14()+' actual')}${card(`FY${yrs[0]}E FCF margin`,d[0]?.fcfMargin!=null?pct(d[0].fcfMargin):'—','OCF margin − CapEx intensity')}${card(`FY${yrs.at(-1)}E FCF`,d.at(-1)?.fcf?fmt(d.at(-1).fcf)+'m':'—','Calculated from drivers')}</div>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><h3>DCF Result</h3>${list([['Forecast anchor',R.anchor||'—'],['Equity value',Number.isFinite(R.equity)?fmt(R.equity)+'m':'Unavailable'],['Shares outstanding',fmt(sec14()?.shares_m)+'m'],['Intrinsic value',Number.isFinite(R.ps)?money(R.ps)+'/share':'Unavailable'],['Current price',money(D.market.price)+'/share'],['Margin of safety',mos==null?'—':pct(mos)]])}</div>
+        <div class="card"><h3>Street comparison</h3>${list([['Street FY'+cy14()+' Revenue',streetR?.estimate!=null?'$'+(streetR.estimate/1e9).toFixed(1)+'bn':'Unavailable'],['ERT FY'+cy14()+' Revenue','$'+(currentYearEstimate14().revenue/1000).toFixed(1)+'bn'],['Street FY'+cy14()+' EPS',streetE?.estimate!=null?'$'+streetE.estimate.toFixed(2):'Unavailable'],['ERT FY'+cy14()+' EPS',currentYearEstimate14().eps!=null?'$'+currentYearEstimate14().eps.toFixed(2):'—']])}<div class="sourcebox">Street data: ${D.consensus?.status==='LIVE'?D.consensus.displaySource:'not connected'}.</div></div>
+      </div>
+      <div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>${sensitivity([1.5,2,2.5,3,3.5])}</div>`;
+  }
+
+  function market14(){
+    const ps=D.prices||[],dates=D.dates||[],s20s=smaSeries(ps,20),s50s=smaSeries(ps,50),s200s=smaSeries(ps,200),rsis=rsiSeries(ps),fv=dcf().ps;
+    const s20=sma(ps,20),s50=sma(ps,50),s200=sma(ps,200),rs=rsi(ps),trend=Number.isFinite(s200)&&D.market.price>s20&&s20>s50&&s50>s200?'Bullish alignment':'Mixed';
+    const c=D.consensus?.nextAnnual,street=c?`FY${c.year} Revenue ${c.revenue?.estimate!=null?'$'+(c.revenue.estimate/1e9).toFixed(1)+'bn':'—'} · EPS ${c.eps?.estimate!=null?'$'+c.eps.estimate.toFixed(2):'—'}`:'Unavailable';
+    return `<h1>Market & Price Context</h1><div class="lead">Price, momentum, DCF and Street forward estimates are separate evidence layers.</div>
+      <div class="grid market5">
+        <div class="card"><div class="sub">Current price</div><div class="value">${money(D.market.price)}</div><div class="${D.market.day_change_pct>=0?'pos':'neg'}" style="font-weight:700;margin-top:5px">${D.market.day_change_pct==null?'':`${D.market.day_change_pct>=0?'▲':'▼'} ${D.market.day_change>=0?'+':''}$${Math.abs(D.market.day_change).toFixed(2)} (${D.market.day_change_pct>=0?'+':''}${D.market.day_change_pct.toFixed(2)}%) vs previous close`}</div><div class="small">${D.market.asof}</div></div>
+        ${card('DCF fair value',Number.isFinite(fv)?money(fv):'Unavailable','ERT Base DCF')}
+        <div class="card"><div class="sub">Street forward consensus</div><div class="value purple" style="font-size:20px;line-height:1.2">${street}</div><div class="small">${D.consensus?.status==='LIVE'?'Business Quant · not a price target':'Add Business Quant API key'}</div></div>
+        ${card('RSI (14)',Number.isFinite(rs)?rs.toFixed(1):'—','Momentum')}
+        ${card('Trend',trend,'Price vs SMA20 / SMA50 / SMA200',trend.includes('Bullish')?'pos':'warn')}
+      </div>
+      <div class="grid k3" style="margin-top:12px">${card('SMA20',money(s20),'Short-term')}${card('SMA50',money(s50),'Medium-term')}${card('SMA200',money(s200),'Long-term')}</div>
+      <div class="card" style="margin-top:12px"><h3>Price, moving averages and DCF fair value</h3>${marketChart(dates,ps,s20s,s50s,s200s,fv,null,null,null)}</div>
+      <div class="card" style="margin-top:12px"><h3>RSI (14)</h3>${rsiChart(dates,rsis)}</div>`;
+  }
+
+  function trendChart14(k){
+    const e=currentYearEstimate14(),years=[...D.years,cy14()],prevFcf=D.years.map((_,i)=>reportedFcf(i));
+    let vals=[],unit='%',title='';
+    if(k==='revenue'){const a=annualVals14('income.revenue');vals=a.map((v,i)=>i?yy(a,i):null);vals.push(S.drvRev[0]);title='Revenue growth'}
+    if(k==='eps'){const a=annualVals14('income.eps');vals=a.map((v,i)=>i?yy(a,i):null);vals.push(a.at(-1)>0?(e.eps/a.at(-1)-1)*100:null);title='EPS growth'}
+    if(k==='fcf'){vals=prevFcf.map((v,i)=>i?yy(prevFcf,i):null);vals.push(prevFcf.at(-1)>0?(e.fcf/prevFcf.at(-1)-1)*100:null);title='FCF growth'}
+    if(k==='opm'){vals=D.years.map((_,i)=>annualVals14('income.op')[i]/annualVals14('income.revenue')[i]*100);vals.push(e.opMargin);title='Operating margin'}
+    if(k==='capex'){vals=annualVals14('cashflow.capex');vals.push(e.capex);unit='USDm';title='CapEx'}
+    const clean=vals.filter(v=>Number.isFinite(Number(v))),W=350,H=190,p=30,mn=Math.min(...clean),mx=Math.max(...clean),x=i=>p+i*(W-2*p)/Math.max(1,years.length-1),y=v=>H-p-(v-mn)/(mx-mn||1)*(H-2*p);
+    let d='',st=false;vals.forEach((v,i)=>{if(!Number.isFinite(Number(v)))return;d+=(st?'L':'M')+x(i)+','+y(v)+' ';st=true});
+    return {title,unit,html:`<div class="chart" style="height:210px"><svg viewBox="0 0 ${W} ${H}"><line class="axis" x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}"/><path class="priceLine" d="${d}"/>${vals.map((v,i)=>Number.isFinite(Number(v))?`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="${i===vals.length-1?'#bd9cff':'#72a9ff'}"/><text x="${x(i)}" y="${H-7}" text-anchor="middle" fill="#99adbf" font-size="9">${years[i]}${i===vals.length-1?'E':''}</text>`:'').join('')}</svg></div>`};
+  }
+
+  function inspector14(){
+    const sel=String(S.sel||'');
+    if(sel.startsWith('driver14:')){
+      buildBase14();const k=sel.split(':')[1],m=S.baseMethod14||{},yrs=forecastYears14();
+      const body=k==='revenue'?`<div class="formula14">FY${yrs[0]}E growth = current YTD Revenue ÷ prior-year comparable YTD − 1 = ${pct(m.revY1)}<br>FY${yrs.at(-1)}E target = max(terminal g + 2.0pp, min(Y1 growth, 5Y median growth)) = ${pct(m.revY5)}<br>FY${yrs[1]}E–FY${yrs[3]}E = straight-line interpolation.</div>`:
+        k==='ocf'?`<div class="formula14">FY${yrs[0]}E OCF margin = current YTD OCF ÷ current YTD Revenue = ${pct(m.ocfY1)}<br>FY${yrs.at(-1)}E target = 5Y median OCF margin = ${pct(m.ocfY5)}.</div>`:
+        `<div class="formula14">FY${yrs[0]}E CapEx/Revenue = current YTD CapEx ÷ current YTD Revenue = ${pct(m.capY1)}<br>FY${yrs.at(-1)}E target = 5Y median CapEx/Revenue = ${pct(m.capY5)}.</div>`;
+      return specialInspector(`Base driver — ${k}`,`${body}<div class="sourcebox">Actual anchor: SEC current-year quarters/YTD. Normalisation anchor: SEC FY${D.years[0]}–FY${fy14()}. These are ERT modelling rules, not company guidance.</div>`);
+    }
+    if(sel.startsWith('trend14:')){
+      const k=sel.split(':')[1],c=trendChart14(k);
+      return specialInspector(`${c.title} — Actual + Forecast`,`${c.html}<div class="sourcebox">2021–${fy14()} = SEC actual. ${cy14()}E = ERT Base forecast from the same assumptions used by the DCF.</div>`);
+    }
+    if(sel.startsWith('cy:')){
+      const [,id,part]=sel.split(':'),y=cy14(),n=qCount14(),def=id.startsWith('income.')?['income',id.split('.')[1]]:id.startsWith('cashflow.')?['cashflow',id.split('.')[1]]:['balance',id.split('.')[1]];
+      const label=rows().find(x=>x[0]===id)?.[1]||id,g=def[0],k=def[1]==='long_debt'?'debt':def[1]==='market'?'marketable':def[1];
+      if(part==='guidance'){const gi=guidance14(id);return specialInspector(`${label} — Company Guidance`,`<div class="value warn">${gi.text}</div><div class="sourcebox">${gi.source}. Company guidance is kept separate from Street consensus and ERT estimates.</div>`)}
+      if(part==='forecast'){const v=metricForecast14(id);return specialInspector(`${label} — ERT FY${y}E`,`<div class="value purple">${v==null?'Not modelled':id==='income.eps'?Number(v).toFixed(2):fmt(v,2)}</div><div class="sourcebox">ERT estimate uses current YTD actual margins/run-rate and/or the same Base forecast drivers used in the DCF. It is not a reported fact.</div>`)}
+      const val=part==='ytd'?(S.st==='balance'?qFor14(g,k,y,n)?.value:sumQ14(g,k,y,n)):qFor14(g,k,y,Number(part))?.value;
+      return specialInspector(`${label} — ${part==='ytd'?'Current YTD':'Q'+part+' '+y}`,`<div class="value">${val==null?'—':id==='income.eps'?Number(val).toFixed(2):fmt(val,2)}</div><div class="sourcebox">Source: SEC 10-Q / XBRL. Standalone Q2/Q3 values may be derived from reported YTD less prior YTD; the cell is labelled when derived.</div>`);
+    }
+    return inspector();
+  }
+
+  function chartLine14(years,series,labels,units,colors){
+    const W=680,H=300,L=62,R=62,T=24,B=45,lv=series[0].filter(Number.isFinite),rv=(series[1]||[]).filter(Number.isFinite);
+    const lmin=Math.min(0,...lv),lmax=Math.max(...lv,1)*1.12,rmin=Math.min(0,...rv),rmax=Math.max(...rv,1)*1.12,x=i=>L+i*(W-L-R)/Math.max(1,years.length-1),yl=v=>H-B-(v-lmin)/(lmax-lmin||1)*(H-T-B),yr=v=>H-B-(v-rmin)/(rmax-rmin||1)*(H-T-B);
+    let grid='';for(let i=0;i<=4;i++){const yy=T+i*(H-T-B)/4,val=lmax-(lmax-lmin)*i/4;grid+=`<line class="rgrid14" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="raxis14" x="${L-7}" y="${yy+4}" text-anchor="end">${val.toFixed(units[0]==='%'?0:1)}</text>`}
+    const draw=(a,j,yf)=>{let d='',st=false,pts='';a.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=x(i),yy=yf(v);d+=(st?'L':'M')+xx+','+yy+' ';st=true;pts+=`<circle cx="${xx}" cy="${yy}" r="4" fill="${colors[j]}"/><text class="rpoint14" x="${xx}" y="${yy-8}" text-anchor="middle">${units[j]==='%'?v.toFixed(1)+'%':units[j]==='$'?'$'+v.toFixed(2):v.toFixed(1)}</text>`});return `<path d="${d}" fill="none" stroke="${colors[j]}" stroke-width="3"/>${pts}`};
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:270px">${grid}<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#8193a4"/>${draw(series[0],0,yl)}${series[1]?draw(series[1],1,yr):''}${years.map((y,i)=>`<text class="raxis14" x="${x(i)}" y="${H-17}" text-anchor="middle">${y}</text>`).join('')}<text class="raxis14" transform="translate(15 ${H/2}) rotate(-90)" text-anchor="middle">${labels[0]} (${units[0]})</text>${series[1]?`<text class="raxis14" transform="translate(${W-12} ${H/2}) rotate(90)" text-anchor="middle">${labels[1]} (${units[1]})</text>`:''}</svg>`;
+  }
+
+  function report14(){
+    buildBase14();const R=rating(),dc=dcf(),e=currentYearEstimate14(),fv=dc.ps,price=Number(D.market.price),mos=Number.isFinite(fv)?(fv/price-1)*100:null;
+    const yrs=D.years,rev=annualVals14('income.revenue').map(v=>v/1000),eps=annualVals14('income.eps'),op=annualVals14('income.op'),ocf=annualVals14('cashflow.ocf').map(v=>v/1000),cap=annualVals14('cashflow.capex').map(v=>v/1000),fcf=D.years.map((_,i)=>reportedFcf(i)/1000),revRaw=annualVals14('income.revenue');
+    const opm=op.map((v,i)=>v/revRaw[i]*100),fcfm=fcf.map((v,i)=>v/(revRaw[i]/1000)*100),streetR=street14('revenue'),streetE=street14('eps');
+    const kpi=(n,v,cls='')=>`<div class="reportKpi14"><span>${n}</span><b class="${cls}">${v}</b></div>`;
+    return `<div class="noPrint actions"><button class="btn primary" onclick="window.print()">Print / Save PDF</button></div><div class="report14">
+      <div class="reportHero14"><h1>Alphabet Inc. (GOOG)</h1><p>Equity Research Terminal · live market + validated SEC financials + explicit ERT forecast</p><div class="reportKpis14">
+        ${kpi('Current price',money(price))}${kpi('Daily change',D.market.day_change_pct==null?'—':(D.market.day_change_pct>=0?'+':'')+D.market.day_change_pct.toFixed(2)+'%',D.market.day_change_pct>=0?'good':'bad')}
+        ${kpi('DCF fair value',Number.isFinite(fv)?money(fv):'Unavailable')}${kpi('Upside / downside',mos==null?'—':pct(mos),mos>=0?'good':'bad')}
+        ${kpi('P/E TTM',Number.isFinite(pe())?pe().toFixed(2)+'x':'—')}${kpi('ERT rating',Number.isFinite(R.overall)?R.overall.toFixed(1)+'/5':'—','amber')}
+      </div></div>
+      <div class="reportBody14">
+        <div class="reportSec14"><h2>Company & business overview</h2><div class="bizGrid14"><div><h3>What does Alphabet do?</h3><p>Alphabet is the parent company of Google. Its economics are driven primarily by Search and other advertising, YouTube, subscriptions/platforms/devices, Google Cloud and smaller Other Bets.</p><p><strong>Sector / industry:</strong> Interactive media / internet services<br><strong>Primary cash engine:</strong> Google advertising<br><strong>Major growth engine:</strong> Google Cloud / AI</p></div><div><h3>Investment framing</h3><p>The research question is not only whether Alphabet is a high-quality business, but whether future growth and cash conversion justify the current valuation while infrastructure CapEx remains elevated.</p></div></div></div>
+        <div class="reportSec14"><h2>Business / revenue mix</h2><table class="bizTable14"><thead><tr><th>Business</th><th>Economic role</th><th>Main opportunity</th><th>Main downside</th></tr></thead><tbody>
+          <tr><td>Google Search & other</td><td>Core advertising cash engine</td><td>Commercial intent + AI monetisation</td><td>AI/search disruption + regulation</td></tr>
+          <tr><td>YouTube</td><td>Ads + subscriptions</td><td>Video / creator ecosystem</td><td>Platform competition</td></tr>
+          <tr><td>Subscriptions / platforms / devices</td><td>Diversification</td><td>Recurring revenue</td><td>Mixed hardware/platform economics</td></tr>
+          <tr><td>Google Cloud</td><td>Cloud + AI growth engine</td><td>Enterprise AI / cloud</td><td>CapEx + AWS/Azure competition</td></tr>
+          <tr><td>Other Bets</td><td>Long-duration optionality</td><td>Waymo / new businesses</td><td>Losses / uncertain payoff</td></tr>
+        </tbody></table><p><small>Exact contribution should only be populated where filing-derived segment/category disclosure supports it; the report does not invent missing percentages.</small></p></div>
+        <div class="reportTwo14"><div class="reportGood14"><h3>Strengths</h3><p>Search distribution, YouTube scale, Cloud/AI opportunity, high cash generation and balance-sheet capacity.</p></div><div class="reportRisk14"><h3>Risks</h3><p>AI/search disruption, regulation, heavy infrastructure CapEx, cloud competition and valuation expectations.</p></div></div>
+        <div class="reportSec14"><h2>Three-minute summary</h2><p>Alphabet combines a durable advertising franchise with fast-growing Cloud/AI opportunities. FY${fy14()} actuals show the historical base; ${cy14()} current-year data shows how the year is progressing; ERT FY${cy14()}E makes the forward assumptions explicit. The central tension remains capital intensity versus future free-cash-flow conversion.</p></div>
+        <div class="reportSec14"><h2>Five-year financial performance</h2><div class="reportCharts14"><div class="reportChart14"><h3>Revenue & diluted EPS</h3>${chartLine14(yrs,[rev,eps],['Revenue','Diluted EPS'],['USD bn','$'],['#3478d4','#7a4fc4'])}<p><strong>Interpretation:</strong> Revenue measures scale; EPS shows how earnings reach each diluted share. The chart uses separate labelled axes rather than visual rescaling.</p></div><div class="reportChart14"><h3>Operating margin & FCF margin</h3>${chartLine14(yrs,[opm,fcfm],['Operating margin','FCF margin'],['%','%'],['#17865c','#d18a00'])}<p><strong>Interpretation:</strong> The gap between operating margin and FCF margin helps reveal cash-conversion and CapEx intensity.</p></div></div></div>
+        <div class="reportSec14"><h2>${cy14()} current year & forecast</h2><div class="consensusBox14"><div><strong>ERT FY${cy14()}E Revenue</strong><div class="value">$${(e.revenue/1000).toFixed(1)}bn</div><span class="small">Base forecast</span></div><div><strong>Street FY${cy14()} Revenue</strong><div class="value purple">${streetR?.estimate!=null?'$'+(streetR.estimate/1e9).toFixed(1)+'bn':'Unavailable'}</div><span class="small">${D.consensus?.status==='LIVE'?'Business Quant':'No live consensus'}</span></div><div><strong>ERT FY${cy14()}E EPS</strong><div class="value">$${e.eps?.toFixed(2)||'—'}</div><span class="small">Current YTD net-margin run-rate</span></div><div><strong>Street FY${cy14()} EPS</strong><div class="value purple">${streetE?.estimate!=null?'$'+streetE.estimate.toFixed(2):'Unavailable'}</div><span class="small">${D.consensus?.status==='LIVE'?'Business Quant':'No live consensus'}</span></div></div></div>
+        <div class="reportSec14"><h2>Valuation view</h2><p>Current price: <strong>${money(price)}</strong>. ERT Base DCF fair value: <strong>${Number.isFinite(fv)?money(fv):'Unavailable'}</strong>. Upside/downside: <strong>${mos==null?'—':pct(mos)}</strong>.</p><p>The DCF explicitly forecasts FY${cy14()}E–FY${cy14()+4}E using Revenue growth, OCF margin and CapEx/Revenue drivers. TTM remains a ratio/valuation input only and is not presented as a completed fiscal year.</p></div>
+        <div class="reportSec14"><h2>Investment scorecard</h2><p>Moat ${R.moat.toFixed(1)}/5 · Business quality ${R.quality.toFixed(1)}/5 · Growth ${R.growth.toFixed(1)}/5 · Financial health ${R.fin.toFixed(1)}/5 · Capital allocation ${R.capital.toFixed(1)}/5 · Valuation ${R.val.toFixed(1)}/5.</p></div>
+        <div class="reportSec14"><h2>What to watch next</h2><p>Revenue growth, Cloud/AI monetisation, operating margin, infrastructure CapEx, FCF conversion, regulatory developments and the gap between ERT Base assumptions and Street estimates.</p></div>
+        <div class="reportSec14"><h2>Sources & methodology</h2><p>Actual financials: SEC EDGAR companyfacts/submissions. Market data: configured Worker. Street Revenue/EPS estimates: ${D.consensus?.status==='LIVE'?D.consensus.displaySource:'not connected'}. Company guidance is a separate evidence category and is shown only when a dated, sourced guidance adapter is configured. ERT forecasts and DCF are model outputs, not reported facts.</p></div>
+      </div></div>`;
+  }
+
+  function overview14(){
+    buildBase14();const R=rating(),dc=dcf(),e=currentYearEstimate14(),mos=Number.isFinite(dc.ps)?(dc.ps/D.market.price-1)*100:null,streetR=street14('revenue'),streetE=street14('eps');
+    return `<h1>Alphabet Inc. (GOOG)</h1><div class="lead">30-second answer: actuals, current-year progress, Street expectations and ERT valuation are kept separate.</div>
+      <div class="grid k4"><div class="card"><div class="sub">Current price</div><div class="value">${money(D.market.price)}</div><div class="${D.market.day_change_pct>=0?'pos':'neg'}">${D.market.day_change_pct==null?'':`${D.market.day_change_pct>=0?'▲':'▼'} ${D.market.day_change_pct>=0?'+':''}${D.market.day_change_pct.toFixed(2)}% vs previous close`}</div></div>${card('Base fair value',Number.isFinite(dc.ps)?money(dc.ps):'Unavailable','FY'+cy14()+'E–FY'+(cy14()+4)+'E DCF')}${card('Upside / downside',mos==null?'—':pct(mos),'Fair value vs current price',mos>=0?'pos':'neg')}${card('ERT rating',star(R.overall),R.overall.toFixed(1)+'/5')}</div>
+      <div class="card" style="margin-top:12px"><h3>${cy14()} Current-Year Snapshot</h3><div class="grid k4">${card('YTD Revenue',fmt(currentYtd14('income','revenue'))+'m',(qCount14()===2?'H1':qCount14()===3?'9M':'Q1')+' actual')}${card('ERT FY'+cy14()+'E Revenue','$'+(e.revenue/1000).toFixed(1)+'bn','Base forecast')}${card('ERT FY'+cy14()+'E FCF','$'+(e.fcf/1000).toFixed(1)+'bn','OCF − CapEx')}${card('Street FY'+cy14()+' Revenue',streetR?.estimate!=null?'$'+(streetR.estimate/1e9).toFixed(1)+'bn':'Unavailable',D.consensus?.status==='LIVE'?'Business Quant':'Consensus not connected')}</div></div>
+      <div class="grid two" style="margin-top:12px"><div class="card"><h3>Investment profile</h3>${ratingLine('Moat / competitive advantage',R.moat,'')}${ratingLine('Business quality',R.quality,'')}${ratingLine('Growth',R.growth,'')}${ratingLine('Financial health',R.fin,'')}${ratingLine('Capital allocation',R.capital,'')}${ratingLine('Valuation',R.val,'')}${ratingLine('Risk',R.risk,'')}</div><div class="card"><h3>Forecast bridge</h3>${list([['Latest complete FY','FY'+fy14()],['Current year actuals',(qCount14()===2?'H1 ':qCount14()===3?'9M ':'Q1 ')+cy14()],['Company guidance',D.live?.guidance?.available?'Connected':'Not provided / not connected'],['ERT estimate','FY'+cy14()+'E'],['Street consensus',D.consensus?.status==='LIVE'?'Business Quant Revenue/EPS':'Unavailable']])}<div class="finding find-risk"><h4>Key distinction</h4><p>Actuals, company guidance, Street consensus and ERT estimates are different evidence types and are never silently substituted for one another.</p></div></div></div>`;
+  }
+
+  function bind14(){
+    // Reuse legacy base bindings first.
+    bind();
+    document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render14()});
+    document.querySelectorAll('[data-driver14]').forEach(i=>i.addEventListener('input',e=>{
+      const idx=+e.target.dataset.i,v=parseFloat(e.target.value);if(!Number.isFinite(v))return;
+      const k=e.target.dataset.driver14;if(k==='rev')S.drvRev[idx]=v;if(k==='ocf')S.drvOcf[idx]=v;if(k==='cap')S.drvCap[idx]=v;S.drvScenario='Custom';render14();
+    }));
+    document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{
+      buildBase14();const k=b.dataset.scenario,base=S.liveBaseDrivers14||{rev:S.drvRev,ocf:S.drvOcf,cap:S.drvCap};
+      if(k==='Bear'){S.drvRev=base.rev.map(x=>+(x-3).toFixed(1));S.drvOcf=base.ocf.map(x=>+(x-2).toFixed(1));S.drvCap=base.cap.map(x=>+(x+2).toFixed(1))}
+      if(k==='Base'){S.drvRev=[...base.rev];S.drvOcf=[...base.ocf];S.drvCap=[...base.cap]}
+      if(k==='Bull'){S.drvRev=base.rev.map(x=>+(x+3).toFixed(1));S.drvOcf=base.ocf.map(x=>+(x+2).toFixed(1));S.drvCap=base.cap.map(x=>+Math.max(0,x-1).toFixed(1))}
+      S.drvScenario=k;render14();
+    });
+    document.getElementById('resetDrivers14')?.addEventListener('click',()=>{buildBase14(true);S.drvRev=[...S.liveBaseDrivers14.rev];S.drvOcf=[...S.liveBaseDrivers14.ocf];S.drvCap=[...S.liveBaseDrivers14.cap];S.drvScenario='Base';render14()});
+  }
+
+  function layout14(content){
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4 FORWARD RESEARCH</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+  }
+
+  window.render14=function(){
+    buildBase14();
+    const P={overview:overview14,financials:financials14,analysis:analysis14,valuation:valuation14,market:market14,research,report:report14,disclaimer};
+    app.innerHTML=layout14(P[S.page]());
+    bind14();
+  };
+  window.render=render14;
+  setTimeout(()=>{try{render14()}catch(e){console.error(e)}},0);
 })();
 </script>
 
