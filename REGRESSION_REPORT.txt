@@ -1,19 +1,6 @@
-ERT Alpha 1.4.6 FULL-NAV TESTED
+ERT Alpha 1.5 BASELINE RESTORE
 
-ACTUAL CHROMIUM CLICK TEST:
-PASS overview -> Alphabet Inc. (GOOG)
-PASS financials -> Financial Statements
-PASS analysis -> Financial Analysis
-PASS valuation -> Valuation Studio
-PASS market -> Market & Price Context
-PASS research -> Research Notes
-PASS report -> Alphabet Inc. (GOOG)
-PASS disclaimer -> Disclaimer
-PASS valuation forecast engine
-PASS valuation sensitivity
-PASS no runtime page errors (excluding sandbox localStorage security)
-
-SYNTAX:
+SYNTAX CHECKS:
 PASS frontend_0
 PASS frontend_1
 PASS frontend_2
@@ -22,4 +9,15 @@ PASS frontend_4
 PASS frontend_5
 PASS frontend_6
 PASS frontend_7
+PASS frontend_8
 PASS worker
+
+BASELINE GATES:
+PASS BL-01 inspector desktop right-column CSS
+PASS BL-03 inspector not hidden below at 1050
+PASS BL-06 combined financials
+PASS BL-07 no separate current-year baseline tab
+PASS BL-10 company guidance column
+PASS BL-11 analyst consensus column
+PASS BL-12 ERT forecast column
+PASS BL-15 business overview retained

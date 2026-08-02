@@ -1,0 +1,20 @@
+ERT BASELINE SPECIFICATION — Alpha 1.5
+
+BL-01 Inspector stays in the right column on desktop.
+BL-02 Clicking a traceable metric opens Inspector evidence.
+BL-03 Inspector is not placed below the Financials table.
+BL-04 One successful live snapshot is reused across page navigation.
+BL-05 Page navigation does not require another manual refresh.
+BL-06 Annual Financials and current-year context are one combined statement.
+BL-07 No separate '2026 Current Year' tab in the baseline structure.
+BL-08 Current year shows Q1/Q2/... actuals when available.
+BL-09 Current year shows YTD/H1/9M actual total.
+BL-10 Company Guidance stays separate from actuals.
+BL-11 Analyst Consensus stays visible even when unavailable.
+BL-12 ERT FY estimate stays separate from actuals/guidance/consensus.
+BL-13 Fair Value must be produced by the DCF when validated required inputs exist.
+BL-14 TTM is a valuation/ratio concept, not shown as a completed fiscal year.
+BL-15 Report keeps Company/Business overview, business mix, strengths, risks, written analysis and charts.
+BL-16 Charts supplement written analysis; they do not replace it.
+BL-17 No demo consensus price target may be substituted for unavailable live consensus.
+BL-18 New features must not remove or reposition baseline features without explicit approval.

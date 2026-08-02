@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.4.6 FULL-NAV TESTED</title>
+<title>ERT GOOG · Alpha 1.5 BASELINE RESTORE</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -303,6 +303,170 @@ html,body{
   overflow-x:hidden !important;
 }
 </style>
+
+
+<style id="alpha15-baseline-css">
+.work{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(330px,28vw) !important;
+  align-items:start !important;
+}
+.content{min-width:0 !important}
+.inspector{
+  display:block !important;
+  position:sticky !important;
+  top:0 !important;
+  align-self:start !important;
+  height:calc(100vh - 74px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  min-width:0 !important;
+  border-left:1px solid var(--line) !important;
+  background:#0b1620 !important;
+  z-index:4 !important;
+}
+.tw{max-width:100% !important;overflow-x:auto !important}
+table{min-width:max-content}
+.finCombined15 th,.finCombined15 td{white-space:nowrap}
+.finCombined15 .actualFY{background:#111d28}
+.finCombined15 .currentQ{background:#10293d}
+.finCombined15 .guidance{background:#2c2615}
+.finCombined15 .street{background:#1d2440}
+.finCombined15 .ert{background:#241d36}
+.finTag15{display:block;font-size:9px;color:#9ab1c4;margin-top:2px}
+@media(max-width:1050px){
+  .work{grid-template-columns:minmax(0,1fr) minmax(300px,34vw) !important}
+  .inspector{display:block !important;position:sticky !important}
+}
+</style>
+
+<script id="alpha15-baseline-runtime">
+(function(){
+  const sec15=()=>D.live?.sec?.validation?.ok?D.live.sec:null;
+  const safe15=v=>Number.isFinite(Number(v))?Number(v):null;
+  const currentYear15=()=>Number(String(sec15()?.latest_period||'').slice(0,4))||new Date().getUTCFullYear();
+  const latestFY15=()=>D.years?.at(-1)||sec15()?.latest_10k?.year||currentYear15()-1;
+  const qSeries15=(g,k)=>sec15()?.quarterly?.[g]?.[k]||[];
+  const qNo15=x=>Number(x?.q||String(x?.label||'').match(/Q([1-4])/)?.[1]);
+  const qYear15=x=>Number(x?.year||String(x?.period||'').slice(0,4));
+  const latestQ15=()=>{
+    const y=currentYear15();
+    const q=qSeries15('income','revenue').filter(x=>qYear15(x)===y&&x.value!=null).map(qNo15).filter(Number.isFinite);
+    return q.length?Math.max(...q):0;
+  };
+  const qVal15=(g,k,y,q)=>{
+    const x=qSeries15(g,k).find(z=>qYear15(z)===y&&qNo15(z)===q&&z.value!=null);
+    return x||null;
+  };
+  const sumQ15=(g,k,y,n)=>{
+    if(!n)return null; let s=0;
+    for(let q=1;q<=n;q++){const x=qVal15(g,k,y,q);if(!x)return null;s+=Number(x.value)}
+    return s;
+  };
+  const annualLast15=id=>by(id)?.[2]?.at(-1)??null;
+
+  function street15(metric){
+    const c=D.consensus;
+    if(c?.status!=='LIVE')return null;
+    const arr=metric==='revenue'?c.forwardAnnual?.revenue:c.forwardAnnual?.eps;
+    return (arr||[]).find(x=>Number(x.period)===currentYear15()&&String(x.data_type).toLowerCase()==='estimate')||null;
+  }
+  function guidance15(id){
+    const g=D.live?.guidance;
+    if(!g?.available)return {text:'Not provided',source:g?.source||'No connected company-guidance source'};
+    const v=g.metrics?.[id];
+    if(v==null)return {text:'Not quantitatively guided',source:g.source||'Company guidance'};
+    return {text:typeof v==='number'?fmt(v,2):String(v),source:g.source||'Company guidance'};
+  }
+
+  // Build current-year ERT estimates from the working DCF/forecast engine.
+  function ertEst15(id){
+    try{
+      const d=dcf(), rows=d?.detail||[];
+      const r=rows[0]; if(!r)return null;
+      const y=currentYear15();
+      const s=sec15();
+      if(id==='income.revenue')return r.revenue;
+      if(id==='cashflow.ocf')return r.ocf;
+      if(id==='cashflow.capex')return r.capex;
+      if(id==='cashflow.fcf')return r.fcf;
+      const qn=latestQ15();
+      const ytdRev=sumQ15('income','revenue',y,qn);
+      const ytdOp=sumQ15('income','op',y,qn);
+      const ytdNet=sumQ15('income','net',y,qn);
+      if(id==='income.op'&&ytdRev>0&&ytdOp!=null)return r.revenue*(ytdOp/ytdRev);
+      if(id==='income.net'&&ytdRev>0&&ytdNet!=null)return r.revenue*(ytdNet/ytdRev);
+      if(id==='income.eps'&&ytdRev>0&&ytdNet!=null&&Number(s?.shares_m)>0)return (r.revenue*(ytdNet/ytdRev))/Number(s.shares_m);
+      return null;
+    }catch(_e){return null}
+  }
+
+  function combinedFinancials15(){
+    const s=sec15(),y=currentYear15(),qn=latestQ15(),fy=latestFY15(),R=D[S.st]||[];
+    if(!s)return `<h1>Financial Statements</h1><div class="finding find-risk"><p>Validated live SEC data unavailable.</p></div>`;
+    const qcols=[...Array(qn)].map((_,i)=>i+1);
+    const isIncome=S.st==='income',isCash=S.st==='cashflow';
+    const currentDefs=isIncome?{
+      'income.revenue':['income','revenue',false],
+      'income.op':['income','op',false],
+      'income.net':['income','net',false],
+      'income.eps':['income','eps',true]
+    }:isCash?{
+      'cashflow.ocf':['cashflow','ocf',false],
+      'cashflow.capex':['cashflow','capex',false],
+      'cashflow.fcf':['cashflow','fcf',false]
+    }:{};
+
+    const rows=R.map(r=>{
+      let h=`<tr class="row" data-row="${r[0]}"><td>${r[1]}</td>`;
+      r[2].forEach((v,i)=>{
+        h+=`<td class="actualFY">${fmt(v,2)}</td>${i?`<td class="${yy(r[2],i)==null?'':yy(r[2],i)>=0?'pos':'neg'}">${yy(r[2],i)==null?'—':pct(yy(r[2],i))}</td>`:''}`;
+      });
+      const def=currentDefs[r[0]];
+      if(def){
+        const [g,k,isEPS]=def;
+        for(const q of qcols){
+          const x=qVal15(g,k,y,q);
+          h+=`<td class="currentQ clickable" data-inspect="cy:${r[0]}:${q}">${x?.value==null?'—':isEPS?Number(x.value).toFixed(2):fmt(x.value,2)}<span class="finTag15">${x?.derived?'DERIVED FROM SEC YTD':'SEC ACTUAL'}</span></td>`;
+        }
+        const ytd=isEPS?null:sumQ15(g,k,y,qn);
+        h+=`<td class="currentQ clickable" data-inspect="cy:${r[0]}:ytd">${isEPS?'—':ytd==null?'—':fmt(ytd,2)}<span class="finTag15">${qn===2?'H1':qn===3?'9M':'YTD'} ACTUAL</span></td>`;
+        const gi=guidance15(r[0]);
+        h+=`<td class="guidance clickable" data-inspect="cy:${r[0]}:guidance">${gi.text}<span class="finTag15">COMPANY GUIDANCE</span></td>`;
+        const st=r[0]==='income.revenue'?street15('revenue'):r[0]==='income.eps'?street15('eps'):null;
+        h+=`<td class="street">${st?.estimate!=null?(r[0]==='income.eps'?Number(st.estimate).toFixed(2):'$'+(Number(st.estimate)/1e9).toFixed(1)+'bn'):'Unavailable'}<span class="finTag15">ANALYST CONSENSUS</span></td>`;
+        const ev=ertEst15(r[0]);
+        h+=`<td class="ert clickable" data-inspect="cy:${r[0]}:forecast">${ev==null?'Unavailable':isEPS?Number(ev).toFixed(2):fmt(ev,2)}<span class="finTag15">ERT FY${y}E</span></td>`;
+      }else{
+        for(let i=0;i<qcols.length+4;i++)h+=`<td>—</td>`;
+      }
+      h+=`</tr>`;return h;
+    }).join('');
+
+    return `<h1>Financial Statements</h1><div class="lead">Completed fiscal years stay in the same statement as current-year progress and forward context. No separate “Current Year” tab.</div>
+      <div class="tabs">${[['income','Income Statement'],['balance','Balance Sheet'],['cashflow','Cash Flow']].map(x=>`<button data-tab="${x[0]}" class="${S.st===x[0]?'active':''}">${x[1]}</button>`).join('')}</div>
+      <div class="sourcebox">Actuals = SEC. Company Guidance = only sourced management guidance. Analyst Consensus = external Street estimate. ERT FY${y}E = model output. These evidence types are never silently substituted.</div>
+      <div class="tw"><table class="finCombined15"><thead><tr><th>Line item</th>${D.years.map((yr,i)=>`<th>${yr}</th>${i?'<th>YoY</th>':''}`).join('')}${qcols.map(q=>`<th>Q${q} ${y}<span class="finTag15">ACTUAL</span></th>`).join('')}<th>${qn===2?'H1':qn===3?'9M':'YTD'} ${y}</th><th>Company Guidance</th><th>Analyst Consensus</th><th>ERT FY${y}E</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // Preserve historical quarter detail as a secondary button inside the page, not a separate baseline structure.
+  window.financialsBaseline15=combinedFinancials15;
+
+  // Ensure Analyst Consensus is always visibly present in Market/Analysis even when unavailable.
+  window.consensusSummary15=function(){
+    const r=street15('revenue'),e=street15('eps');
+    return `<div class="card"><h3>Analyst Consensus</h3>${D.consensus?.status==='LIVE'
+      ?list([['Provider',D.consensus.displaySource||'Live provider'],['As-of',D.consensus.asof||'—'],['FY'+currentYear15()+' Revenue',r?.estimate!=null?'$'+(r.estimate/1e9).toFixed(1)+'bn':'Unavailable'],['FY'+currentYear15()+' EPS',e?.estimate!=null?'$'+Number(e.estimate).toFixed(2):'Unavailable']])
+      :`<div class="finding find-risk"><p>Analyst Consensus unavailable. The section remains visible; no demo values are substituted.</p></div>`}</div>`;
+  };
+
+  // Baseline refresh persistence: restore cached live snapshot immediately and never clear it on page navigation.
+  try{
+    const cached=JSON.parse(localStorage.getItem('ertLiveSnapshot')||'null');
+    if(cached?.ok&&window.live){live.loaded=true;live.data=cached}
+  }catch(_e){}
+})();
+</script>
 
 </head>
 <body>
@@ -1213,7 +1377,7 @@ setTimeout(enhance,0);
     document.querySelectorAll('[data-finview]').forEach(b=>b.onclick=()=>{S.finView=b.dataset.finview;render()});
   }
   function appLayout13(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.6 FULL-NAV TESTED</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.5 BASELINE RESTORE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector13()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`;
   }
   render=function(){
     const P={overview:overview13,financials:financials13,analysis:analysis13,valuation,market:market13,research,report:report13,disclaimer};
@@ -1648,12 +1812,12 @@ setTimeout(enhance,0);
   }
 
   function layout14(content){
-    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.4.6 FULL-NAV TESTED</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
+    return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.5 BASELINE RESTORE</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector14()}</div><div class="footer">Reference only. Actuals, guidance, Street estimates and ERT forecasts are explicitly labelled. Not investment advice.</div></main></div></div>`;
   }
 
   window.render14=function(){
     buildBase14();
-    const P={overview:overview14,financials:financials14,analysis:analysis14,valuation:(window.valuation142||valuation14),market:market14,research,report:report14,disclaimer};
+    const P={overview:overview14,financials:(window.financialsBaseline15||financials14),analysis:analysis14,valuation:(window.valuation142||valuation14),market:market14,research,report:report14,disclaimer};
     app.innerHTML=layout14(P[S.page]());
     bind14();
   };
