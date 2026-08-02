@@ -1,12 +1,17 @@
-ERT GOOG Alpha 0.9.2 TEST
+Alpha 0.9.3 INTEGRATED
+Base: Alpha 0.9.1 FIX (FCF-driver build)
 
-Key fixes in this build:
-- Inspector Hide expands main workspace.
-- Removed need for top assumption-audit boxes; ERP drill-down is in right inspector.
-- ERP default updated to 4.18% and inspector explains the implied-return chain without inventing an unsourced 8.63%.
-- Report now contains Company/Sector, business mix, strengths and risks inside the printable white report.
-- Market page layout enlarged/rebalanced.
-- Main market chart includes a visible consensus reference/legend; consensus remains explicitly DEMO until a live/licensed provider is connected.
-- Mobile sidebar behaviour from the base build retained.
+Integrated:
+- Preserves/rebuilds FCF driver engine with Bear/Base/Bull/Custom + Reset.
+- Prevents held-arrow repeat in driver inputs.
+- Deep right-column ERP, terminal-growth, FCF/CapEx and consensus explanations.
+- Removes the duplicated top assumption-audit panel.
+- Hide Inspector expands main workspace.
+- Market layout widened and consensus mean/range drawn into the main SVG chart (DEMO).
+- Company/sector/business mix inserted inside the printable Report.
+- Browser-safe layout function name and startup error fallback.
 
-Upload: replace repository index.html with this index.html, commit and push.
+Known data limitation:
+- Consensus is DEMO until a live/licensed provider is connected.
+- Macro/ERP source reconstruction is explained but not faked with unsourced underlying inputs.
+- Full driver-to-DCF fair-value pass-through requires the production data engine; this build does not invent missing financial inputs.
