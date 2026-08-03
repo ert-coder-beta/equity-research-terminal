@@ -7,6 +7,21 @@ PASS Frontend script 5 syntax
 PASS Frontend script 6 syntax
 PASS Frontend script 7 syntax
 PASS Frontend script 8 syntax
-PASS Live status survives all page changes without Refresh
-PASS Business Quant badge survives all page changes
+PASS Frontend script 9 syntax
+PASS Frontend script 10 syntax
+PASS Financial unit label
+PASS BQ revenue converted to USD million
+PASS No bn units in statement
+PASS Historical FY headers
+PASS Y0 + explicit years
+PASS FCF rows present
+PASS Street benchmark visible
+PASS Scenario controls present
+PASS Bear differs from Base
+PASS Bear inspector trace
+PASS Bull differs from Base/Bear
+PASS Bull inspector trace
+PASS Base inspector explains derivation
+PASS Custom editable
+PASS No-refresh consensus survives navigation
 PASS No browser runtime errors
