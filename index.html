@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.9.9 BUSINESS QUANT LIVE</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.9.1.9 BUSINESS QUANT LIVE</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -197,7 +197,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.9</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.2.9.1</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -728,7 +728,13 @@ setTimeout(enhance,0);
     setPill('ertPrice','ok','Price '+fmtMoney(m.price)+' · '+(m.asof||''));
     setPill('ertSEC',secOK?'ok':'bad',(secOK?'DATA OK · ':'DATA WARNING · ')+(s.latest_form||'SEC')+' · '+(s.latest_period||''));
     setPill('ertTreasury',t.ten_year!=null?'ok':'warn','US 10Y '+(t.ten_year!=null?fmtPct(t.ten_year):'unavailable'));
-    setPill('ertConsensus',c.available?'ok':'warn',c.available?('Consensus LIVE · '+(c.next_annual?.year||'forward')+'E'):'Consensus unavailable');
+    if(c.available){
+      setPill('ertConsensus','ok','Consensus LIVE · '+(c.next_annual?.year||'forward')+'E');
+    }else if(c.isolated && D?.consensus && ['LIVE','CACHED','STALE CACHE'].includes(D.consensus.status) && D.consensus.nextAnnual){
+      setPill('ertConsensus','ok','Consensus '+D.consensus.status+' · Business Quant · FY'+D.consensus.nextAnnual.year+'E');
+    }else{
+      setPill('ertConsensus','warn','Consensus unavailable');
+    }
   }
 
   function setPill(id,cls,text){
@@ -743,8 +749,28 @@ setTimeout(enhance,0);
     setPill('ertPrice','ok','Price '+fmtMoney(m.price)+' · '+(m.asof||''));
     setPill('ertSEC',secOK?'ok':'bad',(secOK?'DATA OK · ':'DATA WARNING · ')+(s.latest_form||'SEC')+' · '+(s.latest_period||''));
     setPill('ertTreasury',t.ten_year!=null?'ok':'warn','US 10Y '+(t.ten_year!=null?fmtPct(t.ten_year):'unavailable'));
-    setPill('ertConsensus',c.available?'ok':'warn',c.available?('Consensus LIVE · '+(c.next_annual?.year||'forward')+'E'):'Consensus unavailable');
+    if(c.available){
+      setPill('ertConsensus','ok','Consensus LIVE · '+(c.next_annual?.year||'forward')+'E');
+    }else if(c.isolated && D?.consensus && ['LIVE','CACHED','STALE CACHE'].includes(D.consensus.status) && D.consensus.nextAnnual){
+      setPill('ertConsensus','ok','Consensus '+D.consensus.status+' · Business Quant · FY'+D.consensus.nextAnnual.year+'E');
+    }else{
+      setPill('ertConsensus','warn','Consensus unavailable');
+    }
   }
+
+  function restoreFromMemory(){
+    ensureBar();
+    const d=(typeof D!=='undefined'&&D.live)?D.live:live.data;
+    if(d){
+      restoreStatus(d);
+    }else{
+      setPill('ertStatus','warn','Live data not loaded yet');
+    }
+    if(typeof D!=='undefined' && D.consensus && ['LIVE','CACHED','STALE CACHE'].includes(D.consensus.status) && D.consensus.nextAnnual){
+      setPill('ertConsensus','ok','Consensus '+D.consensus.status+' · Business Quant · FY'+D.consensus.nextAnnual.year+'E');
+    }
+  }
+  window.ERT_RESTORE_LIVE_BAR=restoreFromMemory;
 
   function ensureBar(){
     const a=document.getElementById('app');if(!a||document.getElementById('ertLiveBar'))return;
@@ -1492,6 +1518,30 @@ setTimeout(enhance,0);
    }
    return inspectorBeforeBQ();
  };
+})();
+</script>
+
+
+<script id="ert291-nav-memory-hotfix">
+(function(){
+  const prior=window.render;
+  window.render=function(){
+    const result=prior.apply(this,arguments);
+    setTimeout(()=>{
+      try{
+        window.ERT_RESTORE_LIVE_BAR?.();
+        const c=D?.consensus;
+        if(c && ['LIVE','CACHED','STALE CACHE'].includes(c.status) && c.nextAnnual){
+          const p=document.getElementById('ertConsensus');
+          if(p){
+            p.className='livepill ok';
+            p.textContent=`Consensus ${c.status} · Business Quant · FY${c.nextAnnual.year}E`;
+          }
+        }
+      }catch(e){console.warn('ERT 2.9.1 memory restore',e)}
+    },20);
+    return result;
+  };
 })();
 </script>
 
