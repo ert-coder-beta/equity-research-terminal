@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.0.9 BUSINESS QUANT LIVE</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.1.9 BUSINESS QUANT LIVE</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -197,7 +197,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.0</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.1</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -1667,7 +1667,7 @@ setTimeout(enhance,0);
    <tr><td><strong>ERT vs Street</strong></td>${c('—','delta')}${d.map((x,i)=>{const v=delta(x.revenue,street[i]);return c(v==null?'—':pct(v),'delta',v==null?'':'ERT − STREET')}).join('')}</tr>
    <tr><td><strong>Revenue growth %</strong></td>${c(pct(ERT30.actualGrowth()),'actual','SEC ACTUAL')}${S.drvRev.map((v,i)=>inp('rev',i,v)).join('')}</tr>
    <tr><td><strong>OCF margin %</strong></td>${c(pct(ERT30.actualOcf()),'actual','SEC ACTUAL')}${S.drvOcf.map((v,i)=>inp('ocf',i,v)).join('')}</tr>
-   <tr><td><strong>CapEx / Revenue %</strong></td>${c(pct(ERT30.actualCap()),'actual','SEC ACTUAL')}${S.drvCap.map((v,i)=>inp('cap',i,v)).join('')}</tr>
+   <tr><td class="clickable" data-inspect="driver:capex"><strong>CapEx / Revenue %</strong></td>${c(pct(ERT30.actualCap()),'actual','SEC ACTUAL')}${S.drvCap.map((v,i)=>inp('cap',i,v)).join('')}</tr>
    <tr><td><strong>→ FCF margin %</strong></td>${c(pct(ERT30.actualOcf()-ERT30.actualCap()),'actual','SEC ACTUAL')}${S.drvOcf.map((v,i)=>c(pct(v-S.drvCap[i]),'calc','CALCULATED')).join('')}</tr>
    <tr><td><strong>→ FCF (USD m)</strong></td>${c(fmt(reportedFcf(),0),'actual','SEC ACTUAL')}${d.map(x=>c(fmt(x.fcf,0),'calc','CALCULATED')).join('')}</tr>`;
  }
@@ -1695,6 +1695,129 @@ setTimeout(enhance,0);
    const side=name==='Bear'?'Low':'High',ref=name==='Bear'?low:high;
    return specialInspector(`${name} Case — data-derived scenario`,`<div class="traceFact"><b>FACT</b><br>FY${fy0} SEC Revenue ${fmt(r0,0)}m<br>Business Quant FY${fy0+1} ${side} implied growth ${pct(ref)}</div><div class="traceAssume"><b>REVENUE ASSUMPTION</b><br>ERT Base Y1 ${pct(p.meta.baseY1)}<br>Business Quant ${side} ${pct(ref)}<br><b>${name} Y1 = midpoint = ${pct(p.rev[0])}</b><br>The gap versus Base fades to 25% by Y5.</div><div class="traceAssume"><b>CASH-CONVERSION ASSUMPTION</b><br>OCF adjustment = 50% of 5Y historical OCF-margin standard deviation, capped at 0.5–3.0ppt: ${p.meta.ocfSpread.toFixed(1)}ppt.<br>CapEx adjustment = 50% of 5Y historical CapEx-intensity standard deviation, capped at 0.5–3.0ppt: ${p.meta.capSpread.toFixed(1)}ppt.</div><div class="traceCalc"><b>CALCULATED</b><br>FY${fy0+1}E OCF margin ${pct(p.ocf[0])}<br>CapEx / Revenue ${pct(p.cap[0])}<br>FCF margin ${pct(p.ocf[0]-p.cap[0])}<br>FY${fy0+1}E FCF ${d?fmt(d.fcf,0)+'m':'—'}<br>DCF fair value ${money(fv)}/share</div><div class="sourcebox">FACT = SEC / Business Quant. ASSUMPTION = ERT scenario rule. CALCULATED = model output.</div>`);
  };
+})();
+</script>
+
+
+<style id="ert31-css">
+.mgmt31{background:#18251c!important}
+.unknown31{background:#2b2518!important}
+.audit31{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+.audit31 .a{border:1px solid var(--line);border-radius:9px;padding:12px;background:#101923}
+.audit31 .v{font-size:22px;font-weight:800;margin-top:4px}
+.guide31{font-size:10px;color:#b6d9a9;line-height:1.25;margin-top:3px}
+.unknownTag31{font-size:10px;color:#e9c575;line-height:1.25;margin-top:3px}
+.bridge31{display:grid;grid-template-columns:1.25fr 1fr 1.2fr .9fr 1.5fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:10px}
+.bridge31>div{background:#101923;padding:9px 10px;font-size:11px}
+.bridge31 .head{background:#162334;font-weight:800}
+@media(max-width:900px){.audit31{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<script id="ert31-capex-guidance">
+(function(){
+  const fy0=()=>window.ERT30?.fy0?.()||Number(D.years?.at(-1))||2025;
+  const years=()=>window.ERT30?.years?.()||[1,2,3,4,5].map(i=>fy0()+i);
+  const MGMT={
+    low2026:195000, high2026:205000, mid2026:200000,
+    source2026:'Alphabet Q2 2026 earnings call — FY2026 CapEx guidance $195–205bn',
+    source2027:'Alphabet 2026 investor update / Q2 2026 call — FY2027 CapEx expected to increase significantly'
+  };
+  function capexM(i){
+    const d=dcf()?.detail?.[i];
+    return d?Number(d.revenue)*Number(d.capexIntensity)/100:NaN;
+  }
+  function guidanceStatus(i){
+    const y=years()[i],c=capexM(i);
+    if(y===2026){
+      if(!Number.isFinite(c))return {label:'Unavailable',cls:'unknown31'};
+      if(c<MGMT.low2026)return {label:'BELOW guidance',cls:'unknown31'};
+      if(c>MGMT.high2026)return {label:'ABOVE guidance',cls:'unknown31'};
+      return {label:'WITHIN guidance',cls:'mgmt31'};
+    }
+    if(y===2027){
+      const prev=capexM(i-1);
+      if(!Number.isFinite(c)||!Number.isFinite(prev))return {label:'Unavailable',cls:'unknown31'};
+      return c>prev?{label:'Direction aligned ↑',cls:'mgmt31'}:{label:'NOT aligned',cls:'unknown31'};
+    }
+    return {label:'No management guidance',cls:'unknown31'};
+  }
+  function impliedIntensity(){
+    const r=Number(dcf()?.detail?.[0]?.revenue);
+    return Number.isFinite(r)&&r>0?MGMT.mid2026/r*100:NaN;
+  }
+  function reverseAudit(){
+    const r=reverse(), hit=Number.isFinite(r)&&r>=49.95;
+    return {value:r,hitUpper:hit,label:hit?'>50% / solver upper bound reached':pct(r)};
+  }
+  function gap(){
+    const fv=Number(dcf()?.ps),px=Number(D.market.price);
+    return Number.isFinite(fv)&&Number.isFinite(px)&&px!==0?(fv/px-1)*100:NaN;
+  }
+  window.ERT31={MGMT,fy0,years,capexM,guidanceStatus,impliedIntensity,reverseAudit,gap};
+})();
+</script>
+
+<script id="ert31-valuation">
+(function(){
+  const oldVal=window.valuation;
+  window.valuation=function(){
+    let x=oldVal();
+    const yrs=ERT31.years(),R=dcf(),ra=ERT31.reverseAudit(),gap=ERT31.gap();
+    const c26=ERT31.capexM(0),c27=ERT31.capexM(1),s26=ERT31.guidanceStatus(0),s27=ERT31.guidanceStatus(1),ii=ERT31.impliedIntensity();
+
+    const guidanceRows=`<tr><td><strong>ERT CapEx (USD m)</strong></td><td class="actual">${fmt(Number(last(by('cashflow.capex')[2])),0)}<div class="ert30-small">SEC ACTUAL</div></td>${yrs.map((y,i)=>`<td class="${ERT31.guidanceStatus(i).cls}"><div class="ert30-cellval">${Number.isFinite(ERT31.capexM(i))?fmt(ERT31.capexM(i),0):'—'}</div><div class="ert30-small">${ERT31.guidanceStatus(i).label}</div></td>`).join('')}</tr>
+      <tr><td><strong>Management CapEx guidance</strong></td><td class="mgmt31">—<div class="guide31">HISTORICAL ACTUAL</div></td>${yrs.map(y=>{
+        if(y===2026)return `<td class="mgmt31"><div class="ert30-cellval">195,000–205,000</div><div class="guide31">FY2026 GUIDANCE · midpoint 200,000</div></td>`;
+        if(y===2027)return `<td class="mgmt31"><div class="ert30-cellval">Significant increase</div><div class="guide31">DIRECTION ONLY · exact amount not given</div></td>`;
+        return `<td class="unknown31"><div class="ert30-cellval">Unknown</div><div class="unknownTag31">NO NORMALISATION TIMETABLE DISCLOSED</div></td>`;
+      }).join('')}</tr>`;
+
+    x=x.replace(/(<tr><td><strong>→ FCF \(USD m\)<\/strong><\/td>[\s\S]*?<\/tr>)/, '$1'+guidanceRows);
+
+    const audit=`<div class="card" style="margin-top:12px"><h3>Why is Fair Value different from Market Price?</h3>
+      <div class="audit31">
+        <div class="a"><span class="sub">Current price</span><div class="v">${money(D.market.price)}</div><div class="small">${D.market.asof||'—'}</div></div>
+        <div class="a"><span class="sub">ERT Base fair value</span><div class="v">${money(R.ps)}</div><div class="small">DCF under current assumptions</div></div>
+        <div class="a"><span class="sub">Fair value vs price</span><div class="v ${gap>=0?'pos':'neg'}">${pct(gap)}</div><div class="small">Audit the assumptions before interpreting this gap</div></div>
+        <div class="a"><span class="sub">Terminal value share</span><div class="v">${pct(R.tvshare)}</div><div class="small">${R.tvshare>70?'HIGH model dependency':'Moderate model dependency'}</div></div>
+      </div>
+      <div class="bridge31">
+        <div class="head">Audit item</div><div class="head">ERT model</div><div class="head">Management / fact</div><div class="head">Check</div><div class="head">Meaning</div>
+        <div>FY2026 CapEx</div><div>${Number.isFinite(c26)?fmt(c26,0)+'m':'—'}</div><div>195,000–205,000m</div><div>${s26.label}</div><div>${Number.isFinite(ii)?'Guidance midpoint implies ~'+pct(ii)+' of ERT FY2026 revenue':'—'}</div>
+        <div>FY2027 CapEx</div><div>${Number.isFinite(c27)?fmt(c27,0)+'m':'—'}</div><div>Significant increase vs 2026</div><div>${s27.label}</div><div>Exact amount was not provided.</div>
+        <div>FY2028–FY2030</div><div>ERT scenario assumptions</div><div>No normalisation timetable disclosed</div><div>ASSUMPTION</div><div>Any post-2027 normalisation is an ERT thesis, not management guidance.</div>
+        <div>Reverse DCF</div><div>${ra.label}</div><div>Search range −20% to +50%</div><div>${ra.hitUpper?'BOUND HIT':'Solved'}</div><div>${ra.hitUpper?'Do not read 50.0% as a precise market expectation. The solver reached its ceiling.':'Solved inside the configured range.'}</div>
+      </div>
+      <div class="sourcebox"><strong>Management guidance:</strong><br>${ERT31.MGMT.source2026}.<br>${ERT31.MGMT.source2027}.<br><strong>Unknown:</strong> no management CapEx normalisation date is assumed for FY2028 onward.</div>
+    </div>`;
+    x=x.replace('<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>',audit+'<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>');
+    return x;
+  };
+
+  const oldOverview=window.overview;
+  window.overview=function(){
+    let x=oldOverview(),r=ERT31.reverseAudit();
+    if(r.hitUpper){
+      x=x.replace(/50\.0%/g,'>50%');
+      x=x.replace('Market-implied 5Y FCF growth (Reverse DCF)','Market-implied 5Y FCF growth (Reverse DCF · upper bound reached)');
+      x=x.replace('The current price requires materially faster FCF growth than our base forecast.','The current price cannot be explained within the current reverse-DCF search range; the solver reached its +50% ceiling.');
+    }
+    return x;
+  };
+
+  const oldIns=window.inspector;
+  window.inspector=function(){
+    if(String(S.sel||'')==='driver:capex'){
+      const R=dcf(),c26=ERT31.capexM(0),c27=ERT31.capexM(1),s26=ERT31.guidanceStatus(0),s27=ERT31.guidanceStatus(1);
+      return specialInspector('CapEx forecast — guidance vs ERT assumptions',`
+        <div class="traceFact"><b>FACT / MANAGEMENT GUIDANCE</b><br>FY2026 CapEx guidance: $195–205bn.<br>Midpoint: $200bn.<br>Source: Alphabet Q2 2026 earnings call.</div>
+        <div class="traceFact"><b>MANAGEMENT DIRECTION</b><br>FY2027 CapEx is expected to increase significantly vs FY2026.<br>Exact amount: not provided.</div>
+        <div class="traceAssume"><b>ERT MODEL</b><br>FY2026 projected CapEx: ${Number.isFinite(c26)?fmt(c26,0)+'m':'—'} · ${s26.label}<br>FY2027 projected CapEx: ${Number.isFinite(c27)?fmt(c27,0)+'m':'—'} · ${s27.label}<br>FY2028 onward: ERT scenario assumptions because management has not disclosed a normalisation timetable.</div>
+        <div class="traceCalc"><b>VALUATION EFFECT</b><br>FCF = OCF − CapEx. Higher CapEx lowers near-term FCF directly.<br>Current Base fair value: ${money(R.ps)}/share.</div>
+        <div class="sourcebox">No guidance is not treated as evidence of normalisation. Post-2027 CapEx is explicitly an ERT assumption.</div>`);
+    }
+    return oldIns();
+  };
 })();
 </script>
 

@@ -9,19 +9,18 @@ PASS Frontend script 7 syntax
 PASS Frontend script 8 syntax
 PASS Frontend script 9 syntax
 PASS Frontend script 10 syntax
-PASS Financial unit label
-PASS BQ revenue converted to USD million
-PASS No bn units in statement
-PASS Historical FY headers
-PASS Y0 + explicit years
-PASS FCF rows present
-PASS Street benchmark visible
-PASS Scenario controls present
-PASS Bear differs from Base
-PASS Bear inspector trace
-PASS Bull differs from Base/Bear
-PASS Bull inspector trace
-PASS Base inspector explains derivation
-PASS Custom editable
-PASS No-refresh consensus survives navigation
+PASS Frontend script 11 syntax
+PASS Frontend script 12 syntax
+PASS Guidance row
+PASS 2027 direction
+PASS 2028+ unknown
+PASS Valuation audit
+PASS Reverse DCF audit
+PASS CORE 3.0 structure retained
+PASS CapEx inspector 2026
+PASS CapEx inspector 2027 unknown exact
+PASS CapEx inspector 2028 assumption
+PASS Reverse DCF upper-bound labelling
+PASS Financial units preserved
+PASS No-refresh navigation preserved
 PASS No browser runtime errors
