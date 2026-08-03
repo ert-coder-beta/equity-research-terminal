@@ -7,20 +7,23 @@ PASS Frontend script 4 syntax
 PASS Frontend script 5 syntax
 PASS Frontend script 6 syntax
 PASS Frontend script 7 syntax
-PASS Frontend script 8 syntax
-PASS Frontend script 9 syntax
-PASS P/E clickable
-PASS P/E formula detail
+PASS Worker null reported preserved
+PASS Business Quant route active
+PASS Alpha Vantage absent from Worker
+PASS No demo consensus object
 PASS Valuation opens
-PASS Revenue consensus
-PASS EPS consensus
-PASS Revisions visible
-PASS No demo consensus language
-PASS Market uses revenue/EPS consensus
-PASS Market no price-target demo
+PASS P/E row clickable
+PASS P/E shows forward BQ EPS
+PASS P/E keeps trailing detail
+PASS Financials one-table FY2026 context
+PASS Financials BQ revenue
+PASS Financials BQ EPS
+PASS No analyst count invented
+PASS Analysis BQ live
+PASS Analysis no demo consensus
+PASS Market no fake price target
+PASS Market BQ expectations
 PASS Report baseline retained
-PASS Report live consensus
-PASS no browser runtime errors
-PASS Financials Analyst Consensus column
-PASS Financials FY2026 Revenue consensus
-PASS Financials FY2026 EPS consensus
+PASS Report BQ consensus
+PASS Report no fake target
+PASS No browser runtime errors
