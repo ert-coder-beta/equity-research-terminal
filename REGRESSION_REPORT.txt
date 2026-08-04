@@ -1,4 +1,31 @@
 PASS Worker syntax
+PASS Worker earnings-flow route retained
+PASS Worker 52W OHLC support retained
+PASS Worker SEC SBC support retained
+PASS Worker Business Quant consensus retained
+PASS 1366px inspector Show no content rebuild/jump
+PASS 1366px inspector Hide no content rebuild/jump
+PASS 1440px inspector Show no content rebuild/jump
+PASS 1440px inspector Hide no content rebuild/jump
+PASS 1440px overview all evidence cells stable (29 tested)
+PASS 1440px financials all evidence cells stable (11 tested)
+PASS 1440px analysis all evidence cells stable (8 tested)
+PASS 1440px valuation all evidence cells stable (28 tested)
+PASS 1440px market all evidence cells stable (0 tested)
+PASS 1440px research all evidence cells stable (0 tested)
+PASS 1440px CapEx return values finite
+PASS 1440px incremental CapEx correct
+PASS 1440px sensitivity monotonic
+PASS 1366px overview all evidence cells stable (29 tested)
+PASS 1366px financials all evidence cells stable (11 tested)
+PASS 1366px analysis all evidence cells stable (8 tested)
+PASS 1366px valuation all evidence cells stable (28 tested)
+PASS 1366px market all evidence cells stable (0 tested)
+PASS 1366px research all evidence cells stable (0 tested)
+PASS 1366px CapEx return values finite
+PASS 1366px incremental CapEx correct
+PASS 1366px sensitivity monotonic
+PASS Enhanced click-audit browser errors absent
 PASS Frontend script 0 syntax
 PASS Frontend script 1 syntax
 PASS Frontend script 2 syntax
@@ -20,34 +47,129 @@ PASS Frontend script 17 syntax
 PASS Frontend script 18 syntax
 PASS Frontend script 19 syntax
 PASS Frontend script 20 syntax
-PASS 1920 overview markers
-PASS 1920 no old upside
-PASS 1920 earnings flow
-PASS 1920 market deltas
-PASS 1920 market marker bar
-PASS 1920 no horizontal overflow
-PASS 1920 WACC typing
-PASS 1920 WACC no jump
-PASS 1920 custom SBC exists
-PASS 1920 custom SBC commits
-PASS 1440 overview markers
-PASS 1440 no old upside
-PASS 1440 earnings flow
-PASS 1440 market deltas
-PASS 1440 market marker bar
-PASS 1440 no horizontal overflow
-PASS 1440 WACC typing
-PASS 1440 WACC no jump
-PASS 1440 custom SBC exists
-PASS 1440 custom SBC commits
-PASS 1366 overview markers
-PASS 1366 no old upside
-PASS 1366 earnings flow
-PASS 1366 market deltas
-PASS 1366 market marker bar
-PASS 1366 no horizontal overflow
-PASS 1366 WACC typing
-PASS 1366 WACC no jump
-PASS 1366 custom SBC exists
-PASS 1366 custom SBC commits
+PASS Frontend script 21 syntax
+PASS Frontend script 22 syntax
+PASS CapEx Return module implemented
+PASS Verified 175–185 guidance present
+PASS Old 195–205 guidance removed
+PASS Cloud backlog evidence present
+PASS Market-implied methodology present
+PASS Payback sensitivity present
+PASS Inspector-only engine present
+PASS Content scroll preservation present
+PASS 1920px overview no document overflow
+PASS 1920px financials no document overflow
+PASS 1920px analysis no document overflow
+PASS 1920px valuation no document overflow
+PASS 1920px market no document overflow
+PASS 1920px research no document overflow
+PASS 1920px report no document overflow
+PASS 1920px disclaimer no document overflow
+PASS 1920px CapEx module position/content
+PASS 1920px verified guidance shown
+PASS 1920px backlog shown
+PASS 1920px scenario rows
+PASS 1920px market-implied metrics
+PASS 1920px sensitivity points
+PASS 1920px known unknown evidence
+PASS 1920px CapEx Inspector no main rerender
+PASS 1920px CapEx Inspector no scroll jump
+PASS 1920px CapEx Inspector methodology
+PASS 1920px analysis evidence click no rebuild
+PASS 1920px analysis evidence click no jump
+PASS 1920px valuation evidence click no rebuild
+PASS 1920px valuation evidence click no jump
+PASS 1920px scenario switch preserves content scroll
+PASS 1920px WACC continuous typing
+PASS 1920px WACC typing no content jump
+PASS 1920px WACC commit
+PASS 1920px terminal continuous typing
+PASS 1920px terminal typing no content jump
+PASS 1920px custom rev input exists
+PASS 1920px custom rev typing
+PASS 1920px custom rev no content jump
+PASS 1920px custom sbc input exists
+PASS 1920px custom sbc typing
+PASS 1920px custom sbc no content jump
+PASS 1920px Overview five markers
+PASS 1920px old upside card removed
+PASS 1920px earnings flow retained
+PASS 1920px Analysis content text no overflow
+PASS 1440px overview no document overflow
+PASS 1440px financials no document overflow
+PASS 1440px analysis no document overflow
+PASS 1440px valuation no document overflow
+PASS 1440px market no document overflow
+PASS 1440px research no document overflow
+PASS 1440px report no document overflow
+PASS 1440px disclaimer no document overflow
+PASS 1440px CapEx module position/content
+PASS 1440px verified guidance shown
+PASS 1440px backlog shown
+PASS 1440px scenario rows
+PASS 1440px market-implied metrics
+PASS 1440px sensitivity points
+PASS 1440px known unknown evidence
+PASS 1440px CapEx Inspector no main rerender
+PASS 1440px CapEx Inspector no scroll jump
+PASS 1440px CapEx Inspector methodology
+PASS 1440px analysis evidence click no rebuild
+PASS 1440px analysis evidence click no jump
+PASS 1440px valuation evidence click no rebuild
+PASS 1440px valuation evidence click no jump
+PASS 1440px scenario switch preserves content scroll
+PASS 1440px WACC continuous typing
+PASS 1440px WACC typing no content jump
+PASS 1440px WACC commit
+PASS 1440px terminal continuous typing
+PASS 1440px terminal typing no content jump
+PASS 1440px custom rev input exists
+PASS 1440px custom rev typing
+PASS 1440px custom rev no content jump
+PASS 1440px custom sbc input exists
+PASS 1440px custom sbc typing
+PASS 1440px custom sbc no content jump
+PASS 1440px Overview five markers
+PASS 1440px old upside card removed
+PASS 1440px earnings flow retained
+PASS 1440px Analysis content text no overflow
+PASS 1366px overview no document overflow
+PASS 1366px financials no document overflow
+PASS 1366px analysis no document overflow
+PASS 1366px valuation no document overflow
+PASS 1366px market no document overflow
+PASS 1366px research no document overflow
+PASS 1366px report no document overflow
+PASS 1366px disclaimer no document overflow
+PASS 1366px CapEx module position/content
+PASS 1366px verified guidance shown
+PASS 1366px backlog shown
+PASS 1366px scenario rows
+PASS 1366px market-implied metrics
+PASS 1366px sensitivity points
+PASS 1366px known unknown evidence
+PASS 1366px CapEx Inspector no main rerender
+PASS 1366px CapEx Inspector no scroll jump
+PASS 1366px CapEx Inspector methodology
+PASS 1366px analysis evidence click no rebuild
+PASS 1366px analysis evidence click no jump
+PASS 1366px valuation evidence click no rebuild
+PASS 1366px valuation evidence click no jump
+PASS 1366px scenario switch preserves content scroll
+PASS 1366px WACC continuous typing
+PASS 1366px WACC typing no content jump
+PASS 1366px WACC commit
+PASS 1366px terminal continuous typing
+PASS 1366px terminal typing no content jump
+PASS 1366px custom rev input exists
+PASS 1366px custom rev typing
+PASS 1366px custom rev no content jump
+PASS 1366px custom sbc input exists
+PASS 1366px custom sbc typing
+PASS 1366px custom sbc no content jump
+PASS 1366px Overview five markers
+PASS 1366px old upside card removed
+PASS 1366px earnings flow retained
+PASS 1366px Analysis content text no overflow
 PASS No browser runtime errors
+PASS Final hide/show browser errors absent (localStorage sandbox warnings ignored)

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.3.9 BUSINESS QUANT LIVE</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.4.9 BUSINESS QUANT LIVE</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -208,7 +208,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.3</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.4</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -1744,9 +1744,9 @@ setTimeout(enhance,0);
   const fy0=()=>window.ERT30?.fy0?.()||Number(D.years?.at(-1))||2025;
   const years=()=>window.ERT30?.years?.()||[1,2,3,4,5].map(i=>fy0()+i);
   const MGMT={
-    low2026:195000, high2026:205000, mid2026:200000,
-    source2026:'Alphabet Q2 2026 earnings call — FY2026 CapEx guidance $195–205bn',
-    source2027:'Alphabet 2026 investor update / Q2 2026 call — FY2027 CapEx expected to increase significantly'
+    low2026:175000, high2026:185000, mid2026:180000,
+    source2026:'Alphabet Q2 2026 earnings call — FY2026 CapEx guidance $175–185bn',
+    source2027:'Alphabet 2026 investor update / Q2 2026 call — FY2027 exact CapEx guidance not verified in this build'
   };
   function capexM(i){
     const d=dcf()?.detail?.[i];
@@ -1793,8 +1793,8 @@ setTimeout(enhance,0);
 
     const guidanceRows=`<tr><td><strong>ERT CapEx (USD m)</strong></td><td class="actual">${fmt(Number(last(by('cashflow.capex')[2])),0)}<div class="ert30-small">SEC ACTUAL</div></td>${yrs.map((y,i)=>`<td class="${ERT31.guidanceStatus(i).cls}"><div class="ert30-cellval">${Number.isFinite(ERT31.capexM(i))?fmt(ERT31.capexM(i),0):'—'}</div><div class="ert30-small">${ERT31.guidanceStatus(i).label}</div></td>`).join('')}</tr>
       <tr><td><strong>Management CapEx guidance</strong></td><td class="mgmt31">—<div class="guide31">HISTORICAL ACTUAL</div></td>${yrs.map(y=>{
-        if(y===2026)return `<td class="mgmt31"><div class="ert30-cellval">195,000–205,000</div><div class="guide31">FY2026 GUIDANCE · midpoint 200,000</div></td>`;
-        if(y===2027)return `<td class="mgmt31"><div class="ert30-cellval">Significant increase</div><div class="guide31">DIRECTION ONLY · exact amount not given</div></td>`;
+        if(y===2026)return `<td class="mgmt31"><div class="ert30-cellval">175,000–185,000</div><div class="guide31">FY2026 GUIDANCE · midpoint 180,000</div></td>`;
+        if(y===2027)return `<td class="mgmt31"><div class="ert30-cellval">Exact amount not verified</div><div class="guide31">DIRECTION ONLY · exact amount not given</div></td>`;
         return `<td class="unknown31"><div class="ert30-cellval">Unknown</div><div class="unknownTag31">NO NORMALISATION TIMETABLE DISCLOSED</div></td>`;
       }).join('')}</tr>`;
 
@@ -1809,8 +1809,8 @@ setTimeout(enhance,0);
       </div>
       <div class="bridge31">
         <div class="head">Audit item</div><div class="head">ERT model</div><div class="head">Management / fact</div><div class="head">Check</div><div class="head">Meaning</div>
-        <div>FY2026 CapEx</div><div>${Number.isFinite(c26)?fmt(c26,0)+'m':'—'}</div><div>195,000–205,000m</div><div>${s26.label}</div><div>${Number.isFinite(ii)?'Guidance midpoint implies ~'+pct(ii)+' of ERT FY2026 revenue':'—'}</div>
-        <div>FY2027 CapEx</div><div>${Number.isFinite(c27)?fmt(c27,0)+'m':'—'}</div><div>Significant increase vs 2026</div><div>${s27.label}</div><div>Exact amount was not provided.</div>
+        <div>FY2026 CapEx</div><div>${Number.isFinite(c26)?fmt(c26,0)+'m':'—'}</div><div>175,000–185,000m</div><div>${s26.label}</div><div>${Number.isFinite(ii)?'Guidance midpoint implies ~'+pct(ii)+' of ERT FY2026 revenue':'—'}</div>
+        <div>FY2027 CapEx</div><div>${Number.isFinite(c27)?fmt(c27,0)+'m':'—'}</div><div>Exact amount not verified</div><div>${s27.label}</div><div>Exact amount was not provided.</div>
         <div>FY2028–FY2030</div><div>ERT scenario assumptions</div><div>No normalisation timetable disclosed</div><div>ASSUMPTION</div><div>Any post-2027 normalisation is an ERT thesis, not management guidance.</div>
         <div>Reverse DCF</div><div>${ra.label}</div><div>Search range −20% to +50%</div><div>${ra.hitUpper?'BOUND HIT':'Solved'}</div><div>${ra.hitUpper?'Do not read 50.0% as a precise market expectation. The solver reached its ceiling.':'Solved inside the configured range.'}</div>
       </div>
@@ -1836,7 +1836,7 @@ setTimeout(enhance,0);
     if(String(S.sel||'')==='driver:capex'){
       const R=dcf(),c26=ERT31.capexM(0),c27=ERT31.capexM(1),s26=ERT31.guidanceStatus(0),s27=ERT31.guidanceStatus(1);
       return specialInspector('CapEx forecast — guidance vs ERT assumptions',`
-        <div class="traceFact"><b>FACT / MANAGEMENT GUIDANCE</b><br>FY2026 CapEx guidance: $195–205bn.<br>Midpoint: $200bn.<br>Source: Alphabet Q2 2026 earnings call.</div>
+        <div class="traceFact"><b>FACT / MANAGEMENT GUIDANCE</b><br>FY2026 CapEx guidance: $175–185bn.<br>Midpoint: $180bn.<br>Source: Alphabet Q2 2026 earnings call.</div>
         <div class="traceFact"><b>MANAGEMENT DIRECTION</b><br>FY2027 CapEx is expected to increase significantly vs FY2026.<br>Exact amount: not provided.</div>
         <div class="traceAssume"><b>ERT MODEL</b><br>FY2026 projected CapEx: ${Number.isFinite(c26)?fmt(c26,0)+'m':'—'} · ${s26.label}<br>FY2027 projected CapEx: ${Number.isFinite(c27)?fmt(c27,0)+'m':'—'} · ${s27.label}<br>FY2028 onward: ERT scenario assumptions because management has not disclosed a normalisation timetable.</div>
         <div class="traceCalc"><b>VALUATION EFFECT</b><br>FCF = OCF − CapEx. Higher CapEx lowers near-term FCF directly.<br>Current Base fair value: ${money(R.ps)}/share.</div>
@@ -1911,7 +1911,7 @@ setTimeout(enhance,0);
    return {ps:equity/D.market.shares_m,detail,pv,pvt,ev,equity,tvshare:pvt/ev*100,sbcRatios:ratios};
  }
  function capexGuidanceScenario(name=S.drvScenario){
-   return name==='Bear'?205000:name==='Bull'?195000:200000;
+   return name==='Bear'?185000:name==='Bull'?175000:180000;
  }
  function guidedCapexY1(name=S.drvScenario){
    const p=ERT30?.scenario?.(name)||null;
@@ -1949,13 +1949,13 @@ setTimeout(enhance,0);
     const y=ERT31.years()[i],c=ERT31.capexM(i);
     if(y===2026){
       if(!Number.isFinite(c))return {label:'Unavailable',cls:'unknown31'};
-      if(c<195000)return {label:'BELOW guidance',cls:'unknown31'};
-      if(c>205000)return {label:'ABOVE guidance',cls:'unknown31'};
+      if(c<175000)return {label:'BELOW guidance',cls:'unknown31'};
+      if(c>185000)return {label:'ABOVE guidance',cls:'unknown31'};
       return {label:'WITHIN guidance',cls:'mgmt31'};
     }
     if(y===2027){
       if(!Number.isFinite(c))return {label:'Unavailable',cls:'unknown31'};
-      return c>205000?{label:'Direction consistent ↑',cls:'mgmt31'}:{label:'NOT ALIGNED · below FY2026 guide',cls:'unknown31'};
+      return c>185000?{label:'No exact guidance',cls:'mgmt31'}:{label:'Below FY2026 guidance baseline',cls:'unknown31'};
     }
     return oldStatus(i);
   };
@@ -2162,6 +2162,255 @@ setTimeout(enhance,0);
  };
  const ov=window.valuation;window.valuation=function(){let x=ov(),rat=ERT32.sbcScenario(S.drvScenario),actual=(Number(last(by('cashflow.sbc')[2]))/Number(last(by('income.revenue')[2])))*100;const row=`<tr><td class="clickable" data-inspect="driver:sbc"><strong>SBC / Revenue %</strong></td><td class="actual">${pct(actual)}<div class="ert30-small">SEC ACTUAL</div></td>${rat.map((v,i)=>S.drvScenario==='Custom'?`<td><input inputmode="decimal" data-driver="sbc" data-i="${i}" value="${v}"></td>`:`<td class="sbc32"><div class="ert30-cellval">${pct(v)}</div><div class="ert30-small">${S.drvScenario.toUpperCase()} ASSUMPTION</div></td>`).join('')}</tr>`;return x.replace(/<tr><td><strong>SBC \/ Revenue %<\/strong><\/td>[\s\S]*?<\/tr>/,row)};
  const oi=window.inspector;window.inspector=function(){const k=String(S.sel||'');if(k.startsWith('flow:')){const f=D.earningsFlow||{},L=f.latest||{},Y=f.yoy||{},id=k.slice(5);if(id.startsWith('seg:')){const s=f.segments?.rows?.[+id.split(':')[1]];return specialInspector(s?.name||'Revenue segment',`<div class="traceFact"><b>BUSINESS QUANT SEGMENT DATA</b><br>${s?'$'+(s.value/1000).toFixed(1)+'bn':'Unavailable'}<br>Period ${s?.period||f.period||'—'}</div>`)}const map={revenue:['Revenue',L.revenue,Y.revenue,'SEC FACT'],cost:['Cost of revenues',L.cost,Y.cost,'SEC FACT'],gross:['Gross profit',L.gross_profit,null,'DERIVED'],rnd:['R&D',L.rnd,Y.rnd,'SEC FACT'],sales:['Sales & marketing',L.sales,Y.sales,'SEC FACT'],gna:['G&A',L.gna,Y.gna,'SEC FACT'],op:['Operating income',L.op,Y.op,'SEC FACT'],pretax:['Pre-tax income',L.pretax,Y.pretax,'SEC FACT'],otheropex:['Other OpEx',L.other_opex,null,'DERIVED'],net:['Net income',L.net,Y.net,'SEC FACT'],tax:['Tax',L.tax,Y.tax,'SEC FACT']},m=map[id]||[id,null,null,'Unavailable'];return specialInspector(m[0],`<div class="traceFact"><b>${m[3]}</b><br>${Number.isFinite(m[1])?'$'+(m[1]/1000).toFixed(1)+'bn':'Unavailable'}<br>${Number.isFinite(m[2])?(m[2]>=0?'+':'')+m[2].toFixed(1)+'% YoY':'YoY unavailable'}</div><div class="sourcebox">Period ${f.period||'—'} · ${f.source||'SEC EDGAR'}.</div>`)}return oi()};
+})();
+</script>
+
+
+<style id="ert34-css">
+.capex34-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.capex34-kpi{border:1px solid var(--line);border-radius:9px;background:#101a25;padding:12px;min-width:0}
+.capex34-kpi .v{font-size:22px;font-weight:900;margin:4px 0}
+.capex34-bridge{display:grid;grid-template-columns:1fr 42px 1fr 42px 1fr 42px 1fr;align-items:center;gap:6px;margin:14px 0}
+.capex34-step{border:1px solid var(--line);border-radius:8px;background:#101b27;padding:12px;text-align:center;min-width:0}
+.capex34-arrow{text-align:center;font-size:22px;color:var(--blue)}
+.capex34-table{min-width:900px}
+.capex34-table th,.capex34-table td{text-align:right}
+.capex34-table th:first-child,.capex34-table td:first-child{text-align:left}
+.capex34-fact{color:#74bfff}.capex34-assume{color:#c5a1ff}.capex34-calc{color:#55d99a}.capex34-implied{color:#ffc257}
+.capex34-sense{display:grid;grid-template-columns:170px repeat(5,minmax(110px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.capex34-sense>div{background:#101923;padding:10px;text-align:center}
+.capex34-sense .head{background:#162334;font-weight:800}
+.capex34-evidence{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.capex34-evidence>div{border:1px solid var(--line);border-radius:8px;padding:12px;background:#0f1923}
+@media(max-width:1050px){
+ .capex34-grid{grid-template-columns:repeat(2,1fr)}
+ .capex34-bridge{grid-template-columns:1fr}
+ .capex34-arrow{transform:rotate(90deg)}
+ .capex34-evidence{grid-template-columns:1fr}
+}
+</style>
+
+<script id="ert34-capex-return">
+(function(){
+  const MG={
+    guideLow:175000,
+    guideMid:180000,
+    guideHigh:185000,
+    backlog:240000,
+    backlogPeriod:'Q4 2025',
+    capexSource:'Alphabet Q4 2025 earnings call',
+    backlogSource:'Alphabet Q4 2025 earnings call',
+    computeAllocation:'Just over half of FY2026 ML compute expected to go to Google Cloud',
+    capacity:'Google Cloud described as operating in a tight supply environment'
+  };
+
+  function scenarioDrivers(name){
+    const p=ERT30.scenario(name);
+    const rev=[...p.rev],ocf=[...p.ocf],cap=[...p.cap];
+    const rev0=Number(last(by('income.revenue')[2]));
+    const rev1=rev0*(1+Number(rev[0])/100);
+    const capex=name==='Bear'?MG.guideHigh:name==='Bull'?MG.guideLow:MG.guideMid;
+    if(rev1>0)cap[0]=capex/rev1*100;
+    return {rev,ocf,cap,capex};
+  }
+  function sbcRatios(name){
+    if(name==='Custom' && Array.isArray(S.drvSbc))return [...S.drvSbc];
+    return [...ERT32.sbcScenario(name)];
+  }
+  function dcfFrom(name){
+    const x=scenarioDrivers(name),sr=sbcRatios(name),W=wacc().w,t=S.terminal;
+    const start=Number(last(by('income.revenue')[2]));
+    let rev=start,pv=0,lastAdj=null;
+    const detail=[];
+    for(let i=0;i<5;i++){
+      rev*=1+x.rev[i]/100;
+      const ocf=rev*x.ocf[i]/100;
+      const capex=rev*x.cap[i]/100;
+      const sbc=rev*sr[i]/100;
+      const fcf=ocf-capex-sbc;
+      const df=1/Math.pow(1+W/100,i+1);
+      pv+=fcf*df;lastAdj=fcf;
+      detail.push({year:ERT30.fy0()+i+1,revenue:rev,ocf,capex,sbc,fcf,df});
+    }
+    const spread=W/100-t/100;
+    if(spread<=0)return {ps:NaN,detail,pv,pvt:NaN,ev:NaN,equity:NaN};
+    const tv=lastAdj*(1+t/100)/spread,pvt=tv/Math.pow(1+W/100,5),ev=pv+pvt,equity=ev+D.market.net_cash_m;
+    return {ps:equity/D.market.shares_m,detail,pv,pvt,ev,equity,capex2026:x.capex};
+  }
+  function incrementalCapex(name){
+    return (name==='Bear'?MG.guideHigh:name==='Bull'?MG.guideLow:MG.guideMid)-Number(last(by('cashflow.capex')[2]));
+  }
+
+  // Present value factor for a constant incremental annual FCF beginning in FY2027 (year 2),
+  // continuing through FY2030 and then terminalized using the same WACC/g.
+  function extraFcfPvFactor(){
+    const W=wacc().w/100,g=S.terminal/100;
+    if(W<=g)return NaN;
+    let factor=0;
+    for(let yr=2;yr<=5;yr++)factor+=1/Math.pow(1+W,yr);
+    factor+=(1+g)/(W-g)/Math.pow(1+W,5);
+    return factor;
+  }
+  function marketImplied(name='Base'){
+    const base=dcfFrom(name),shares=Number(D.market.shares_m),gapPerShare=Math.max(0,Number(D.market.price)-Number(base.ps));
+    const gapEquity=gapPerShare*shares,factor=extraFcfPvFactor(),addFcf=factor>0?gapEquity/factor:NaN,inc=incrementalCapex(name);
+    const ret=inc>0?addFcf/inc*100:NaN,payback=addFcf>0?inc/addFcf:NaN;
+    return {base,gapPerShare,gapEquity,additionalAnnualFcf:addFcf,incrementalCapex:inc,returnPct:ret,paybackYears:payback,factor};
+  }
+  function fairValueAtReturn(retPct,name='Base'){
+    const b=dcfFrom(name),inc=incrementalCapex(name),extra=inc*Number(retPct)/100,factor=extraFcfPvFactor();
+    return b.ps+(extra*factor)/Number(D.market.shares_m);
+  }
+  function fmtBnM(v){return Number.isFinite(Number(v))?'$'+(Number(v)/1000).toFixed(1)+'bn':'—'}
+  function fmtPct(v){return Number.isFinite(Number(v))?Number(v).toFixed(1)+'%':'—'}
+
+  function scenarioRows(){
+    return ['Bear','Base','Bull'].map(name=>{
+      const m=marketImplied(name),fv=m.base.ps;
+      return `<tr class="clickable" data-inspect="capexroi:scenario:${name}">
+        <td><strong>${name}</strong></td>
+        <td>${fmtBnM(m.base.capex2026)}</td>
+        <td>${fmtBnM(m.incrementalCapex)}</td>
+        <td class="capex34-implied">${fmtPct(m.returnPct)}</td>
+        <td>${Number.isFinite(m.paybackYears)?m.paybackYears.toFixed(1)+' yrs':'—'}</td>
+        <td>${money(fv)}</td>
+      </tr>`;
+    }).join('');
+  }
+  function moduleHtml(){
+    const fy=ERT30.fy0(),actual=Number(last(by('cashflow.capex')[2])),base=marketImplied('Base'),baseD=base.base,rev1=Number(baseD.detail?.[0]?.revenue),capRatio=rev1>0?MG.guideMid/rev1*100:NaN;
+    const sense=[5,10,15,20,25],vals=sense.map(r=>fairValueAtReturn(r,'Base'));
+    return `<div class="card" style="margin-top:12px"><h3>AI / CapEx Investment Return Analysis</h3>
+      <p>This section asks whether the extraordinary AI / Cloud investment can plausibly earn enough future cash return to bridge ERT's DCF and the market price. It does <strong>not</strong> assume management promised a specific ROI.</p>
+      <div class="capex34-grid">
+        <div class="capex34-kpi clickable" data-inspect="capexroi:guide"><span class="sub">FY2026 CapEx</span><div class="v">${fmtBnM(MG.guideMid)}</div><div class="capex34-fact">FACT · $175–185bn management guidance</div></div>
+        <div class="capex34-kpi clickable" data-inspect="capexroi:incremental"><span class="sub">Incremental CapEx</span><div class="v">${fmtBnM(MG.guideMid-actual)}</div><div class="capex34-calc">CALCULATED · vs FY${fy} actual ${fmtBnM(actual)}</div></div>
+        <div class="capex34-kpi clickable" data-inspect="capexroi:backlog"><span class="sub">Cloud backlog</span><div class="v">${fmtBnM(MG.backlog)}</div><div class="capex34-fact">FACT · ${MG.backlogPeriod}</div></div>
+        <div class="capex34-kpi clickable" data-inspect="capexroi:ratio"><span class="sub">CapEx / ERT Revenue</span><div class="v">${fmtPct(capRatio)}</div><div class="capex34-calc">CALCULATED · $180bn ÷ FY2026E ERT revenue</div></div>
+      </div>
+
+      <h4>CapEx → Return Bridge</h4>
+      <div class="capex34-bridge">
+        <div class="capex34-step clickable" data-inspect="capexroi:actual"><div class="sub">FY${fy} actual CapEx</div><div class="value">${fmtBnM(actual)}</div><div class="capex34-fact">SEC FACT</div></div>
+        <div class="capex34-arrow">→</div>
+        <div class="capex34-step clickable" data-inspect="capexroi:guide"><div class="sub">FY2026 Base CapEx</div><div class="value">${fmtBnM(MG.guideMid)}</div><div class="capex34-fact">GUIDANCE MIDPOINT</div></div>
+        <div class="capex34-arrow">→</div>
+        <div class="capex34-step clickable" data-inspect="capexroi:incremental"><div class="sub">Incremental investment</div><div class="value">+${fmtBnM(MG.guideMid-actual)}</div><div class="capex34-calc">CALCULATED</div></div>
+        <div class="capex34-arrow">→</div>
+        <div class="capex34-step clickable" data-inspect="capexroi:market"><div class="sub">What must it produce?</div><div class="value">${fmtBnM(base.additionalAnnualFcf)}/yr</div><div class="capex34-implied">MARKET-IMPLIED MODEL OUTPUT</div></div>
+      </div>
+
+      <div class="tw"><table class="capex34-table"><thead><tr><th>Scenario</th><th>FY26 CapEx</th><th>Incremental CapEx</th><th>Required annual FCF return</th><th>Implied payback</th><th>Fair Value after SBC</th></tr></thead><tbody>${scenarioRows()}</tbody></table></div>
+
+      <h4 style="margin-top:16px">What return does the market price require? — Base Case</h4>
+      <div class="capex34-grid">
+        <div class="capex34-kpi"><span class="sub">Current market price</span><div class="v">${money(D.market.price)}</div><div class="capex34-fact">MARKET FACT</div></div>
+        <div class="capex34-kpi"><span class="sub">ERT Base Fair Value</span><div class="v">${money(baseD.ps)}</div><div class="capex34-calc">SBC-adjusted DCF</div></div>
+        <div class="capex34-kpi"><span class="sub">Valuation gap</span><div class="v">${money(base.gapPerShare)}/share</div><div class="capex34-calc">CURRENT PRICE − ERT VALUE</div></div>
+        <div class="capex34-kpi clickable" data-inspect="capexroi:market"><span class="sub">Required annual incremental FCF</span><div class="v">${fmtBnM(base.additionalAnnualFcf)}</div><div class="capex34-implied">${fmtPct(base.returnPct)} on incremental CapEx · payback ${Number.isFinite(base.paybackYears)?base.paybackYears.toFixed(1):'—'} yrs</div></div>
+      </div>
+
+      <h4>CapEx Payback Sensitivity — Base Case</h4>
+      <div class="capex34-sense">
+        <div class="head">Incremental FCF return</div>${sense.map(r=>`<div class="head">${r}%</div>`).join('')}
+        <div>Fair value after SBC</div>${vals.map((v,i)=>`<div class="${v>=D.market.price?'pos':'neg'}">${money(v)}${v>=D.market.price?'<br><small>≥ market</small>':''}</div>`).join('')}
+      </div>
+      <div class="sourcebox"><strong>Market-implied methodology:</strong> solve the additional constant annual FCF beginning in FY2027 that, discounted at the current ERT WACC and terminal growth and terminalized after FY2030, closes the gap between ERT after-SBC fair value and the current share price. Required return = that annual FCF ÷ incremental FY2026 CapEx. This is a stylized reverse-valuation diagnostic, not a management forecast.</div>
+
+      <div class="capex34-evidence" style="margin-top:12px">
+        <div><h4 class="capex34-fact">Known / sourced</h4><p>FY2026 CapEx guidance: $175–185bn; Base uses $180bn midpoint. FY2025 actual CapEx: ${fmtBnM(actual)}. Google Cloud backlog was $240bn at Q4 2025. Management said AI investment was already translating into business performance, Cloud remained supply-constrained, and just over half of FY2026 ML compute was expected to support Cloud.</p></div>
+        <div><h4 class="capex34-assume">Unknown / not promised</h4><p>Management did not promise a specific revenue uplift, FCF return, ROI percentage, payback period, or post-2026 CapEx normalisation date. Those outputs are ERT assumptions or market-implied calculations and are labelled accordingly.</p></div>
+      </div>
+    </div>`;
+  }
+
+  function inspectorHtml(k){
+    const fy=ERT30.fy0(),actual=Number(last(by('cashflow.capex')[2]));
+    if(k==='capexroi:guide')return specialInspector('FY2026 CapEx — management guidance',`<div class="traceFact"><b>FACT</b><br>Alphabet FY2026 CapEx guidance: $175–185bn.<br>ERT Base: $180bn midpoint.<br>Bear: $185bn · Bull: $175bn.</div><div class="sourcebox">${MG.capexSource}. This is a management spending range, not an ROI promise.</div>`);
+    if(k==='capexroi:actual')return specialInspector(`FY${fy} actual CapEx`,`<div class="traceFact"><b>SEC FACT</b><br>${fmtBnM(actual)}</div>`);
+    if(k==='capexroi:incremental')return specialInspector('Incremental CapEx — calculation',`<div class="traceCalc"><b>CALCULATED</b><br>$180.0bn FY2026 Base CapEx − ${fmtBnM(actual)} FY${fy} actual = <strong>${fmtBnM(MG.guideMid-actual)}</strong> incremental investment.</div>`);
+    if(k==='capexroi:backlog')return specialInspector('Google Cloud backlog',`<div class="traceFact"><b>FACT</b><br>Q4 2025 Cloud backlog: $240bn.</div><div class="sourcebox">${MG.backlogSource}. Backlog is contracted performance obligations, not immediate revenue and not proof of a specific CapEx ROI.</div>`);
+    if(k==='capexroi:ratio'){const b=marketImplied('Base'),r=b.base.detail[0].revenue;return specialInspector('FY2026 CapEx / Revenue',`<div class="traceCalc"><b>CALCULATED</b><br>$180.0bn ÷ ${fmtBnM(r)} FY2026E ERT revenue = <strong>${fmtPct(MG.guideMid/r*100)}</strong>.</div>`);}
+    if(k==='capexroi:market'){const m=marketImplied('Base');return specialInspector('Market-implied return on incremental AI / Cloud CapEx',`<div class="traceFact"><b>MARKET FACT</b><br>Current price: ${money(D.market.price)}</div><div class="traceCalc"><b>ERT BASE</b><br>After-SBC DCF: ${money(m.base.ps)}<br>Gap: ${money(m.gapPerShare)}/share.</div><div class="traceAssume"><b>MARKET-IMPLIED — NOT MANAGEMENT GUIDANCE</b><br>Additional constant annual FCF required from FY2027 onward: ${fmtBnM(m.additionalAnnualFcf)}.<br>Implied annual FCF return on incremental FY2026 CapEx: ${fmtPct(m.returnPct)}.<br>Simple payback: ${Number.isFinite(m.paybackYears)?m.paybackYears.toFixed(1)+' years':'—'}.</div><div class="sourcebox">The incremental FCF is discounted using the same WACC / terminal growth as ERT and terminalized after FY2030. It answers “what would have to be true?” rather than “what will happen?”.</div>`);}
+    if(k.startsWith('capexroi:scenario:')){const name=k.split(':').at(-1),m=marketImplied(name);return specialInspector(`${name} — AI / CapEx return scenario`,`<div class="traceFact"><b>FACT / GUIDANCE RANGE</b><br>FY2026 CapEx used: ${fmtBnM(m.base.capex2026)}.</div><div class="traceAssume"><b>ERT SCENARIO</b><br>Revenue / OCF / later CapEx / SBC assumptions come from the ${name} scenario engine.</div><div class="traceCalc"><b>CALCULATED</b><br>Incremental CapEx: ${fmtBnM(m.incrementalCapex)}<br>After-SBC Fair Value: ${money(m.base.ps)}.</div><div class="traceAssume"><b>MARKET-IMPLIED</b><br>Required annual FCF return: ${fmtPct(m.returnPct)}<br>Payback: ${Number.isFinite(m.paybackYears)?m.paybackYears.toFixed(1)+' years':'—'}.</div>`);}
+    return null;
+  }
+
+  window.ERT34Capex={MG,scenarioDrivers,dcfFrom,marketImplied,fairValueAtReturn,moduleHtml,inspectorHtml};
+})();
+</script>
+
+<script id="ert34-integration">
+(function(){
+  // Insert the previously-promised CapEx return analysis in the correct place:
+  // Forecast Engine -> CapEx Return Analysis -> SBC valuation bridge.
+  const oldVal=window.valuation;
+  window.valuation=function(){
+    let x=oldVal();
+    const marker='<div class="card" style="margin-top:12px"><h3>SBC valuation bridge — before vs after stock-based compensation</h3>';
+    if(x.includes(marker)&&!x.includes('AI / CapEx Investment Return Analysis'))x=x.replace(marker,ERT34Capex.moduleHtml()+marker);
+    return x;
+  };
+
+  // CapEx ROI inspector.
+  const oldIns=window.inspector;
+  window.inspector=function(){
+    const k=String(S.sel||'');
+    if(k.startsWith('capexroi:'))return ERT34Capex.inspectorHtml(k)||oldIns();
+    return oldIns();
+  };
+
+  // True same-page render stability: preserve .content scrollTop, not only window.scrollY.
+  // This covers scenario switches, WACC/terminal commits, financial tabs and any other same-page render.
+  const rawRender=window.render;
+  let lastPage=S.page;
+  window.render=function(){
+    const oldPage=lastPage, c=document.querySelector('.content');
+    const cTop=c?c.scrollTop:0, cLeft=c?c.scrollLeft:0, wx=window.scrollX,wy=window.scrollY;
+    const result=rawRender.apply(this,arguments);
+    const same=S.page===oldPage;
+    lastPage=S.page;
+    if(same)requestAnimationFrame(()=>{
+      const nc=document.querySelector('.content');
+      if(nc){nc.scrollTop=cTop;nc.scrollLeft=cLeft;}
+      window.scrollTo(wx,wy);
+    });
+    return result;
+  };
+
+  // Inspector-only rendering. Evidence-cell clicks no longer rebuild the page.
+  function updateInspectorOnly(){
+    const work=document.getElementById('work');if(!work)return;
+    work.querySelector('.res')?.remove();
+    work.querySelector('.ins')?.remove();
+    work.querySelector('#show')?.remove();
+    if(S.show){
+      work.classList.remove('inspectorCollapsed');
+      const section=work.querySelector('.content');
+      section.insertAdjacentHTML('afterend','<div class="res" id="res"></div>'+inspector());
+    }else{
+      work.classList.add('inspectorCollapsed');
+      work.insertAdjacentHTML('beforeend',inspector());
+    }
+  }
+  window.ERT34_UPDATE_INSPECTOR=updateInspectorOnly;
+
+  // Capture inspector/row clicks before legacy handlers call full render().
+  document.addEventListener('click',e=>{
+    if(e.target.closest('input,select,textarea,button[data-page],button[data-tab],button[data-scenario]'))return;
+    const t=e.target.closest('[data-inspect],[data-row]');
+    if(!t)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    S.sel=t.dataset.inspect||t.dataset.row;S.show=true;
+    updateInspectorOnly();
+  },true);
+  document.addEventListener('click',e=>{
+    if(e.target?.id==='hide'){
+      e.preventDefault();e.stopImmediatePropagation();S.show=false;updateInspectorOnly();
+    }else if(e.target?.id==='show'){
+      e.preventDefault();e.stopImmediatePropagation();S.show=true;updateInspectorOnly();
+    }
+  },true);
 })();
 </script>
 
