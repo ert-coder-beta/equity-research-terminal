@@ -16,22 +16,38 @@ PASS Frontend script 13 syntax
 PASS Frontend script 14 syntax
 PASS Frontend script 15 syntax
 PASS Frontend script 16 syntax
-PASS Overview 52W cards
-PASS Overview 52W position
-PASS Overview before-SBC reference
-PASS SBC before/after fair value visible
-PASS After-SBC fair value lower
-PASS SBC rows visible
-PASS FY2026 Base CapEx anchored to midpoint
-PASS FY2026 guidance within status
-PASS FY2027 does not falsely say aligned
-PASS Continuous typing works
-PASS No page jump while typing
-PASS Enter commits input
-PASS Market 52W cards
-PASS Market chart 52W labels
-PASS Market chart uses after-SBC DCF
-PASS 52W Inspector details
-PASS SBC Inspector trace
-PASS No-refresh navigation retained
+PASS Frontend script 17 syntax
+PASS Frontend script 18 syntax
+PASS Frontend script 19 syntax
+PASS Frontend script 20 syntax
+PASS 1920 overview markers
+PASS 1920 no old upside
+PASS 1920 earnings flow
+PASS 1920 market deltas
+PASS 1920 market marker bar
+PASS 1920 no horizontal overflow
+PASS 1920 WACC typing
+PASS 1920 WACC no jump
+PASS 1920 custom SBC exists
+PASS 1920 custom SBC commits
+PASS 1440 overview markers
+PASS 1440 no old upside
+PASS 1440 earnings flow
+PASS 1440 market deltas
+PASS 1440 market marker bar
+PASS 1440 no horizontal overflow
+PASS 1440 WACC typing
+PASS 1440 WACC no jump
+PASS 1440 custom SBC exists
+PASS 1440 custom SBC commits
+PASS 1366 overview markers
+PASS 1366 no old upside
+PASS 1366 earnings flow
+PASS 1366 market deltas
+PASS 1366 market marker bar
+PASS 1366 no horizontal overflow
+PASS 1366 WACC typing
+PASS 1366 WACC no jump
+PASS 1366 custom SBC exists
+PASS 1366 custom SBC commits
 PASS No browser runtime errors

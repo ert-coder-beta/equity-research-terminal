@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.2.9 BUSINESS QUANT LIVE</title>
+<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.3.9 BUSINESS QUANT LIVE</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -146,6 +146,17 @@ body.inspector-collapsed #showInspector{display:block}
 .reportLegend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#556573;margin-top:8px}.reportLegend i{width:14px;height:3px;display:inline-block;margin-right:5px;vertical-align:middle}
 @media(max-width:950px){.reportChartGrid{grid-template-columns:1fr}}
 </style>
+
+<style id="ert33-css">
+.content,.card,.finding,.event,.eventTop,.grid>*{min-width:0}.card,.finding,.event,.eventTop,.metricDesc,.sourcebox,.small,p,strong,h1,h2,h3,h4{overflow-wrap:anywhere}.event p,.event strong,.eventTop strong{white-space:normal;max-width:100%}
+.priceCards33{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.delta33{font-size:13px;font-weight:800;margin-top:5px;line-height:1.35}
+.markerBar33{position:relative;margin:12px 20px;padding-top:70px;padding-bottom:24px}.markerTrack33{height:9px;border-radius:999px;background:linear-gradient(90deg,#1b6545,#c5aa3a,#d44f3b)}
+.marker33{position:absolute;top:50px;transform:translateX(-50%);z-index:3;text-align:center;min-width:115px}.marker33 .arrow{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:11px solid currentColor;margin:auto}.marker33 .dot{width:11px;height:11px;border:2px solid white;border-radius:50%;background:currentColor;margin:-1px auto}.marker33 .lab{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;white-space:nowrap;text-shadow:0 1px 2px #000}.marker33 .val{display:block;font-size:11px;margin-top:2px}.markerScale33{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--muted)}
+.markerLow{color:#55d89a}.markerHigh{color:#ff6969}.markerBefore{color:#ffc25b}.markerAfter{color:#bc94ff}.markerCurrent{color:#fff}
+.flow33{overflow-x:auto}.flowCanvas33{min-width:1120px;height:475px;position:relative}.flowSvg33{position:absolute;inset:0;width:100%;height:100%}.flowNode33{position:absolute;z-index:2;width:150px;border:1px solid var(--line);border-radius:8px;background:#101b27;padding:8px;cursor:pointer}.flowNode33 .n{font-size:11px;font-weight:800}.flowNode33 .v{font-size:17px;font-weight:900}.flowNode33 .y{font-size:10px}.flowNode33.fact{border-left:4px solid #5ca8ff}.flowNode33.derived{border-left:4px solid #f2b84b}.flowNode33.segment{border-left:4px solid #61d99f}.flowLegend33{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin:8px 0}
+@media(max-width:1400px){.priceCards33{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.priceCards33{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 <div id="app"></div>
@@ -197,7 +208,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.2</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.3.3</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -2067,6 +2078,90 @@ setTimeout(enhance,0);
     <div class="grid k3" style="margin-top:12px">${card('SMA20',money(s20),'Short-term moving average')}${card('SMA50',money(s50),'Medium-term moving average')}${card('SMA200',money(s200),'Long-term moving average')}</div>
     <div class="card" style="margin-top:12px"><h3>Price, moving averages, 52W range and SBC-adjusted DCF</h3>${chart32(dates,ps,s20s,s50s,s200s,fv)}<div class="legend"><span><i style="background:var(--blue)"></i>Price</span><span><i style="background:var(--amber)"></i>SMA20</span><span><i style="background:var(--purple)"></i>SMA50</span><span><i style="background:var(--cyan)"></i>SMA200</span><span><i style="background:var(--green)"></i>DCF after SBC</span><span><i style="background:#ffb84d"></i>52W High</span><span><i style="background:#71d7ff"></i>52W Low</span></div></div>`;
  };
+})();
+</script>
+
+
+<script id="ert33-ui">
+(function(){
+ const m2=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'—',sp=v=>Number.isFinite(Number(v))?(Number(v)>=0?'+':'')+Number(v).toFixed(1)+'%':'—';
+ const dm=(d,p,l)=>{if(!Number.isFinite(Number(d))||!Number.isFinite(Number(p)))return '';const pos=d>=0;return `<div class="delta33 ${pos?'pos':'neg'}">${pos?'▲':'▼'} ${d>=0?'+':''}$${Math.abs(d).toFixed(2)} (${sp(p)}) ${l}</div>`};
+ const vsCur=(v,l)=>{const p=Number(D.market.price),x=Number(v);return p&&Number.isFinite(x)?dm(x-p,(x/p-1)*100,l):''};
+ const curVs=(v,l)=>{const p=Number(D.market.price),x=Number(v);return x&&Number.isFinite(p)?dm(p-x,(p/x-1)*100,l):''};
+ const pc=(t,v,sub,d,cls='')=>`<div class="card"><div class="sub">${t}</div><div class="value ${cls}">${v}</div>${d||''}<div class="small">${sub||''}</div></div>`;
+ function bar(){
+   const z=ERT32.w52(),b=dcf().ps,a=ERT32.dcfAdjusted().ps,c=Number(D.market.price);if(!z)return '';
+   const vals=[z.low,a,b,c,z.high].map(Number),rawMin=Math.min(...vals),rawMax=Math.max(...vals),pad=(rawMax-rawMin||1)*.08,mn=Math.max(0,rawMin-pad),mx=rawMax+pad,pos=v=>(Number(v)-mn)/(mx-mn)*100;
+   const a0=[['52W LOW',z.low,'markerLow'],['FAIR VALUE AFTER SBC',a,'markerAfter'],['FAIR VALUE BEFORE SBC',b,'markerBefore'],['CURRENT PRICE',c,'markerCurrent'],['52W HIGH',z.high,'markerHigh']];
+   return `<div class="card" style="margin-top:12px"><h3>52-Week Range & Valuation Position</h3><div class="markerBar33"><div class="markerTrack33"></div>${a0.map(x=>`<div class="marker33 ${x[2]}" style="left:${pos(x[1])}%"><div class="lab">${x[0]}<span class="val">${m2(x[1])}</span></div><div class="arrow"></div><div class="dot"></div></div>`).join('')}<div class="markerScale33"><span>${m2(mn)}</span><span>${m2((mn+mx)/2)}</span><span>${m2(mx)}</span></div></div></div>`;
+ }
+ function cards(includeRating=true){
+   const z=ERT32.w52(),b=dcf().ps,a=ERT32.dcfAdjusted().ps,R=rating(),dc=Number(D.market.day_change),dp=Number(D.market.day_change_pct);
+   let s=`<div class="priceCards33">${pc('Current price',m2(D.market.price),'USD/share · '+(D.market.asof||''),dm(dc,dp,'vs previous close'))}${pc('Base fair value — after SBC',m2(a),'Primary · OCF − CapEx − SBC',vsCur(a,'vs current price'),'neg')}${pc('Fair value — before SBC',m2(b),'Reference · OCF − CapEx',vsCur(b,'vs current price'),'neg')}${pc('52W high',z?m2(z.high):'Unavailable',z?.high_date||'',z?curVs(z.high,'current vs 52W high'):'')}${pc('52W low',z?m2(z.low):'Unavailable',z?.low_date||'',z?curVs(z.low,'current vs 52W low'):'')}`;
+   if(includeRating)s+=card('ERT rating',`<span class="stars">${star(R.overall)}</span>`,R.overall.toFixed(1)+' / 5');else{s+=card('RSI / Trend',`${rsi(D.prices).toFixed(1)} · <span class="${D.market.price>sma(D.prices,20)&&sma(D.prices,20)>sma(D.prices,50)?'pos':'warn'}">${D.market.price>sma(D.prices,20)&&sma(D.prices,20)>sma(D.prices,50)?'Bullish':'Mixed'}</span>`,'RSI(14) · moving-average context');}
+   return s+'</div>';
+ }
+ window.ERT33={m2,dm,vsCur,curVs,pc,bar,cards};
+
+ if(!Array.isArray(S.drvSbc)||S.drvSbc.length!==5)S.drvSbc=[...ERT32.sbcScenario('Base')];
+ const oldSbc=ERT32.sbcScenario;ERT32.sbcScenario=function(name=S.drvScenario){return name==='Custom'?[...S.drvSbc]:oldSbc(name)};
+ const oldSet=ERT30.setScenario;ERT30.setScenario=function(name){if(name==='Custom'&&(!Array.isArray(S.drvSbc)||S.drvSbc.length!==5))S.drvSbc=[...oldSbc(S.drvScenario==='Custom'?'Base':S.drvScenario)];oldSet(name)};
+})();
+</script>
+
+<script id="ert33-stable-input">
+(function(){
+ const sel='[data-wa],#terminal,#basis,#maint,[data-g],[data-driver]';
+ function stable(){const x=scrollX,y=scrollY;render();requestAnimationFrame(()=>scrollTo(x,y))}
+ function commit(el){
+   const n=parseFloat(el.value);
+   if(el.matches('[data-wa]')&&Number.isFinite(n))S[el.dataset.wa]=n;
+   else if(el.id==='terminal'&&Number.isFinite(n))S.terminal=n;
+   else if(el.id==='basis')S.basis=el.value;
+   else if(el.id==='maint'&&Number.isFinite(n))S.maint=n;
+   else if(el.matches('[data-g]')&&Number.isFinite(n))S.g[+el.dataset.g]=n;
+   else if(el.matches('[data-driver]')&&Number.isFinite(n)){const i=+el.dataset.i,k=el.dataset.driver;if(k==='rev')S.drvRev[i]=n;if(k==='ocf')S.drvOcf[i]=n;if(k==='cap')S.drvCap[i]=n;if(k==='sbc')S.drvSbc[i]=n;S.drvScenario='Custom';}
+   else return;stable();
+ }
+ document.addEventListener('click',e=>{if(e.target.closest('input,select,textarea'))e.stopPropagation()},true);
+ document.addEventListener('focusin',e=>{const el=e.target.closest(sel);if(el)el.dataset.start=el.value},true);
+ document.addEventListener('keydown',e=>{const el=e.target.closest(sel);if(!el)return;if(e.key==='Enter'){e.preventDefault();e.stopPropagation();commit(el)}if(e.key==='Escape'){e.preventDefault();e.stopPropagation();el.value=el.dataset.start??el.value;el.blur()}},true);
+ document.addEventListener('change',e=>{const el=e.target.closest(sel);if(!el)return;e.preventDefault();e.stopImmediatePropagation();commit(el)},true);
+})();
+</script>
+
+<script id="ert33-flow">
+(function(){
+ const K='ert_flow_v33',TTL=86400000;
+ function base(){try{return (localStorage.getItem('ertApiBase')||'https://ert-live-data.cmyukhk.workers.dev').replace(/\/+$/,'')}catch(_e){return 'https://ert-live-data.cmyukhk.workers.dev'}}
+ function read(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(_e){return null}}function save(d){try{localStorage.setItem(K,JSON.stringify({t:Date.now(),d}))}catch(_e){}}
+ async function load(force=false){const o=read();if(o&&!force&&Date.now()-o.t<TTL){D.earningsFlow=o.d;return o.d}try{const r=await fetch(base()+'/api/earnings-flow?ticker=GOOG'+(force?'&_='+Date.now():''),{cache:'no-store'}),j=await r.json();if(!r.ok||!j.ok||!j.earnings_flow?.available)throw Error(j?.earnings_flow?.reason||j?.error||'Unavailable');D.earningsFlow=j.earnings_flow;save(j.earnings_flow);return j.earnings_flow}catch(e){if(o?.d){D.earningsFlow=o.d;return o.d}D.earningsFlow={available:false,reason:String(e.message||e)};return D.earningsFlow}}
+ const bn=v=>Number.isFinite(Number(v))?'$'+(Number(v)/1000).toFixed(1)+'bn':'—',yy=v=>Number.isFinite(Number(v))?(v>=0?'+':'')+Number(v).toFixed(1)+'% YoY':'YoY unavailable';
+ const nd=(id,t,v,y,c,x,top)=>`<div class="flowNode33 ${c} clickable" data-inspect="flow:${id}" style="left:${x}px;top:${top}px"><div class="n">${t}</div><div class="v">${bn(v)}</div><div class="y ${Number(y)>=0?'pos':'neg'}">${yy(y)}</div></div>`;
+ function html(){
+   const f=D.earningsFlow;if(!f?.available)return `<div class="card" style="margin-top:12px"><h3>Latest Quarter Earnings Flow</h3><div class="sourcebox">${f?.reason||'Loading latest quarterly flow…'}</div></div>`;
+   const L=f.latest||{},Y=f.yoy||{},S=f.segments?.available?f.segments.rows:[],nodes=[],paths=[],W=1120,H=475,px=270,gx=500,ox=725,nx=950,gap=Math.min(67,385/Math.max(1,S.length));
+   S.forEach((s,i)=>nodes.push(nd('seg:'+i,s.name,s.value,null,'segment',20,18+i*gap)));
+   nodes.push(nd('revenue','Revenue',L.revenue,Y.revenue,'fact',px,165),nd('cost','Cost of revenues',L.cost,Y.cost,'fact',px,320),nd('gross','Gross profit',L.gross_profit,null,'derived',gx,120),nd('rnd','R&D',L.rnd,Y.rnd,'fact',gx,265),nd('sales','Sales & marketing',L.sales,Y.sales,'fact',gx,335),nd('gna','G&A',L.gna,Y.gna,'fact',gx,405),nd('op','Operating income',L.op,Y.op,'fact',ox,120),nd('pretax','Pre-tax income',L.pretax,Y.pretax,'fact',ox,210),nd('otheropex','Other OpEx',L.other_opex,null,'derived',ox,330),nd('net','Net income',L.net,Y.net,'fact',nx,160),nd('tax','Tax',L.tax,Y.tax,'fact',nx,300));
+   const p=(x1,y1,x2,y2,col,wid=8)=>{const a=x1+(x2-x1)*.45,b=x1+(x2-x1)*.55;return `<path d="M${x1},${y1} C${a},${y1} ${b},${y2} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="${wid}" opacity=".4" stroke-linecap="round"/>`};
+   S.forEach((s,i)=>paths.push(p(170,45+i*gap,px,195,'#61d99f',Math.max(3,Math.min(20,s.value/L.revenue*25)))));
+   paths.push(p(px+150,195,gx,150,'#5ca8ff',20),p(px+150,200,px+150,345,'#d46f63',12),p(gx+150,150,ox,150,'#61d99f',17),p(gx+150,170,gx+150,295,'#d46f63',7),p(gx+150,175,gx+150,365,'#d46f63',6),p(gx+150,180,gx+150,435,'#d46f63',5),p(ox+150,240,nx,190,'#61d99f',16),p(ox+150,240,nx,330,'#d46f63',8));
+   return `<div class="card" style="margin-top:12px"><h3>Latest Quarter Earnings Flow — Q${f.quarter} FY${f.year}</h3><div class="flowLegend33">Blue = SEC fact · Amber = derived · Green = Business Quant product revenue</div><div class="sourcebox">Auto-updates after Live Refresh. Product revenue is shown only when it reconciles to SEC total revenue. Period ${f.period||'—'} · filed ${f.filed||'—'}.</div><div class="flow33"><div class="flowCanvas33"><svg class="flowSvg33" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${paths.join('')}</svg>${nodes.join('')}</div></div></div>`;
+ }
+ window.ERT33Flow={load,html};
+ const oo=window.overview;window.overview=function(){let x=oo();x=x.replace(/<div class="grid k4">[\s\S]*?<\/div>\s*<div class="grid two" style="margin-top:12px">/,ERT33.cards(true)+ERT33.bar()+'<div class="grid two" style="margin-top:12px">');x=x.replace(/<div class="grid k4" style="margin-top:12px">[\s\S]*?52W range position[\s\S]*?<\/div>\s*<div class="card" style="margin-top:10px">[\s\S]*?<\/div>/,'');return x+html()};
+ addEventListener('load',async()=>{await load(false);if(S.page==='overview')render()},{once:true});document.addEventListener('click',e=>{if(e.target?.id==='ertLiveRefresh')setTimeout(async()=>{await load(true);if(S.page==='overview')render()},1600)},true);
+})();
+</script>
+
+<script id="ert33-pages">
+(function(){
+ window.market=function(){
+   const ps=D.prices,ds=D.dates,s20s=smaSeries(ps,20),s50s=smaSeries(ps,50),s200s=smaSeries(ps,200),s20=sma(ps,20),s50=sma(ps,50),s200=sma(ps,200),after=ERT32.dcfAdjusted().ps,y=Number(D.consensus?.nextAnnual?.year)||ERT30.fy0()+1,r=ERT30.ann('revenue',y),e=ERT30.ann('eps',y);
+   return `<h1>Market & Price Context</h1><div class="lead">Market price, valuation reference points, 52-week range and technical context.</div>${ERT33.cards(false)}${ERT33.bar()}<div class="card" style="margin-top:12px"><h3>Business Quant Street expectations</h3>${D.consensus?.nextAnnual?list([[`FY${y}E Revenue`,r?'$'+(r.estimate/1e9).toFixed(1)+'bn':'Unavailable'],['Revenue low / high',r?'$'+(r.low/1e9).toFixed(1)+'bn / $'+(r.high/1e9).toFixed(1)+'bn':'Unavailable'],[`FY${y}E EPS`,e?e.estimate.toFixed(2):'Unavailable'],['EPS low / high',e?e.low.toFixed(2)+' / '+e.high.toFixed(2):'Unavailable'],['Analyst count','Not provided'],['Source',D.consensus.displaySource||'Business Quant']]):'<p>Unavailable.</p>'}</div><div class="grid k3" style="margin-top:12px">${card('SMA20',money(s20),'Short-term moving average')}${card('SMA50',money(s50),'Medium-term moving average')}${card('SMA200',money(s200),'Long-term moving average')}</div><div class="card" style="margin-top:12px"><h3>Price, moving averages, 52W range and SBC-adjusted DCF</h3>${marketChart32(ds,ps,s20s,s50s,s200s,after)}</div>`;
+ };
+ const ov=window.valuation;window.valuation=function(){let x=ov(),rat=ERT32.sbcScenario(S.drvScenario),actual=(Number(last(by('cashflow.sbc')[2]))/Number(last(by('income.revenue')[2])))*100;const row=`<tr><td class="clickable" data-inspect="driver:sbc"><strong>SBC / Revenue %</strong></td><td class="actual">${pct(actual)}<div class="ert30-small">SEC ACTUAL</div></td>${rat.map((v,i)=>S.drvScenario==='Custom'?`<td><input inputmode="decimal" data-driver="sbc" data-i="${i}" value="${v}"></td>`:`<td class="sbc32"><div class="ert30-cellval">${pct(v)}</div><div class="ert30-small">${S.drvScenario.toUpperCase()} ASSUMPTION</div></td>`).join('')}</tr>`;return x.replace(/<tr><td><strong>SBC \/ Revenue %<\/strong><\/td>[\s\S]*?<\/tr>/,row)};
+ const oi=window.inspector;window.inspector=function(){const k=String(S.sel||'');if(k.startsWith('flow:')){const f=D.earningsFlow||{},L=f.latest||{},Y=f.yoy||{},id=k.slice(5);if(id.startsWith('seg:')){const s=f.segments?.rows?.[+id.split(':')[1]];return specialInspector(s?.name||'Revenue segment',`<div class="traceFact"><b>BUSINESS QUANT SEGMENT DATA</b><br>${s?'$'+(s.value/1000).toFixed(1)+'bn':'Unavailable'}<br>Period ${s?.period||f.period||'—'}</div>`)}const map={revenue:['Revenue',L.revenue,Y.revenue,'SEC FACT'],cost:['Cost of revenues',L.cost,Y.cost,'SEC FACT'],gross:['Gross profit',L.gross_profit,null,'DERIVED'],rnd:['R&D',L.rnd,Y.rnd,'SEC FACT'],sales:['Sales & marketing',L.sales,Y.sales,'SEC FACT'],gna:['G&A',L.gna,Y.gna,'SEC FACT'],op:['Operating income',L.op,Y.op,'SEC FACT'],pretax:['Pre-tax income',L.pretax,Y.pretax,'SEC FACT'],otheropex:['Other OpEx',L.other_opex,null,'DERIVED'],net:['Net income',L.net,Y.net,'SEC FACT'],tax:['Tax',L.tax,Y.tax,'SEC FACT']},m=map[id]||[id,null,null,'Unavailable'];return specialInspector(m[0],`<div class="traceFact"><b>${m[3]}</b><br>${Number.isFinite(m[1])?'$'+(m[1]/1000).toFixed(1)+'bn':'Unavailable'}<br>${Number.isFinite(m[2])?(m[2]>=0?'+':'')+m[2].toFixed(1)+'% YoY':'YoY unavailable'}</div><div class="sourcebox">Period ${f.period||'—'} · ${f.source||'SEC EDGAR'}.</div>`)}return oi()};
 })();
 </script>
 
