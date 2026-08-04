@@ -1,3 +1,4 @@
+PASS Worker syntax
 PASS Frontend script 0 syntax
 PASS Frontend script 1 syntax
 PASS Frontend script 2 syntax
@@ -11,16 +12,26 @@ PASS Frontend script 9 syntax
 PASS Frontend script 10 syntax
 PASS Frontend script 11 syntax
 PASS Frontend script 12 syntax
-PASS Guidance row
-PASS 2027 direction
-PASS 2028+ unknown
-PASS Valuation audit
-PASS Reverse DCF audit
-PASS CORE 3.0 structure retained
-PASS CapEx inspector 2026
-PASS CapEx inspector 2027 unknown exact
-PASS CapEx inspector 2028 assumption
-PASS Reverse DCF upper-bound labelling
-PASS Financial units preserved
-PASS No-refresh navigation preserved
+PASS Frontend script 13 syntax
+PASS Frontend script 14 syntax
+PASS Frontend script 15 syntax
+PASS Frontend script 16 syntax
+PASS Overview 52W cards
+PASS Overview 52W position
+PASS Overview before-SBC reference
+PASS SBC before/after fair value visible
+PASS After-SBC fair value lower
+PASS SBC rows visible
+PASS FY2026 Base CapEx anchored to midpoint
+PASS FY2026 guidance within status
+PASS FY2027 does not falsely say aligned
+PASS Continuous typing works
+PASS No page jump while typing
+PASS Enter commits input
+PASS Market 52W cards
+PASS Market chart 52W labels
+PASS Market chart uses after-SBC DCF
+PASS 52W Inspector details
+PASS SBC Inspector trace
+PASS No-refresh navigation retained
 PASS No browser runtime errors
