@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.4.0.9 BUSINESS QUANT LIVE</title>
+<title>ERT GOOG · CORE 4.1 SINGLE DCF STABILITY</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -2832,6 +2832,63 @@ setTimeout(enhance,0);
    if(!Array.isArray(S.normManual.Custom)){ERT40.enableManualNormalisation();return;}
    S.normManual.Custom[i][k]=v;S.normCustomManual=true;S.drvScenario='Custom';render();
  },true);
+})();
+</script>
+
+
+<style id="ert41-css">
+.ert41-bridge{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:stretch}.ert41-step{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.ert41-step .v{font-size:18px;font-weight:800;margin-top:5px}.ert41-arrow{display:none}.ert41-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ert41-pass{border-left:4px solid var(--green)}.ert41-fail{border-left:4px solid var(--red)}.ert41-details summary{cursor:pointer;font-weight:700}.ert41-details{margin-top:10px}.ert41-reverse{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.ert41-reverse>div{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:11px}.ert41-reverse .v{font-size:20px;font-weight:800;margin:4px 0}.ert41-hidden{display:none!important}
+@media(max-width:1200px){.ert41-bridge{grid-template-columns:repeat(4,1fr)}.ert41-reverse{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.ert41-bridge,.ert41-checks,.ert41-reverse{grid-template-columns:1fr}}
+</style>
+<script id="ert41-single-source">
+(function(){
+ const oldVal41=window.valuation, oldAnalysis41=window.analysis, oldOverview41=window.overview;
+ const m=v=>Number.isFinite(Number(v))?fmt(Number(v),0)+'m':'—';
+ function bridge(name){const r=ERT40.dcf10(name),shares=Number(D.market.shares_m),nc=Number(D.market.net_cash_m);return `<div class="card" style="margin-top:12px"><h3>10-Year DCF Calculation Bridge — ${name}</h3><div class="ert41-bridge"><div class="ert41-step"><div class="sub">PV FY26–35 FCF</div><div class="v">${m(r.pv)}</div></div><div class="ert41-step"><div class="sub">+ PV Terminal Value</div><div class="v">${m(r.pvt)}</div></div><div class="ert41-step"><div class="sub">= Enterprise Value</div><div class="v">${m(r.ev)}</div></div><div class="ert41-step"><div class="sub">+ Net Cash</div><div class="v">${m(nc)}</div></div><div class="ert41-step"><div class="sub">= Equity Value</div><div class="v">${m(r.equity)}</div></div><div class="ert41-step"><div class="sub">÷ Diluted Shares</div><div class="v">${fmt(shares,0)}m</div></div><div class="ert41-step"><div class="sub">= Fair Value / Share</div><div class="v">${money(r.ps)}</div></div></div><details class="ert41-details"><summary>Show annual DCF detail</summary><div class="tw" style="max-height:360px"><table><thead><tr><th>Year</th><th>Revenue</th><th>OCF</th><th>CapEx</th><th>SBC</th><th>Economic FCF</th><th>Discount factor</th><th>PV FCF</th></tr></thead><tbody>${r.detail.map(x=>`<tr><td>FY${x.year}</td><td>${m(x.revenue)}</td><td>${m(x.ocf)}</td><td>${m(x.capex)}</td><td>${m(x.sbc)}</td><td>${m(x.fcf)}</td><td>${x.df.toFixed(3)}</td><td>${m(x.pvFcf)}</td></tr>`).join('')}</tbody></table></div></details></div>`}
+ function reverseDCF(){
+   const p=Number(D.market.price),b=ERT40.dcf10('Base'),eqReq=p*Number(D.market.shares_m),evReq=eqReq-Number(D.market.net_cash_m),gap=b.ev?evReq/b.ev-1:NaN;
+   const d=b.detail,baseRevCagr=d.length?((Math.pow(d[4].revenue/(d[0].revenue/(1+d[0].revGrowth/100)),1/5)-1)*100):NaN;
+   const fcfM=d[4]?.fcfMargin, cap=d[4]?.capMargin;
+   return `<div class="card" style="margin-top:12px"><h3>Reverse DCF — what must be true at the market price?</h3><p>Rather than presenting another fair value, this section translates ${money(p)} into the operating outcome the market requires. WACC ${pct(b.wacc)} and terminal growth ${pct(b.terminal)} are held fixed.</p><div class="ert41-reverse"><div><div class="sub">Required EV vs ERT Base</div><div class="v ${gap>0?'neg':'pos'}">${Number.isFinite(gap)?(gap>=0?'+':'')+(gap*100).toFixed(1)+'%':'—'}</div><div class="small">Market-implied enterprise value ${m(evReq)}</div></div><div><div class="sub">Revenue growth hurdle</div><div class="v">>${Number.isFinite(baseRevCagr)?baseRevCagr.toFixed(1)+'%':'—'}</div><div class="small">If cash conversion is unchanged, growth must exceed ERT Base.</div></div><div><div class="sub">FCF margin hurdle</div><div class="v">>${Number.isFinite(fcfM)?fcfM.toFixed(1)+'%':'—'}</div><div class="small">If growth is unchanged, economic FCF margin must improve.</div></div><div><div class="sub">CapEx normalisation hurdle</div><div class="v"><${Number.isFinite(cap)?cap.toFixed(1)+'%':'—'}</div><div class="small">If other drivers are unchanged, CapEx intensity must normalise faster.</div></div></div><div class="sourcebox">These are directional hurdle tests, not four simultaneous forecasts. The detailed solver belongs in the Inspector; no second intrinsic-value output is created here.</div></div>`;
+ }
+ function checks(){
+   const b=ERT40.dcf10('Base'),upW=ERT40.dcf10('Base',{wacc:b.wacc+.5}),upG=ERT40.dcf10('Base',{terminal:b.terminal+.25});
+   const okW=upW.ps<b.ps,okG=upG.ps>b.ps,valid=Number.isFinite(b.ps)&&b.detail.length===10;
+   const items=[['Single 10Y DCF engine',valid],['WACC ↑ → FV ↓',okW],['Terminal growth ↑ → FV ↑',okG]];
+   return `<div class="card" style="margin-top:12px"><h3>Model Integrity Gate</h3><div class="ert41-checks">${items.map(([a,o])=>`<div class="ert40-audit-item ${o?'ert41-pass':'ert41-fail'}"><strong>${o?'PASS':'FAIL'} · ${a}</strong></div>`).join('')}</div></div>`;
+ }
+ window.valuation=function(){
+   let x=oldVal41(),name=S.drvScenario||'Base';
+   x=x.replace('ERT PRIMARY FAIR VALUE','ERT BASE FAIR VALUE');
+   // Remove standalone extension; normalisation now lives inside Forecast Engine.
+   x=x.replace(/<div class="card" style="margin-top:12px"><h3>10-Year Explicit DCF Extension<\/h3>[\s\S]*?<\/div>(?=<div class="card" style="margin-top:12px"><h3>AI \/ CapEx Investment Return Analysis<\/h3>)/,'');
+   // Remove legacy 5Y result and verbose historical anchor block.
+   x=x.replace(/<div class="grid two" style="margin-top:12px"><div class="card"><h3>DCF Result<\/h3>[\s\S]*?<\/div><\/div>(?=\s*<div class="card" style="margin-top:12px"><h3>Sensitivity)/,'');
+   // Add SBC driver if the legacy five-year table does not show it.
+   if(!x.includes('data-driver="sbc"')) x=x.replace(/(<tr><td><strong>→ FCF margin %<\/strong>)/,`<tr><td class="clickable" data-inspect="v40:sbc"><strong>SBC / Revenue %</strong></td>${S.drvSbc.map((v,i)=>`<td><input inputmode="decimal" data-driver="sbc" data-i="${i}" value="${Number(v).toFixed(1)}"></td>`).join('')}</tr>$1`);
+   // Economic FCF margin must deduct SBC.
+   x=x.replace(/<tr><td><strong>→ FCF margin %<\/strong><\/td>[\s\S]*?<\/tr>/,`<tr><td><strong>→ Economic FCF margin %</strong></td>${S.drvOcf.map((v,i)=>`<td><strong class="tone-pos">${(Number(v)-Number(S.drvCap[i])-Number(S.drvSbc[i]||0)).toFixed(1)}%</strong></td>`).join('')}</tr>`);
+   // Put FY31-35 in the same forecast engine, immediately before CapEx classification.
+   const norm=ERT40UI.normalizationTable();
+   x=x.replace('<div class="finding find-risk"><h4>CapEx classification</h4>',norm+'<div class="finding find-risk"><h4>CapEx classification</h4>');
+   // Replace legacy market-price audit with Reverse DCF and collapse supporting sections.
+   x=x.replace(/<div class="card" style="margin-top:12px"><h3>Legacy 5Y DCF Audit — reference only<\/h3>[\s\S]*?(?=<div class="card" style="margin-top:12px"><h3>Sensitivity)/,reverseDCF());
+   x=x.replace(/<div class="card" style="margin-top:12px"><h3>AI \/ CapEx Investment Return Analysis<\/h3>/,'<details class="card ert41-details" style="margin-top:12px"><summary>AI / CapEx Investment Return Analysis</summary>');
+   // Add bridge as the only detailed valuation result.
+   x=x.replace('<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>',bridge(name)+'<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>');
+   return x+checks();
+ };
+ window.analysis=function(){
+   let x=oldAnalysis41();
+   x=x.replace('ERT vs Street vs Market-implied expectations','Actual vs ERT vs Street vs Market');
+   x=x.replace(/<div class="grid two" style="margin-top:12px"><div class="card"><h3>Business Quant analyst consensus[\s\S]*?<\/div><div class="card"><h3>Upcoming catalysts/,`<div class="grid two" style="margin-top:12px"><div class="card"><details><summary><strong>Street estimate detail (Business Quant)</strong></summary><p class="small">Q3/Q4 and annual Street detail is supporting evidence. Use Financial Statements or Inspector for line-item estimates.</p></details></div><div class="card"><h3>Upcoming catalysts`);
+   return x;
+ };
+ window.overview=function(){let x=oldOverview41();return x.replace(/ERT Primary Fair Value/g,'ERT Base Fair Value').replace(/ERT PRIMARY FAIR VALUE/g,'ERT BASE FAIR VALUE');};
+ // Preserve scroll position for in-page controls that re-render the active page.
+ let savedScroll=0;
+ document.addEventListener('pointerdown',e=>{if(e.target.closest('[data-scenario],[data-copycustom],#resetCustom40,#normToggle,#normManual,[data-inspect]')){const c=document.querySelector('.content');savedScroll=c?c.scrollTop:0;}},true);
+ const oldRender41=window.render;window.render=function(){oldRender41();requestAnimationFrame(()=>{const c=document.querySelector('.content');if(c&&savedScroll>0){c.scrollTop=savedScroll;savedScroll=0;}})};
 })();
 </script>
 
