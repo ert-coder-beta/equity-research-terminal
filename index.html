@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>ERT GOOG · Alpha 1.0 DATA-VALIDATED CORE.4.3 VALUATION-ONLY CLEAN</title>
+<title>ERT GOOG · CORE 4.1 SINGLE DCF STABILITY</title>
 <style>
 :root{--bg:#091017;--panel:#121b25;--panel2:#192636;--line:#2b3b4c;--text:#eef5fc;--muted:#99adbf;--blue:#72a9ff;--green:#62d494;--red:#ff7885;--amber:#f4c65f;--purple:#bd9cff;--cyan:#73d6f2}
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
@@ -114,6 +114,7 @@ body.inspector-collapsed #showInspector{display:block}
 .report .companyOverviewGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.report .companyOverviewBox{border:1px solid #ddd;border-radius:8px;padding:12px}.report .bizMix{width:100%;border-collapse:collapse}.report .bizMix th,.report .bizMix td{padding:8px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}.report .positiveText{color:#08783f}.report .negativeText{color:#b51f34}
 @media(max-width:900px){.driverResults{grid-template-columns:repeat(2,1fr)}.report .companyOverviewGrid{grid-template-columns:1fr}}@media(max-width:650px){.driverResults{grid-template-columns:1fr}}
 </style>
+
 <style id="a095-live-css">
 .livebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;margin-bottom:12px;border:1px solid #29435a;border-radius:9px;background:#0d1925}
 .livepill{font-size:11px;padding:4px 8px;border-radius:999px;background:#15304a;color:#bfe1ff;border:1px solid #315779}
@@ -132,6 +133,7 @@ body.inspector-collapsed #showInspector{display:block}
 @media(max-width:900px){.liveDataGrid{grid-template-columns:repeat(2,1fr)}.refreshBtn{margin-left:0}}
 @media(max-width:650px){.liveDataGrid{grid-template-columns:1fr}}
 </style>
+
 <style id="direct-fix-css">
 #ertLiveFinancials,#ertLiveStatements{display:none!important}
 .reportAnalysisCharts{margin-top:22px}
@@ -144,6 +146,7 @@ body.inspector-collapsed #showInspector{display:block}
 .reportLegend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#556573;margin-top:8px}.reportLegend i{width:14px;height:3px;display:inline-block;margin-right:5px;vertical-align:middle}
 @media(max-width:950px){.reportChartGrid{grid-template-columns:1fr}}
 </style>
+
 <style id="ert33-css">
 .content,.card,.finding,.event,.eventTop,.grid>*{min-width:0}.card,.finding,.event,.eventTop,.metricDesc,.sourcebox,.small,p,strong,h1,h2,h3,h4{overflow-wrap:anywhere}.event p,.event strong,.eventTop strong{white-space:normal;max-width:100%}
 .priceCards33{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.delta33{font-size:13px;font-weight:800;margin-top:5px;line-height:1.35}
@@ -153,13 +156,14 @@ body.inspector-collapsed #showInspector{display:block}
 .flow33{overflow-x:auto}.flowCanvas33{min-width:1120px;height:475px;position:relative}.flowSvg33{position:absolute;inset:0;width:100%;height:100%}.flowNode33{position:absolute;z-index:2;width:150px;border:1px solid var(--line);border-radius:8px;background:#101b27;padding:8px;cursor:pointer}.flowNode33 .n{font-size:11px;font-weight:800}.flowNode33 .v{font-size:17px;font-weight:900}.flowNode33 .y{font-size:10px}.flowNode33.fact{border-left:4px solid #5ca8ff}.flowNode33.derived{border-left:4px solid #f2b84b}.flowNode33.segment{border-left:4px solid #61d99f}.flowLegend33{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin:8px 0}
 @media(max-width:1400px){.priceCards33{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.priceCards33{grid-template-columns:1fr}}
 </style>
+
 </head>
 <body>
 <div id="app"></div>
 <script>
 const D={"years": [2020, 2021, 2022, 2023, 2024], "income": [["income.revenue", "Revenues", [182527, 257637, 282836, 307394, 350018]], ["income.cost", "Cost of revenues", [84732, 110939, 126203, 133332, 146306]], ["income.rnd", "Research and development", [27573, 31562, 39500, 45427, 49326]], ["income.sales", "Sales and marketing", [17946, 22912, 26567, 27917, 27808]], ["income.gna", "General and administrative", [11052, 13510, 15724, 16425, 14188]], ["income.op", "Income from operations", [41224, 78714, 74842, 84293, 112390]], ["income.pretax", "Income before income taxes", [42680, 90734, 71328, 85717, 119815]], ["income.tax", "Provision for income taxes", [7813, 14701, 11356, 11922, 19697]], ["income.net", "Net income", [40269, 76033, 59972, 73795, 100118]], ["income.eps", "Diluted EPS", [2.93, 5.61, 4.56, 5.8, 8.04]], ["income.shares", "Diluted weighted average shares", [13741, 13553, 13159, 12722, 12447]]], "balance": [["balance.cash", "Cash and cash equivalents", [26465, 20945, 21879, 24048, 23466]], ["balance.market", "Marketable securities", [110229, 118704, 91883, 86868, 72191]], ["balance.receivables", "Accounts receivable, net", [31384, 39304, 40258, 47964, 52340]], ["balance.inventory", "Inventory", [728, 1170, 2670, 2671, 3623]], ["balance.current_assets", "Total current assets", [174296, 188143, 164795, 171530, 177520]], ["balance.ppe", "Property and equipment, net", [96960, 110558, 127049, 134345, 171036]], ["balance.goodwill", "Goodwill", [21175, 22956, 28960, 29198, 31400]], ["balance.assets", "Total assets", [319616, 359268, 365264, 402392, 450256]], ["balance.ap", "Accounts payable", [5589, 6037, 5128, 7493, 8280]], ["balance.current_liab", "Total current liabilities", [56834, 64254, 69300, 81814, 87000]], ["balance.long_debt", "Long-term debt", [13932, 12844, 14701, 13253, 10883]], ["balance.liabilities", "Total liabilities", [97072, 107633, 109120, 119013, 125172]], ["balance.equity", "Total stockholders' equity", [222544, 251635, 256144, 283379, 325084]]], "cashflow": [["cashflow.net", "Net income", [40269, 76033, 59972, 73795, 100118]], ["cashflow.depr", "Depreciation and amortisation", [13697, 12441, 15400, 11946, 15311]], ["cashflow.sbc", "Stock-based compensation", [12991, 15376, 19362, 22460, 22785]], ["cashflow.ocf", "Net cash provided by operating activities", [65124, 91652, 91495, 101746, 125299]], ["cashflow.capex", "Purchases of property and equipment", [22281, 24640, 31485, 32251, 52535]], ["cashflow.acquisitions", "Acquisitions, net", [738, 2618, 6969, 1544, 3300]], ["cashflow.buybacks", "Repurchases of stock", [31149, 50274, 59296, 61504, 62222]], ["cashflow.dividends", "Dividend payments", [0, 0, 0, 0, 7363]], ["cashflow.net_change", "Net change in cash", [7967, -5520, 216, -3831, -4651]]], "market": {"price": 192.13, "shares_m": 12447, "net_cash_m": 84774, "asof": "2026-07-31", "model_asof": "2026-08-01"}, "dates": ["2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-01", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30"], "prices": [123.34, 123.86, 125.98, 128.51, 130.54, 130.82, 131.55, 131.37, 129.53, 129.01, 130.69, 131.28, 130.99, 129.55, 129.62, 128.92, 129.18, 130.15, 126.82, 126.88, 124.86, 123.67, 122.05, 123.85, 125.04, 125.98, 125.08, 123.13, 122.76, 123.26, 123.36, 124.56, 124.23, 127.1, 128.28, 131.54, 132.14, 131.99, 130.87, 132.34, 134.2, 134.66, 135.53, 135.31, 134.85, 134.59, 131.79, 130.41, 130.67, 131.07, 132.98, 134.19, 135.07, 135.37, 131.92, 132.21, 131.02, 131.99, 131.75, 131.43, 130.79, 130.53, 127.68, 125.45, 127.44, 128.3, 127.82, 127.49, 127.12, 132.25, 133.27, 133.47, 132.59, 129.05, 129.43, 131.76, 133.44, 134.05, 133.28, 131.59, 131.91, 131.46, 129.86, 132.62, 131.33, 130.66, 127.13, 129.9, 129.84, 129.91, 130.55, 129.43, 128.64, 129.28, 128.21, 128.88, 130.93, 132.31, 134.75, 136.67, 139.71, 140.39, 141.32, 139.69, 139.58, 138.59, 138.68, 137.15, 137.88, 142.33, 141.22, 142.4, 143.68, 142.62, 142.33, 141.66, 142.61, 141.74, 146.36, 148.08, 150.32, 154.43, 157.2, 157.22, 158.14, 158.45, 159.19, 161.27, 157.67, 154.74, 154.37, 155.43, 154.73, 154.6, 156.87, 158.37, 158.39, 157.97, 155.41, 156.54, 156.94, 155.36, 156.46, 155.97, 155.53, 152.64, 154.45, 153.22, 153.94, 154.52, 153.64, 153.69, 153.4, 153.08, 153.58, 152.53, 153.91, 154.25, 152.22, 153.09, 152.47, 153.44, 149.26, 149.99, 146.05, 145.36, 151.01, 152.27, 154.28, 153.04, 151.03, 150.94, 151.74, 151.62, 150.45, 148.92, 148.27, 151.22, 151.31, 150.71, 150.33, 148.7, 146.39, 146.79, 149.28, 150.32, 147.97, 150.82, 151.46, 155.06, 154.97, 152.63, 153.23, 153.13, 151.3, 150.11, 149.54, 148.13, 149.41, 150.14, 149.49, 149.02, 150.79, 151.7, 149.74, 150.39, 153.71, 154.47, 153.09, 156.11, 161.0, 161.52, 157.3, 154.78, 158.52, 158.47, 160.11, 161.46, 162.11, 165.74, 166.5, 168.1, 169.15, 170.07, 175.51, 173.6, 171.51, 174.21, 172.0, 172.79, 171.05, 173.46, 173.87, 175.75, 174.64, 174.76, 170.37, 172.47, 173.71, 174.12, 174.63, 174.21, 174.46, 178.83, 177.92, 177.27, 179.16, 180.06, 179.15, 183.11, 187.22, 186.9, 191.43, 188.66, 192.6, 189.27, 190.57, 190.66, 190.26, 192.13], "historicalMultiples": {"P/E": [31.2, 29.4, 18.6, 24.8, 23.9], "PEG": [1.61, 1.32, 0.94, 1.21, 0.93], "EV/Sales": [7.4, 6.5, 4.1, 5.8, 6.59], "EV/EBIT": [28.5, 25.4, 17.8, 21.2, 20.52], "EV/FCF": [31.7, 28.1, 18.9, 24.4, 31.7]}, "source": {"form": "10-K", "fy": 2024, "filingDate": "2025-02-05", "accession": "0001652044-25-000014", "filing": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000014/goog-20241231.htm", "pdf": "https://www.sec.gov/Archives/edgar/data/1652044/000130817925000513/goog012714-ars.pdf", "pages": {"income": 50, "balance": 49, "cashflow": 53}}, "consensus": {"status":"UNAVAILABLE","displaySource":"Business Quant Analyst Estimates API","asof":null,"provider":"Business Quant","forwardAnnual":{"revenue":[],"eps":[]},"forwardQuarterly":{"revenue":[],"eps":[]},"nextAnnual":null,"priceTargetAvailable":false,"targetLow":null,"targetMedian":null,"targetMean":null,"targetHigh":null,"revenueGrowth":null,"epsGrowth":null}, "events": [{"date": "2026-08-06", "title": "Q2 2026 earnings (test event)", "status": "Estimated", "impact": "High", "watch": "Search growth \u00b7 Cloud growth & margin \u00b7 AI monetisation \u00b7 CapEx \u00b7 management outlook", "source": "Demo event for workflow testing"}, {"date": "2026-09-15", "title": "Regulatory / antitrust milestone (test event)", "status": "Expected", "impact": "High", "watch": "Potential impact on Search economics and moat", "source": "Demo event for workflow testing"}, {"date": "2026-10-27", "title": "Q3 2026 earnings window (test event)", "status": "Estimated", "impact": "High", "watch": "Revenue, margin, AI CapEx, FCF conversion", "source": "Demo event for workflow testing"}]};
 let S={page:'overview',st:'income',sel:'income.revenue',show:true,menu:false,basis:'reported',
-rf:4.3,beta:1.05,erp:4.18,cod:4.4,tax:16.4,terminal:2.5,g:[11,9,8,7,6],maint:28,forecastMode:'driver',drvRev:[11,10,9,8,7],drvOcf:[37,37,37.2,37.3,37.5],drvCap:[15,14,13,12,11],drvScenario:'Base',waccOverride:null};
+rf:4.3,beta:1.05,erp:4.18,cod:4.4,tax:16.4,terminal:2.5,g:[11,9,8,7,6],maint:28,forecastMode:'driver',drvRev:[11,10,9,8,7],drvOcf:[37,37,37.2,37.3,37.5],drvCap:[15,14,13,12,11],drvScenario:'Base'};
 
 const app=document.getElementById('app');
 const rows=()=>[...D.income,...D.balance,...D.cashflow],by=id=>rows().find(x=>x[0]===id);
@@ -172,7 +176,7 @@ function reportedFcf(i=D.years.length-1){let o=Number(by('cashflow.ocf')[2][i]),
 function fcfMargins(){return D.years.map((_,i)=>{let f=reportedFcf(i),r=Number(by('income.revenue')[2][i]);return Number.isFinite(f)&&Number.isFinite(r)&&r!==0?f/r*100:NaN})}
 function baseFcf(){return S.basis==='reported'?reportedFcf():S.basis==='sbc'?reportedFcf()-last(by('cashflow.sbc')[2]):S.basis==='owner'?last(by('cashflow.ocf')[2])-last(by('cashflow.capex')[2])*S.maint/100-last(by('cashflow.sbc')[2]):last(by('income.revenue')[2])*avg(fcfMargins())/100}
 function marketCap(){return D.market.price*D.market.shares_m}
-function wacc(){let coe=S.rf+S.beta*S.erp, debt=last(by('balance.long_debt')[2]),eq=marketCap(),ew=eq/(eq+debt),dw=1-ew,after=S.cod*(1-S.tax/100),calc=coe*ew+after*dw;return {w:S.waccOverride!==null&&S.waccOverride!==''&&Number.isFinite(Number(S.waccOverride))?Number(S.waccOverride):calc,calc,coe,after,ew,dw,debt,eq}}
+function wacc(){let coe=S.rf+S.beta*S.erp, debt=last(by('balance.long_debt')[2]),eq=marketCap(),ew=eq/(eq+debt),dw=1-ew,after=S.cod*(1-S.tax/100);return {w:coe*ew+after*dw,coe,after,ew,dw,debt,eq}}
 function dcf(g=S.g,w=wacc().w,t=S.terminal){
  let pv=0,detail=[],f=baseFcf();
  if(S.forecastMode==='driver'){
@@ -204,7 +208,7 @@ function star(n){let k=Math.max(1,Math.min(5,Math.round(n)));return '★'.repeat
 function rating(){let moat=4.8,quality=4.7,growth=4.2,fin=4.6,capital=4.1,val=Math.max(1,Math.min(5,3+(dcf().ps/D.market.price-1)*4)),risk=3.4;let overall=moat*.18+quality*.18+growth*.13+fin*.14+capital*.12+val*.17+risk*.08;return {moat,quality,growth,fin,capital,val,risk,overall}}
 const descr={"P/E":"Price paid for each $1 of earnings","PEG":"P/E adjusted for earnings growth","EV/Sales":"Business value per $1 of revenue","EV/EBIT":"Business value per $1 of operating profit","EV/FCF":"Business value per $1 of free cash flow"};
 
-function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.4.3</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
+function appLayout(content){return `<div class="app"><header class="top"><button class="menuBtn" id="menuBtn">☰</button><div><div class="brand">Equity Research Terminal</div><div class="tag">Every number traceable. Every valuation explainable.</div></div><div class="sp"></div><div class="ticker">GOOG · Alpha 1.0 DATA-VALIDATED CORE.4.0</div></header><div class="drawerShade ${S.menu?'open':''}" id="shade"></div><div class="shell"><aside class="side ${S.menu?'open':''}"><nav class="nav">${[['overview','Overview'],['financials','Financials'],['analysis','Analysis'],['valuation','Valuation'],['market','Market'],['research','Research'],['report','Report'],['disclaimer','Disclaimer']].map(x=>`<button data-page="${x[0]}" class="${S.page===x[0]?'active':''}">${x[1]}</button>`).join('')}</nav></aside><main class="main"><div class="work ${S.show?'':'inspectorCollapsed'}" id="work"><section class="content">${content}</section>${S.show?'<div class="res" id="res"></div>':''}${inspector()}</div><div class="footer">Reference only. Not investment advice. LIVE values are source-labelled; invalid live financial data is blocked from valuation.</div></main></div></div>`}
 
 
 function overview(){
@@ -237,8 +241,27 @@ function analysis(){
 function snap(a,b,c,id=''){return `<div class="clickable" data-inspect="${id}"><span class="sub">${a}</span><b class="${c}">${b}</b></div>`}function cmp(a,b,c,d,e){return `<div class="compare"><span>${a}</span><strong>${b}</strong><strong>${c}</strong><strong class="purple">${d}</strong><strong class="warn">${e}</strong></div>`}
 
 function valuation(){
- if(!window.ERT40UI?.page)return `<h1>Valuation Studio</h1><div class="notice">Valuation module is loading…</div>`;
- return ERT40UI.page();
+ let W=wacc(),R=dcf(),mos=(R.ps/D.market.price-1)*100,fcfm=fcfMargins(),termRange=[1.5,2,2.5,3,3.5];
+ let d=R.detail||[],y5=d[d.length-1]||{},revCagr=d.length&&d[0].revenue?((Math.pow(d[d.length-1].revenue/last(by('income.revenue')[2]),1/5)-1)*100):fiveYCagrForecast();
+ return `<h1>Valuation Studio</h1><div class="lead">Every assumption is editable. Click any label/value for definition, benchmark, source and valuation impact.</div>
+ <div class="grid two"><div class="card"><h3 class="clickable" data-inspect="wacc">WACC <span class="value tone-model">${pct(W.w)}</span></h3><div class="small">Weighted average cost of capital — the discount rate used to convert future cash flows into today's value.</div><div class="formgrid">
+ ${waInput('Risk-free rate (%)','rf',S.rf,'wacc:rf')}${waInput('Beta','beta',S.beta,'wacc:beta')}${waInput('Equity risk premium (%)','erp',S.erp,'wacc:erp')}${waInput('Pre-tax cost of debt (%)','cod',S.cod,'wacc:debt')}${waInput('Tax rate (%)','tax',S.tax,'wacc:tax')}<label class="clickable" data-inspect="wacc:weights">Equity / debt weights<input value="${(W.ew*100).toFixed(2)}% / ${(W.dw*100).toFixed(2)}%" disabled></label></div>
+ <div class="formula clickable" data-inspect="wacc">Cost of equity = ${pct(S.rf)} + ${S.beta.toFixed(2)} × ${pct(S.erp)} = ${pct(W.coe)}<br>After-tax cost of debt = ${pct(S.cod)} × (1-${pct(S.tax)}) = ${pct(W.after)}<br>Equity weight ${(W.ew*100).toFixed(2)}% · Debt weight ${(W.dw*100).toFixed(2)}%<br><strong>WACC = ${pct(W.w)}</strong></div></div>
+ <div class="card"><h3>Terminal growth assumption</h3><label class="sub clickable" data-inspect="terminal">Selected long-run growth (%)<input id="terminal" value="${S.terminal}" style="width:100%;margin-top:5px;background:#0a121b;color:#fff;border:1px solid var(--line);padding:10px;border-radius:7px"></label><div class="value tone-model clickable" data-inspect="terminal">${pct(S.terminal)}</div><div class="small">Growth after the explicit 5-year forecast. Editable independently from WACC.</div>${list([['Conservative reference','2.0%'],['Base reference','2.5%'],['Optimistic reference','3.0%'],['WACC − g spread',pct(W.w-S.terminal)],['Terminal value share of PV',pct(R.tvshare)]])}<div class="finding ${R.tvshare>70?'find-risk':'find-pos'} clickable" data-inspect="terminal"><h4>Model dependency: ${R.tvshare>70?'HIGH':'MODERATE'}</h4><p>${pct(R.tvshare)} of present value comes from terminal value, so small WACC/g changes can materially move fair value.</p></div></div></div>
+ <div class="card" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers</h3><p>Build the forecast from operating drivers. Changing any driver updates the DCF immediately.</p><div class="sourcebox"><b>Base scenario anchor:</b> after Live Refresh, Base is re-anchored to the latest SEC annual revenue growth, OCF margin and CapEx intensity, blended with recent history. Bear/Bull are spreads around that live Base; Custom preserves your manual inputs.</div>
+ <div class="driverBtns"><button data-scenario="Bear" class="${S.drvScenario==='Bear'?'active':''}">Bear</button><button data-scenario="Base" class="${S.drvScenario==='Base'?'active':''}">Base</button><button data-scenario="Bull" class="${S.drvScenario==='Bull'?'active':''}">Bull</button><button data-scenario="Custom" class="${S.drvScenario==='Custom'?'active':''}">Custom</button><button id="resetDrivers">Reset to Base</button></div>
+ <table class="driverTable"><thead><tr><th>Driver</th>${[1,2,3,4,5].map(x=>`<th>Y${x}</th>`).join('')}</tr></thead><tbody>
+ <tr><td class="clickable" data-inspect="driver:revenue"><strong>Revenue growth %</strong></td>${S.drvRev.map((v,i)=>`<td><input inputmode="decimal" data-driver="rev" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+ <tr><td class="clickable" data-inspect="driver:ocf"><strong>OCF margin %</strong></td>${S.drvOcf.map((v,i)=>`<td><input inputmode="decimal" data-driver="ocf" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+ <tr><td class="clickable" data-inspect="driver:capex"><strong>CapEx / Revenue %</strong></td>${S.drvCap.map((v,i)=>`<td><input inputmode="decimal" data-driver="cap" data-i="${i}" value="${v}"></td>`).join('')}</tr>
+ <tr><td><strong>→ FCF margin %</strong></td>${S.drvOcf.map((v,i)=>`<td><strong class="tone-pos">${(v-S.drvCap[i]).toFixed(1)}%</strong></td>`).join('')}</tr></tbody></table>
+ <div class="driverResults">
+ ${card('Scenario',S.drvScenario,'Bear / Base / Bull / Custom')}${card('5Y Revenue CAGR',pct(revCagr),'Driver-based forecast')}${card('Y5 FCF margin',y5.fcfMargin!=null?pct(y5.fcfMargin):'—','OCF margin − CapEx intensity')}${card('Y5 FCF',y5.fcf?fmt(y5.fcf)+'m':'—','Calculated from drivers')}
+ </div>
+ <div class="finding find-risk"><h4>CapEx classification</h4><p><strong>Maintenance / Growth / One-off / Unclassified:</strong> Alphabet does not separately disclose a precise split in this prototype. Do not invent precision. The Inspector explains how CapEx intensity affects FCF and fair value.</p></div></div>
+ <div class="grid two" style="margin-top:12px"><div class="card"><h3>DCF Result</h3><div class="clickable" data-inspect="dcfresult">${list([['Equity value',fmt(R.equity)+' USD million'],['Shares outstanding',fmt(D.market.shares_m)+' million shares'],['Intrinsic value',money(R.ps)+' / share'],['Current price',money(D.market.price)+' / share'],['Margin of safety',pct(mos)]])}</div><div class="sourcebox"><strong>Data dates:</strong><br>Price: ${D.market.asof}<br>Shares / financial facts: latest SEC live refresh<br>Model recalculated: ${D.market.model_asof}</div></div>
+ <div class="card"><h3>Historical FCF anchor</h3><div class="formula clickable" data-inspect="fcfmargin">${D.years.map((y,i)=>`${y}: ${pct(fcfm[i])}`).join('<br>')}<br><strong>5Y average = ${pct(avg(fcfm))}</strong><br>Median = ${pct(med(fcfm))}</div><p class="small">Use history as context, not as a substitute for a forward CapEx / cash-conversion thesis.</p></div></div>
+ <div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>${sensitivity(termRange)}</div>`;
 }
 function waInput(label,key,val,id){return `<label class="clickable" data-inspect="${id}">${label}<input data-wa="${key}" value="${val}"></label>`}
 function sensitivity(ts){
@@ -432,33 +455,12 @@ function specialInspector(title,body){return `<aside class="ins mobileOpen"><div
 function soWhat(id){if(id==='cashflow.capex')return 'CapEx reduces current free cash flow, but may create future capacity and AI growth. The key question is whether future ROIC justifies the spending.';if(id==='income.revenue')return 'Revenue growth sets the starting point for future profit and FCF. Faster sustainable growth usually raises intrinsic value.';if(id==='balance.receivables')return 'Receivables should be compared with revenue growth. If receivables rise much faster, collection quality may be weakening.';return 'Use the trend, source and related calculations to understand whether this item improves or weakens the investment thesis.'}
 function spark(a){let W=320,H=150,p=24,mn=Math.min(...a),mx=Math.max(...a),x=i=>p+i*(W-2*p)/(a.length-1),y=v=>H-p-(v-mn)/(mx-mn||1)*(H-2*p),d=a.map((v,i)=>(i?'L':'M')+x(i)+','+y(v)).join(' ');return `<div class="chart" style="height:165px"><svg viewBox="0 0 ${W} ${H}"><line class="axis" x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}"/><path class="priceLine" d="${d}"/>${a.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="var(--blue)"/><text x="${x(i)}" y="${H-6}" fill="#99adbf" font-size="9" text-anchor="middle">${D.years[i]}</text>`).join('')}</svg></div>`}
 
-function refreshValuationContent(){
- if(S.page!=='valuation')return render();
- const c=document.querySelector('.content');if(!c)return render();
- const top=c.scrollTop,left=c.scrollLeft,tw=[...c.querySelectorAll('.ert40-driverwrap')].map(x=>({l:x.scrollLeft,t:x.scrollTop}));
- c.innerHTML=valuation();
- const wraps=[...c.querySelectorAll('.ert40-driverwrap')];wraps.forEach((x,i)=>{if(tw[i]){x.scrollLeft=tw[i].l;x.scrollTop=tw[i].t}});
- c.scrollTop=top;c.scrollLeft=left;
- bindValuationLocal();
-}
-function updateValuationInspectorOnly(id){
- if(id){S.sel=id;S.show=true}
- if(typeof window.ERT34_UPDATE_INSPECTOR==='function'){window.ERT34_UPDATE_INSPECTOR();return}
- const work=document.getElementById('work');if(!work)return;const old=work.querySelector('.ins'),html=inspector(),tmp=document.createElement('div');tmp.innerHTML=html;const neo=tmp.firstElementChild;if(old&&neo)old.replaceWith(neo);
-}
-function bindValuationLocal(){
- if(S.page!=='valuation')return;
- document.querySelectorAll('.content [data-inspect]').forEach(el=>el.onclick=e=>{if(e.target.closest('input,select,textarea'))return;e.preventDefault();e.stopPropagation();updateValuationInspectorOnly(el.dataset.inspect)});
- document.querySelectorAll('.content [data-scenario]').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();window.ERT30?.setScenario?.(b.dataset.scenario)});
- const rb=document.getElementById('resetDrivers');if(rb)rb.onclick=e=>{e.preventDefault();e.stopPropagation();window.ERT30?.setScenario?.('Base')};
-}
-window.ERT43_REFRESH_VALUATION=refreshValuationContent;
 function render(){let P={overview,financials,analysis,valuation,market,research,report,disclaimer};app.innerHTML=appLayout(P[S.page]());bind()}
 function bind(){
- document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{S.page=b.dataset.page;S.menu=false;if(S.page==='valuation'){S.sel='v40:dcf10';S.show=true}render()});
+ document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{S.page=b.dataset.page;S.menu=false;render()});
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{S.st=b.dataset.tab;S.sel=D[S.st][0][0];render()});
  document.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{S.sel=b.dataset.row;S.show=true;render()});
- document.querySelectorAll('[data-inspect]').forEach(b=>b.onclick=()=>{if(S.page==='valuation'){updateValuationInspectorOnly(b.dataset.inspect);return}S.sel=b.dataset.inspect;S.show=true;render()});
+ document.querySelectorAll('[data-inspect]').forEach(b=>b.onclick=()=>{S.sel=b.dataset.inspect;S.show=true;render()});
  document.getElementById('menuBtn')?.addEventListener('click',()=>{S.menu=!S.menu;render()});
  document.getElementById('shade')?.addEventListener('click',()=>{S.menu=false;render()});
  document.getElementById('hide')?.addEventListener('click',()=>{S.show=false;render()});
@@ -489,7 +491,6 @@ function bind(){
  document.getElementById('resetDrivers')?.addEventListener('click',()=>{let b=S.liveBaseDrivers||{rev:[11,10,9,8,7],ocf:[37,37,37.2,37.3,37.5],cap:[15,14,13,12,11]};S.drvRev=[...b.rev];S.drvOcf=[...b.ocf];S.drvCap=[...b.cap];S.drvScenario='Base';render()});
 
  document.getElementById('save')?.addEventListener('click',()=>{localStorage.setItem('ert07notes',document.getElementById('notes').value);document.getElementById('save').textContent='Saved'});
- bindValuationLocal();
  let r=document.getElementById('res'),w=document.getElementById('work');if(r&&w&&S.show&&window.innerWidth>767){let drag=false;r.onmousedown=()=>drag=true;window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(!drag)return;let b=w.getBoundingClientRect(),right=Math.max(290,Math.min(620,b.right-e.clientX));w.style.gridTemplateColumns=`minmax(560px,1fr) 6px ${right}px`};r.ondblclick=()=>w.style.gridTemplateColumns='minmax(560px,1fr) 6px 360px'}
 }
 try{render();}catch(err){console.error(err);document.getElementById('app').innerHTML='<div style="padding:30px"><h1>ERT startup error</h1><pre>'+String(err.stack||err)+'</pre></div>'}
@@ -594,6 +595,8 @@ if(typeof oldRender==='function'){
 setTimeout(enhance,0);
 })();
 </script>
+
+
 <script id="a095-live-runtime">
 (function(){
   const DEFAULT_API = 'https://YOUR-WORKER.workers.dev';
@@ -853,7 +856,7 @@ setTimeout(enhance,0);
       let W=origWacc();
       if(!s?.validation?.ok||s.debt_m==null)return W;
       let coe=S.rf+S.beta*S.erp, eq=marketCap(), debt=s.debt_m, ew=eq/(eq+debt),dw=1-ew,after=S.cod*(1-S.tax/100);
-      return {w:S.waccOverride!==null&&S.waccOverride!==''&&Number.isFinite(Number(S.waccOverride))?Number(S.waccOverride):coe*ew+after*dw,calc:coe*ew+after*dw,coe,after,ew,dw,debt,eq};
+      return {w:coe*ew+after*dw,coe,after,ew,dw,debt,eq};
     };
   }
   if(typeof origDcf==='function'){
@@ -910,6 +913,7 @@ setTimeout(enhance,0);
   window.ERT_REFRESH_LIVE=refresh;
 })();
 </script>
+
 <style id="ert-index5-financials-recovery-css">
 /* The old live anchor was injected above the whole application. Hide it.
    A scoped version is rendered inside Financial Statements instead. */
@@ -932,6 +936,7 @@ setTimeout(enhance,0);
 @media(max-width:1000px){.finRecoverGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.finRecoverGrid{grid-template-columns:1fr}}
 </style>
+
 <script id="ert-index5-financials-recovery">
 (function(){
   const originalFinancials = window.financials;
@@ -1161,6 +1166,8 @@ setTimeout(enhance,0);
   };
 })();
 </script>
+
+
 <script id="direct-fix-consensus-report">
 (function(){
  function consYear(){return Number(D.consensus?.nextAnnual?.year)||Number(String(D.live?.sec?.latest_period||'').slice(0,4))||D.years.at(-1)+1}
@@ -1222,6 +1229,8 @@ setTimeout(enhance,0);
  }
 })();
 </script>
+
+
 <script id="consensus-cache-ui">
 (function(){
  const oldRender=window.render;
@@ -1242,6 +1251,8 @@ setTimeout(enhance,0);
  }
 })();
 </script>
+
+
 <script id="ert-consensus-businessquant-v29">
 (function(){
   const KEY='ert_consensus_GOOG_businessquant_v29';
@@ -1316,6 +1327,8 @@ setTimeout(enhance,0);
   },{once:true});
 })();
 </script>
+
+
 <style id="ert29-businessquant-css">
 .bqtag{display:block;font-size:9px;line-height:1.25;margin-top:3px;color:#bcaaf7}
 .bq-est{background:#211c38!important}
@@ -1533,6 +1546,8 @@ setTimeout(enhance,0);
  };
 })();
 </script>
+
+
 <script id="ert291-nav-memory-hotfix">
 (function(){
   const prior=window.render;
@@ -1555,6 +1570,8 @@ setTimeout(enhance,0);
   };
 })();
 </script>
+
+
 <style id="ert30-css">
 .ert30-driver{min-width:1120px}.ert30-driver th,.ert30-driver td{min-width:120px;vertical-align:middle}
 .ert30-driver th:first-child,.ert30-driver td:first-child{min-width:180px;position:sticky;left:0;z-index:3;background:#111c29}
@@ -1565,6 +1582,7 @@ setTimeout(enhance,0);
 .fin30 .street{background:#211c38}.fin30 .actual{background:#10283a}.fin30 .ytd{background:#123146}.fin30 .ert{background:#271d3b}.fin30-unit{margin:8px 0 10px;font-size:11px;color:#9ecfff}
 .traceFact,.traceAssume,.traceCalc{padding:8px 10px;border-radius:7px;margin:7px 0}.traceFact{background:#10283a;border-left:3px solid #59a8e8}.traceAssume{background:#211c38;border-left:3px solid #a988ff}.traceCalc{background:#0f211d;border-left:3px solid #36d399}
 </style>
+
 <script id="ert30-core">
 (function(){
  const av=a=>{const b=(a||[]).map(Number).filter(Number.isFinite);return b.length?b.reduce((x,y)=>x+y,0)/b.length:NaN};
@@ -1605,7 +1623,7 @@ setTimeout(enhance,0);
  }
  function setScenario(name){
    if(name!=='Custom'){const p=scenario(name);S.drvRev=[...p.rev];S.drvOcf=[...p.ocf];S.drvCap=[...p.cap];S.scenarioMeta=p.meta}
-   S.drvScenario=name;S.sel='scenario:'+name;S.show=true;if(S.page==='valuation'&&typeof window.ERT43_REFRESH_VALUATION==='function')window.ERT43_REFRESH_VALUATION();else render();
+   S.drvScenario=name;S.sel='scenario:'+name;S.show=true;render();
  }
  window.ERT30={fy0,years,ann,actualRev,actualGrowth,actualOcf,actualCap,hist,bqGrowth,scenario,setScenario};
  const prior=window.render;
@@ -1619,6 +1637,7 @@ setTimeout(enhance,0);
  };
 })();
 </script>
+
 <script id="ert30-pages">
 (function(){
  const cy=()=>Number(D.consensus?.nextAnnual?.year)||ERT30.fy0()+1;
@@ -1679,8 +1698,18 @@ setTimeout(enhance,0);
    <tr><td><strong>→ FCF (USD m)</strong></td>${c(fmt(reportedFcf(),0),'actual','SEC ACTUAL')}${d.map(x=>c(fmt(x.fcf,0),'calc','CALCULATED')).join('')}</tr>`;
  }
 
- 
- 
+ const oldVal=window.valuation;
+ window.valuation=function(){
+   let x=oldVal(),fy0=ERT30.fy0(),yrs=ERT30.years(),R=dcf(),d=R.detail||[],y5=d.at(-1)||{},revCagr=d.length?((Math.pow(d.at(-1).revenue/ERT30.actualRev(),1/5)-1)*100):fiveYCagrForecast();
+   const card30=`<div class="card" style="margin-top:12px"><h3>FCF Forecast Engine — actual anchor + ERT scenarios + Street benchmark</h3>
+   <p>FY${fy0}A is the latest completed SEC actual year. FY${fy0+1}E–FY${fy0+5}E are ERT scenario forecasts. Business Quant Revenue is shown as a benchmark.</p>
+   <div class="sourcebox"><b>Scenario logic:</b> Base keeps the SEC historical-blend logic. Bear/Bull use Business Quant Low/High Revenue dispersion plus historical OCF/CapEx volatility. Custom preserves manual inputs. Click a scenario to trace it in the Inspector.</div>
+   <div class="driverBtns"><button data-scenario="Bear" class="${S.drvScenario==='Bear'?'active':''}">Bear</button><button data-scenario="Base" class="${S.drvScenario==='Base'?'active':''}">Base</button><button data-scenario="Bull" class="${S.drvScenario==='Bull'?'active':''}">Bull</button><button data-scenario="Custom" class="${S.drvScenario==='Custom'?'active':''}">Custom</button><button id="resetDrivers">Reset to Base</button></div>
+   <div class="tw"><table class="driverTable ert30-driver"><thead><tr><th>Driver / output</th><th>FY${fy0}A<span class="ert30-lock">Y0 · SEC ACTUAL</span></th>${yrs.map((y,i)=>`<th>FY${y}E<span class="ert30-street">Y${i+1} · ERT</span></th>`).join('')}</tr></thead><tbody>${forecastRows()}</tbody></table></div>
+   <div class="driverResults">${card('Scenario',S.drvScenario,'Bear / Base / Bull / Custom')}${card('5Y Revenue CAGR',pct(revCagr),'ERT forecast')}${card('Y5 FCF margin',y5.fcfMargin!=null?pct(y5.fcfMargin):'—','OCF margin − CapEx intensity')}${card('Y5 FCF',y5.fcf?fmt(y5.fcf)+'m':'—','Calculated')}</div></div>`;
+   const reCard=/<div class="card" style="margin-top:12px"><h3>FCF Forecast Engine — editable drivers<\/h3>[\s\S]*?<div class="finding find-risk"><h4>CapEx classification<\/h4>[\s\S]*?<\/div><\/div>/;
+   return reCard.test(x)?x.replace(reCard,card30):x;
+ };
 
  const oldInspector=window.inspector;
  window.inspector=function(){
@@ -1694,6 +1723,8 @@ setTimeout(enhance,0);
  };
 })();
 </script>
+
+
 <style id="ert31-css">
 .mgmt31{background:#18251c!important}
 .unknown31{background:#2b2518!important}
@@ -1707,6 +1738,7 @@ setTimeout(enhance,0);
 .bridge31 .head{background:#162334;font-weight:800}
 @media(max-width:900px){.audit31{grid-template-columns:repeat(2,1fr)}}
 </style>
+
 <script id="ert31-capex-guidance">
 (function(){
   const fy0=()=>window.ERT30?.fy0?.()||Number(D.years?.at(-1))||2025;
@@ -1750,10 +1782,43 @@ setTimeout(enhance,0);
   window.ERT31={MGMT,fy0,years,capexM,guidanceStatus,impliedIntensity,reverseAudit,gap};
 })();
 </script>
+
 <script id="ert31-valuation">
 (function(){
-  
-  
+  const oldVal=window.valuation;
+  window.valuation=function(){
+    let x=oldVal();
+    const yrs=ERT31.years(),R=dcf(),ra=ERT31.reverseAudit(),gap=ERT31.gap();
+    const c26=ERT31.capexM(0),c27=ERT31.capexM(1),s26=ERT31.guidanceStatus(0),s27=ERT31.guidanceStatus(1),ii=ERT31.impliedIntensity();
+
+    const guidanceRows=`<tr><td><strong>ERT CapEx (USD m)</strong></td><td class="actual">${fmt(Number(last(by('cashflow.capex')[2])),0)}<div class="ert30-small">SEC ACTUAL</div></td>${yrs.map((y,i)=>`<td class="${ERT31.guidanceStatus(i).cls}"><div class="ert30-cellval">${Number.isFinite(ERT31.capexM(i))?fmt(ERT31.capexM(i),0):'—'}</div><div class="ert30-small">${ERT31.guidanceStatus(i).label}</div></td>`).join('')}</tr>
+      <tr><td><strong>Management CapEx guidance</strong></td><td class="mgmt31">—<div class="guide31">HISTORICAL ACTUAL</div></td>${yrs.map(y=>{
+        if(y===2026)return `<td class="mgmt31"><div class="ert30-cellval">175,000–185,000</div><div class="guide31">FY2026 GUIDANCE · midpoint 180,000</div></td>`;
+        if(y===2027)return `<td class="mgmt31"><div class="ert30-cellval">Exact amount not verified</div><div class="guide31">DIRECTION ONLY · exact amount not given</div></td>`;
+        return `<td class="unknown31"><div class="ert30-cellval">Unknown</div><div class="unknownTag31">NO NORMALISATION TIMETABLE DISCLOSED</div></td>`;
+      }).join('')}</tr>`;
+
+    x=x.replace(/(<tr><td><strong>→ FCF \(USD m\)<\/strong><\/td>[\s\S]*?<\/tr>)/, '$1'+guidanceRows);
+
+    const audit=`<div class="card" style="margin-top:12px"><h3>Why is Fair Value different from Market Price?</h3>
+      <div class="audit31">
+        <div class="a"><span class="sub">Current price</span><div class="v">${money(D.market.price)}</div><div class="small">${D.market.asof||'—'}</div></div>
+        <div class="a"><span class="sub">ERT Base fair value</span><div class="v">${money(R.ps)}</div><div class="small">DCF under current assumptions</div></div>
+        <div class="a"><span class="sub">Fair value vs price</span><div class="v ${gap>=0?'pos':'neg'}">${pct(gap)}</div><div class="small">Audit the assumptions before interpreting this gap</div></div>
+        <div class="a"><span class="sub">Terminal value share</span><div class="v">${pct(R.tvshare)}</div><div class="small">${R.tvshare>70?'HIGH model dependency':'Moderate model dependency'}</div></div>
+      </div>
+      <div class="bridge31">
+        <div class="head">Audit item</div><div class="head">ERT model</div><div class="head">Management / fact</div><div class="head">Check</div><div class="head">Meaning</div>
+        <div>FY2026 CapEx</div><div>${Number.isFinite(c26)?fmt(c26,0)+'m':'—'}</div><div>175,000–185,000m</div><div>${s26.label}</div><div>${Number.isFinite(ii)?'Guidance midpoint implies ~'+pct(ii)+' of ERT FY2026 revenue':'—'}</div>
+        <div>FY2027 CapEx</div><div>${Number.isFinite(c27)?fmt(c27,0)+'m':'—'}</div><div>Exact amount not verified</div><div>${s27.label}</div><div>Exact amount was not provided.</div>
+        <div>FY2028–FY2030</div><div>ERT scenario assumptions</div><div>No normalisation timetable disclosed</div><div>ASSUMPTION</div><div>Any post-2027 normalisation is an ERT thesis, not management guidance.</div>
+        <div>Reverse DCF</div><div>${ra.label}</div><div>Search range −20% to +50%</div><div>${ra.hitUpper?'BOUND HIT':'Solved'}</div><div>${ra.hitUpper?'Do not read 50.0% as a precise market expectation. The solver reached its ceiling.':'Solved inside the configured range.'}</div>
+      </div>
+      <div class="sourcebox"><strong>Management guidance:</strong><br>${ERT31.MGMT.source2026}.<br>${ERT31.MGMT.source2027}.<br><strong>Unknown:</strong> no management CapEx normalisation date is assumed for FY2028 onward.</div>
+    </div>`;
+    x=x.replace('<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>',audit+'<div class="card" style="margin-top:12px"><h3>Sensitivity — WACC × terminal growth (USD/share)</h3>');
+    return x;
+  };
 
   const oldOverview=window.overview;
   window.overview=function(){
@@ -1781,6 +1846,8 @@ setTimeout(enhance,0);
   };
 })();
 </script>
+
+
 <style id="ert32-css">
 .range32{height:8px;border-radius:999px;background:#203245;position:relative;margin-top:10px;overflow:visible}
 .range32 i{position:absolute;top:-4px;width:4px;height:16px;background:#fff;border-radius:2px;transform:translateX(-50%)}
@@ -1794,6 +1861,7 @@ setTimeout(enhance,0);
 @media(max-width:1200px){.market32{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.market32,.valuationBridge32{grid-template-columns:1fr}}
 </style>
+
 <script id="ert32-core">
 (function(){
  const avg=a=>{const b=(a||[]).map(Number).filter(Number.isFinite);return b.length?b.reduce((x,y)=>x+y,0)/b.length:NaN};
@@ -1862,6 +1930,7 @@ setTimeout(enhance,0);
  window.ERT32={w52,rangePos,actualSbcRatioSeries,sbcScenario,dcfAdjusted,capexGuidanceScenario,guidedCapexY1,applyGuidedCapex};
 })();
 </script>
+
 <script id="ert32-capex-fix">
 (function(){
   // Upgrade the scenario setter: FY2026 CapEx is anchored to management range.
@@ -1902,10 +1971,32 @@ setTimeout(enhance,0);
   };
 })();
 </script>
+
 <script id="ert32-valuation-sbc">
 (function(){
- 
- 
+ const oldVal=window.valuation;
+ window.valuation=function(){
+   let x=oldVal(),before=dcf(),after=ERT32.dcfAdjusted(),impact=after.ps-before.ps,impactPct=before.ps?impact/before.ps*100:NaN;
+   const bridge=`<div class="card" style="margin-top:12px"><h3>SBC valuation bridge — before vs after stock-based compensation</h3>
+     <div class="valuationBridge32">
+       <div><span class="sub">Fair value before SBC</span><div class="v">${money(before.ps)}</div><div class="small">Reference · OCF − CapEx</div></div>
+       <div class="sbcAdj32"><span class="sub">Fair value after SBC</span><div class="v">${money(after.ps)}</div><div class="small">Primary shareholder-adjusted view · OCF − CapEx − SBC</div></div>
+       <div><span class="sub">SBC valuation impact</span><div class="v neg">${money(impact)}/share</div><div class="small">${pct(impactPct)} vs before-SBC value</div></div>
+       <div><span class="sub">Current market price</span><div class="v">${money(D.market.price)}</div><div class="small">Compare both DCF bases with market price</div></div>
+     </div>
+     <div class="sourcebox"><strong>Current treatment:</strong> ERT shows both values. The after-SBC view treats stock-based compensation as an economic cost and does not separately apply a second full SBC dilution penalty. Forecast SBC / Revenue is derived from SEC history; Bear/Base/Bull use data-derived historical dispersion.</div>
+   </div>`;
+   x=x.replace('<div class="card" style="margin-top:12px"><h3>Why is Fair Value different from Market Price?</h3>',bridge+'<div class="card" style="margin-top:12px"><h3>Why is Fair Value different from Market Price?</h3>');
+
+   // Add SBC rows into the forecast engine directly after reported FCF.
+   const ad=after.detail||[];
+   const histSbc=Number(last(by('cashflow.sbc')[2])),histRev=Number(last(by('income.revenue')[2])),histRatio=histRev>0?histSbc/histRev*100:NaN;
+   const sbcRows=`<tr><td class="clickable" data-inspect="driver:sbc"><strong>Stock-based compensation (USD m)</strong></td><td class="actual">${Number.isFinite(histSbc)?fmt(histSbc,0):'—'}<div class="ert30-small">SEC ACTUAL</div></td>${ad.map(z=>`<td class="sbc32"><div class="ert30-cellval">${fmt(z.sbc,0)}</div><div class="ert30-small">ERT SBC FORECAST</div></td>`).join('')}</tr>
+   <tr><td><strong>SBC / Revenue %</strong></td><td class="actual">${pct(histRatio)}<div class="ert30-small">SEC ACTUAL</div></td>${ad.map(z=>`<td class="sbc32"><div class="ert30-cellval">${pct(z.sbcRatio)}</div><div class="ert30-small">${S.drvScenario.toUpperCase()} ASSUMPTION</div></td>`).join('')}</tr>
+   <tr><td><strong>→ SBC-adjusted FCF (USD m)</strong></td><td class="actual">${Number.isFinite(reportedFcf()-histSbc)?fmt(reportedFcf()-histSbc,0):'—'}<div class="ert30-small">OCF − CAPEX − SBC</div></td>${ad.map(z=>`<td class="sbcAdj32"><div class="ert30-cellval">${fmt(z.adjustedFcf,0)}</div><div class="ert30-small">SHAREHOLDER-ADJUSTED</div></td>`).join('')}</tr>`;
+   x=x.replace(/(<tr><td><strong>→ FCF \(USD m\)<\/strong><\/td>[\s\S]*?<\/tr>)/,'$1'+sbcRows);
+   return x;
+ };
 
  const oldOverview=window.overview;
  window.overview=function(){
@@ -1946,6 +2037,7 @@ setTimeout(enhance,0);
  };
 })();
 </script>
+
 <script id="ert32-market">
 (function(){
  function chart32(ds,p,s20,s50,s200,fv){
@@ -1988,6 +2080,8 @@ setTimeout(enhance,0);
  };
 })();
 </script>
+
+
 <script id="ert33-ui">
 (function(){
  const m2=v=>Number.isFinite(Number(v))?'$'+Number(v).toFixed(2):'—',sp=v=>Number.isFinite(Number(v))?(Number(v)>=0?'+':'')+Number(v).toFixed(1)+'%':'—';
@@ -2014,13 +2108,14 @@ setTimeout(enhance,0);
  const oldSet=ERT30.setScenario;ERT30.setScenario=function(name){if(name==='Custom'&&(!Array.isArray(S.drvSbc)||S.drvSbc.length!==5))S.drvSbc=[...oldSbc(S.drvScenario==='Custom'?'Base':S.drvScenario)];oldSet(name)};
 })();
 </script>
+
 <script id="ert33-stable-input">
 (function(){
  const sel='[data-wa],#terminal,#basis,#maint,[data-g],[data-driver]';
- function stable(){if(S.page==='valuation'&&typeof window.ERT43_REFRESH_VALUATION==='function'){window.ERT43_REFRESH_VALUATION();return}const x=scrollX,y=scrollY;render();requestAnimationFrame(()=>scrollTo(x,y))}
+ function stable(){const x=scrollX,y=scrollY;render();requestAnimationFrame(()=>scrollTo(x,y))}
  function commit(el){
    const n=parseFloat(el.value);
-   if(el.matches('[data-wa]')&&Number.isFinite(n)){if(el.dataset.wa==='__waccDisplay')S.waccOverride=n;else S[el.dataset.wa]=n;}
+   if(el.matches('[data-wa]')&&Number.isFinite(n))S[el.dataset.wa]=n;
    else if(el.id==='terminal'&&Number.isFinite(n))S.terminal=n;
    else if(el.id==='basis')S.basis=el.value;
    else if(el.id==='maint'&&Number.isFinite(n))S.maint=n;
@@ -2034,6 +2129,7 @@ setTimeout(enhance,0);
  document.addEventListener('change',e=>{const el=e.target.closest(sel);if(!el)return;e.preventDefault();e.stopImmediatePropagation();commit(el)},true);
 })();
 </script>
+
 <script id="ert33-flow">
 (function(){
  const K='ert_flow_v33',TTL=86400000;
@@ -2057,16 +2153,19 @@ setTimeout(enhance,0);
  addEventListener('load',async()=>{await load(false);if(S.page==='overview')render()},{once:true});document.addEventListener('click',e=>{if(e.target?.id==='ertLiveRefresh')setTimeout(async()=>{await load(true);if(S.page==='overview')render()},1600)},true);
 })();
 </script>
+
 <script id="ert33-pages">
 (function(){
  window.market=function(){
    const ps=D.prices,ds=D.dates,s20s=smaSeries(ps,20),s50s=smaSeries(ps,50),s200s=smaSeries(ps,200),s20=sma(ps,20),s50=sma(ps,50),s200=sma(ps,200),after=ERT32.dcfAdjusted().ps,y=Number(D.consensus?.nextAnnual?.year)||ERT30.fy0()+1,r=ERT30.ann('revenue',y),e=ERT30.ann('eps',y);
    return `<h1>Market & Price Context</h1><div class="lead">Market price, valuation reference points, 52-week range and technical context.</div>${ERT33.cards(false)}${ERT33.bar()}<div class="card" style="margin-top:12px"><h3>Business Quant Street expectations</h3>${D.consensus?.nextAnnual?list([[`FY${y}E Revenue`,r?'$'+(r.estimate/1e9).toFixed(1)+'bn':'Unavailable'],['Revenue low / high',r?'$'+(r.low/1e9).toFixed(1)+'bn / $'+(r.high/1e9).toFixed(1)+'bn':'Unavailable'],[`FY${y}E EPS`,e?e.estimate.toFixed(2):'Unavailable'],['EPS low / high',e?e.low.toFixed(2)+' / '+e.high.toFixed(2):'Unavailable'],['Analyst count','Not provided'],['Source',D.consensus.displaySource||'Business Quant']]):'<p>Unavailable.</p>'}</div><div class="grid k3" style="margin-top:12px">${card('SMA20',money(s20),'Short-term moving average')}${card('SMA50',money(s50),'Medium-term moving average')}${card('SMA200',money(s200),'Long-term moving average')}</div><div class="card" style="margin-top:12px"><h3>Price, moving averages, 52W range and SBC-adjusted DCF</h3>${marketChart32(ds,ps,s20s,s50s,s200s,after)}</div>`;
  };
- 
+ const ov=window.valuation;window.valuation=function(){let x=ov(),rat=ERT32.sbcScenario(S.drvScenario),actual=(Number(last(by('cashflow.sbc')[2]))/Number(last(by('income.revenue')[2])))*100;const row=`<tr><td class="clickable" data-inspect="driver:sbc"><strong>SBC / Revenue %</strong></td><td class="actual">${pct(actual)}<div class="ert30-small">SEC ACTUAL</div></td>${rat.map((v,i)=>S.drvScenario==='Custom'?`<td><input inputmode="decimal" data-driver="sbc" data-i="${i}" value="${v}"></td>`:`<td class="sbc32"><div class="ert30-cellval">${pct(v)}</div><div class="ert30-small">${S.drvScenario.toUpperCase()} ASSUMPTION</div></td>`).join('')}</tr>`;return x.replace(/<tr><td><strong>SBC \/ Revenue %<\/strong><\/td>[\s\S]*?<\/tr>/,row)};
  const oi=window.inspector;window.inspector=function(){const k=String(S.sel||'');if(k.startsWith('flow:')){const f=D.earningsFlow||{},L=f.latest||{},Y=f.yoy||{},id=k.slice(5);if(id.startsWith('seg:')){const s=f.segments?.rows?.[+id.split(':')[1]];return specialInspector(s?.name||'Revenue segment',`<div class="traceFact"><b>BUSINESS QUANT SEGMENT DATA</b><br>${s?'$'+(s.value/1000).toFixed(1)+'bn':'Unavailable'}<br>Period ${s?.period||f.period||'—'}</div>`)}const map={revenue:['Revenue',L.revenue,Y.revenue,'SEC FACT'],cost:['Cost of revenues',L.cost,Y.cost,'SEC FACT'],gross:['Gross profit',L.gross_profit,null,'DERIVED'],rnd:['R&D',L.rnd,Y.rnd,'SEC FACT'],sales:['Sales & marketing',L.sales,Y.sales,'SEC FACT'],gna:['G&A',L.gna,Y.gna,'SEC FACT'],op:['Operating income',L.op,Y.op,'SEC FACT'],pretax:['Pre-tax income',L.pretax,Y.pretax,'SEC FACT'],otheropex:['Other OpEx',L.other_opex,null,'DERIVED'],net:['Net income',L.net,Y.net,'SEC FACT'],tax:['Tax',L.tax,Y.tax,'SEC FACT']},m=map[id]||[id,null,null,'Unavailable'];return specialInspector(m[0],`<div class="traceFact"><b>${m[3]}</b><br>${Number.isFinite(m[1])?'$'+(m[1]/1000).toFixed(1)+'bn':'Unavailable'}<br>${Number.isFinite(m[2])?(m[2]>=0?'+':'')+m[2].toFixed(1)+'% YoY':'YoY unavailable'}</div><div class="sourcebox">Period ${f.period||'—'} · ${f.source||'SEC EDGAR'}.</div>`)}return oi()};
 })();
 </script>
+
+
 <style id="ert34-css">
 .capex34-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
 .capex34-kpi{border:1px solid var(--line);border-radius:9px;background:#101a25;padding:12px;min-width:0}
@@ -2090,6 +2189,7 @@ setTimeout(enhance,0);
  .capex34-evidence{grid-template-columns:1fr}
 }
 </style>
+
 <script id="ert34-capex-return">
 (function(){
   const MG={
@@ -2239,12 +2339,18 @@ setTimeout(enhance,0);
   window.ERT34Capex={MG,scenarioDrivers,dcfFrom,marketImplied,fairValueAtReturn,moduleHtml,inspectorHtml};
 })();
 </script>
+
 <script id="ert34-integration">
 (function(){
   // Insert the previously-promised CapEx return analysis in the correct place:
   // Forecast Engine -> CapEx Return Analysis -> SBC valuation bridge.
-  
-  
+  const oldVal=window.valuation;
+  window.valuation=function(){
+    let x=oldVal();
+    const marker='<div class="card" style="margin-top:12px"><h3>SBC valuation bridge — before vs after stock-based compensation</h3>';
+    if(x.includes(marker)&&!x.includes('AI / CapEx Investment Return Analysis'))x=x.replace(marker,ERT34Capex.moduleHtml()+marker);
+    return x;
+  };
 
   // CapEx ROI inspector.
   const oldIns=window.inspector;
@@ -2307,25 +2413,39 @@ setTimeout(enhance,0);
   },true);
 })();
 </script>
+
+
 <style id="ert40-css">
-/* CORE 4.3 — Valuation-only layout. Other page CSS remains untouched. */
-.ert40-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 12px}
-.ert40-summary .card{min-height:104px}.ert40-summary .value{font-size:27px;color:var(--text)}
-.ert40-summary .baseCard{border-color:#4d9af2;background:#102238}.ert40-summary .marketCard{border-color:#66788b}
-.ert40-rangebar{position:relative;height:88px;margin:0 28px 4px}.ert40-rangebar .track{position:absolute;left:0;right:0;top:49px;height:7px;border-radius:8px;background:linear-gradient(90deg,#71323d,#aa8734,#326a4e)}
-.ert40-rangebar .mark{position:absolute;top:18px;transform:translateX(-50%);font-size:9px;font-weight:800;text-align:center;white-space:nowrap}.ert40-rangebar .mark:after{content:"";display:block;width:3px;height:22px;margin:4px auto 0;background:currentColor}.ert40-rangebar .bear{color:#ff7b8b}.ert40-rangebar .base{color:#72a9ff}.ert40-rangebar .bull{color:#62d494}.ert40-rangebar .market{color:#fff}
-.ert40-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.ert40-toolbar .spacer{flex:1}
-.ert40-driverwrap{overflow:auto;border:1px solid var(--line);border-radius:10px}.ert40-driver{min-width:1040px;width:100%;border-collapse:collapse}.ert40-driver th,.ert40-driver td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:right;background:var(--panel);font-size:11px}.ert40-driver th:first-child,.ert40-driver td:first-child{text-align:left;position:sticky;left:0;z-index:3;background:#111c29;min-width:190px}.ert40-driver thead th{position:sticky;top:0;background:#162332;z-index:4}.ert40-driver thead th:first-child{z-index:5}.ert40-driver input{width:82px;background:#08131e;color:#fff;border:1px solid #38516b;border-radius:6px;padding:7px;text-align:right}.ert40-driver .actual{background:#10283a}.ert40-driver .calc{background:#0f211d}.ert40-driver .street{background:#211c38;color:#ddd2ff}.ert40-driver .guide{background:#1b2b1e}.ert40-driver .negative{color:var(--red)}
-.ert40-minirow{display:flex;gap:18px;flex-wrap:wrap;padding:9px 0;color:var(--muted);font-size:11px}.ert40-minirow strong{color:var(--text)}
-.ert40-normal-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}.ert40-normal-head .spacer{flex:1}.ert40-normal{display:none;margin-top:9px}.ert40-normal.open{display:block}
-.ert40-dcf-top{display:grid;grid-template-columns:1fr 150px 150px;gap:10px;align-items:end}.ert40-assump label{display:block;font-size:10px;color:var(--muted)}.ert40-assump input{width:100%;margin-top:4px;background:#08131e;color:#fff;border:1px solid #38516b;border-radius:6px;padding:8px}.ert40-fv{font-size:34px;font-weight:900;color:var(--text);line-height:1.05;margin-top:4px}
-.ert40-bridge{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:11px}.ert40-bridge>div{background:#101923;padding:9px;font-size:10px;min-width:0}.ert40-bridge .k{color:var(--muted);display:block;margin-bottom:4px}.ert40-bridge strong{font-size:13px;overflow-wrap:anywhere}
-.ert40-detail{display:none;margin-top:10px}.ert40-detail.open{display:block}.ert40-detail table{min-width:1100px}
-.ert40-reverse{display:grid;grid-template-columns:1.2fr repeat(3,minmax(0,1fr));gap:8px}.ert40-reverse>div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#101923}.ert40-reverse .head{background:#162334}.ert40-reverse .v{font-weight:900;font-size:17px;margin:4px 0}.ert40-implied{color:var(--amber)}
-.ert40-cross{display:grid;grid-template-columns:1.2fr repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}.ert40-cross>div{background:#101923;padding:10px;font-size:11px}.ert40-cross .head{background:#162334;font-weight:800}.ert40-status{display:inline-block;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:900}.ert40-support{background:#173a2b;color:#6ae0a5}.ert40-warn{background:#473719;color:#ffd56a}.ert40-outlier{background:#47222a;color:#ff8b9a}
-@media(max-width:1050px){.ert40-summary{grid-template-columns:repeat(2,1fr)}.ert40-dcf-top{grid-template-columns:1fr 1fr}.ert40-dcf-top>div:first-child{grid-column:1/-1}.ert40-bridge{grid-template-columns:repeat(3,1fr)}.ert40-reverse{grid-template-columns:1fr 1fr}.ert40-cross{grid-template-columns:1fr 1fr}}
-@media(max-width:680px){.ert40-summary,.ert40-dcf-top,.ert40-bridge,.ert40-reverse,.ert40-cross{grid-template-columns:1fr!important}.ert40-dcf-top>div:first-child{grid-column:auto}}
+.ert40-hero{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.ert40-hero>div,.ert40-method,.ert40-thesis,.ert40-audit-item{border:1px solid var(--line);border-radius:10px;background:#101b27;padding:14px;min-width:0}
+.ert40-big{font-size:34px;font-weight:900;line-height:1.05;margin:6px 0}
+.ert40-range{font-size:17px;font-weight:800}
+.ert40-methods{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:10px}
+.ert40-method.primary{border-color:#4d9af2;background:#102238}
+.ert40-method .mprice{font-size:25px;font-weight:900;margin:5px 0}
+.ert40-status{display:inline-block;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:900;margin-top:4px}
+.ert40-support{background:#173a2b;color:#6ae0a5}.ert40-warn{background:#473719;color:#ffd56a}.ert40-outlier{background:#47222a;color:#ff8b9a}
+.ert40-rangebar{position:relative;height:105px;margin:4px 24px 12px}
+.ert40-rangebar .track{position:absolute;left:0;right:0;top:55px;height:8px;border-radius:8px;background:linear-gradient(90deg,#76353f,#b58c31,#326c50)}
+.ert40-rangebar .mark{position:absolute;top:25px;transform:translateX(-50%);text-align:center;min-width:90px;font-size:10px;font-weight:800}
+.ert40-rangebar .mark:after{content:"";display:block;width:3px;height:24px;background:currentColor;margin:5px auto 0;border-radius:3px}
+.ert40-rangebar .bear{color:#ff7b8b}.ert40-rangebar .base{color:#5ca8ff}.ert40-rangebar .bull{color:#62d99e}.ert40-rangebar .market{color:#fff}
+.ert40-thesis-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ert40-thesis .line{font-size:12px;line-height:1.5;margin-top:5px}
+.ert40-source{font-size:10px;color:var(--muted);margin-top:4px}
+.ert40-normal-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 6px}
+.ert40-normal-table{display:none}.ert40-normal-table.open{display:block}
+.ert40-normal-table input{width:100%;min-width:74px}
+.ert40-compare{display:grid;grid-template-columns:1.15fr repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:10px}
+.ert40-compare>div{background:#101923;padding:9px 10px;font-size:11px}.ert40-compare .head{background:#162334;font-weight:900}
+.ert40-audit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ert40-audit-item strong{display:block;margin-bottom:5px}
+.ert40-pass{border-left:4px solid #55d99a}.ert40-caution{border-left:4px solid #ffc257}.ert40-fail{border-left:4px solid #ff6677}
+.ert40-collapsible{cursor:pointer;user-select:none}
+@media(max-width:1250px){.ert40-hero,.ert40-methods{grid-template-columns:repeat(2,1fr)}.ert40-thesis-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.ert40-hero,.ert40-methods,.ert40-thesis-grid,.ert40-audit{grid-template-columns:1fr}}
 </style>
+
 <script id="ert40-engine">
 (function(){
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -2334,9 +2454,6 @@ setTimeout(enhance,0);
   const lastN=(a,n)=>a.slice(Math.max(0,a.length-n));
   const pct1=v=>Number.isFinite(Number(v))?Number(v).toFixed(1)+'%':'—';
   const mm=v=>Number.isFinite(Number(v))?'$'+fmt(Number(v),0)+'m':'—';
-  const num1=v=>Number.isFinite(Number(v))?Number(v).toFixed(1):'';
-  function fy0(){return Number(D.years?.at(-1))||2025}
-  function detailedYears(){return [1,2,3,4,5].map(i=>fy0()+i)}
 
   function actualRatios(){
     const rev=by('income.revenue')[2]||[],ocf=by('cashflow.ocf')[2]||[],cap=by('cashflow.capex')[2]||[],sbc=by('cashflow.sbc')[2]||[];
@@ -2346,202 +2463,562 @@ setTimeout(enhance,0);
       sbc:rev.map((r,i)=>Number(r)>0?Number(sbc[i])/Number(r)*100:null).filter(Number.isFinite)
     };
   }
-  function streetRevenue(y,scenario='Base'){
-    const a=D.consensus?.forwardAnnual?.revenue||[],x=a.find(z=>Number(z.period)===Number(y)&&String(z.data_type||'estimate').toLowerCase()==='estimate');
+
+  function streetRevenue(year,scenario='Base'){
+    const arr=D.consensus?.annual?.revenue||[];
+    const x=arr.find(z=>Number(z.period)===Number(year));
     if(!x)return null;
     if(scenario==='Bear'&&Number.isFinite(Number(x.low)))return Number(x.low)/1e6;
     if(scenario==='Bull'&&Number.isFinite(Number(x.high)))return Number(x.high)/1e6;
     return Number.isFinite(Number(x.estimate))?Number(x.estimate)/1e6:null;
   }
-  function sbcScenario(name){
-    const a=actualRatios().sbc,latest=a.at(-1),avg3=mean(lastN(a,3));
-    const base0=Number.isFinite(latest)&&Number.isFinite(avg3)?0.6*latest+0.4*avg3:(Number.isFinite(latest)?latest:5.5);
-    const end=clamp(mean(lastN(a,3)),4,6.5),base=[0,1,2,3,4].map(i=>lerp(base0,end,i/4));
-    if(name==='Bear')return base.map(x=>x+.5);if(name==='Bull')return base.map(x=>Math.max(2,x-.5));
-    if(name==='Custom'&&Array.isArray(S.drvSbc)&&S.drvSbc.length===5)return S.drvSbc.map(Number);
-    return base;
-  }
-  function scenarioCore(name){
-    const b=window.ERT30?.scenario?.(name==='Custom'?'Custom':name);
-    return b||{rev:[...S.drvRev],ocf:[...S.drvOcf],cap:[...S.drvCap]};
-  }
+
   function detailedDrivers(name='Base'){
-    const years=detailedYears(),raw=scenarioCore(name),rev0=Number(last(by('income.revenue')[2]));
-    const out={years,revGrowth:[],ocf:[],cap:[],sbc:[],revenues:[]};let prev=rev0;
+    const fy0=ERT30.fy0(), years=[1,2,3,4,5].map(i=>fy0+i);
+    const raw=ERT30.scenario(name==='Custom'?'Base':name);
+    const ratios=actualRatios(),rev0=Number(last(by('income.revenue')[2]));
+    const out={years,revGrowth:[],ocf:[],cap:[],sbc:[],revenues:[]};
+    let prev=rev0;
+
+    // Base uses Street estimate; Bear/Bull use Street low/high where available.
+    // Custom preserves user-entered detailed drivers.
     for(let i=0;i<5;i++){
-      let growth,revenue;
+      const y=years[i];
+      let growth, revenue;
       if(name==='Custom'){
-        growth=Number(S.drvRev[i]);revenue=prev*(1+growth/100);
+        growth=Number(S.drvRev[i]); revenue=prev*(1+growth/100);
       }else{
-        const sr=streetRevenue(years[i],name);
-        if(Number.isFinite(sr)&&sr>0){revenue=sr;growth=prev>0?(revenue/prev-1)*100:Number(raw.rev[i]);}
-        else{growth=Number(raw.rev[i]);revenue=prev*(1+growth/100);}
+        const sr=streetRevenue(y,name);
+        if(Number.isFinite(sr)&&sr>0){
+          revenue=sr; growth=prev>0?(revenue/prev-1)*100:Number(raw.rev[i]);
+        }else{
+          growth=Number(raw.rev[i]); revenue=prev*(1+growth/100);
+        }
       }
       out.revGrowth.push(growth);out.revenues.push(revenue);prev=revenue;
     }
+
     if(name==='Custom'){
-      out.ocf=(S.drvOcf||[]).slice(0,5).map(Number);out.cap=(S.drvCap||[]).slice(0,5).map(Number);out.sbc=sbcScenario('Custom');
+      out.ocf=[...S.drvOcf].map(Number);out.cap=[...S.drvCap].map(Number);
+      out.sbc=ERT32.sbcScenario('Custom').map(Number);
     }else{
-      out.ocf=raw.ocf.map(Number);out.sbc=sbcScenario(name);
-      const cap26=name==='Bear'?185000:name==='Bull'?175000:180000,cap26Pct=cap26/out.revenues[0]*100;
+      out.ocf=raw.ocf.map(Number);
+      out.sbc=ERT32.sbcScenario(name).map(Number);
+
+      // FY2026 is directly anchored to management guidance.
+      const cap26=name==='Bear'?185000:name==='Bull'?175000:180000;
+      const cap26Pct=cap26/out.revenues[0]*100;
+
+      // FY2027-30 is explicitly an ERT normalisation assumption.
+      // The target is scenario-dependent rather than pretending management guided it.
       const fy30Target=name==='Bear'?22:name==='Bull'?15:18;
       out.cap=[0,1,2,3,4].map(i=>lerp(cap26Pct,fy30Target,i/4));
     }
     return out;
   }
+
   function longRunTargets(name='Base'){
-    const a=actualRatios(),recentOcf=mean(lastN(a.ocf,3)),histCap=mean((a.cap||[]).slice(0,-1).slice(-4)),recentSbc=mean(lastN(a.sbc,3));
-    const base={revGrowth:Math.max(Number(S.terminal)+1.5,4.5),ocf:Number.isFinite(recentOcf)?clamp(recentOcf,36,43):40,cap:Number.isFinite(histCap)?clamp(histCap+2,13,16):15,sbc:Number.isFinite(recentSbc)?clamp(recentSbc,4,6.5):5.5};
+    const a=actualRatios();
+    const recentOcf=mean(lastN(a.ocf,3)),histCap=mean((a.cap||[]).slice(0,-1).slice(-4)),recentSbc=mean(lastN(a.sbc,3));
+    const base={
+      revGrowth:Math.max(Number(S.terminal)+1.5,4.5),
+      ocf:Number.isFinite(recentOcf)?clamp(recentOcf,36,43):40,
+      cap:Number.isFinite(histCap)?clamp(histCap+2,13,16):15,
+      sbc:Number.isFinite(recentSbc)?clamp(recentSbc,4,6.5):5.5
+    };
     if(name==='Bear')return {...base,revGrowth:Math.max(Number(S.terminal)+1,3.5),ocf:base.ocf-2,cap:base.cap+2,sbc:base.sbc+.5};
     if(name==='Bull')return {...base,revGrowth:base.revGrowth+1,ocf:base.ocf+2,cap:Math.max(10,base.cap-2),sbc:Math.max(2,base.sbc-.5)};
-    if(name==='Custom'&&S.normTargets?.Custom)return {...S.normTargets.Custom};return base;
+    if(name==='Custom'&&S.normTargets&&S.normTargets.Custom)return {...S.normTargets.Custom};
+    return base;
   }
-  function ensureState(){
-    if(!Array.isArray(S.drvSbc)||S.drvSbc.length!==5)S.drvSbc=sbcScenario('Base').map(x=>+x.toFixed(1));
-    S.normTargets=S.normTargets||{};if(!S.normTargets.Custom)S.normTargets.Custom={...longRunTargets('Base')};
-    S.normManual=S.normManual||{};if(!Array.isArray(S.normManual.Custom)||S.normManual.Custom.length!==5)S.normManual.Custom=null;
-    if(typeof S.normOpen!=='boolean')S.normOpen=false;if(typeof S.normCustomManual!=='boolean')S.normCustomManual=false;if(typeof S.dcfBridgeOpen!=='boolean')S.dcfBridgeOpen=false;
+
+  function ensureNormState(){
+    S.normTargets=S.normTargets||{};
+    if(!S.normTargets.Custom)S.normTargets.Custom={...longRunTargets('Base')};
+    S.normManual=S.normManual||{};
+    if(!Array.isArray(S.normManual.Custom)||S.normManual.Custom.length!==5)S.normManual.Custom=null;
+    if(typeof S.normOpen!=='boolean')S.normOpen=false;
+    if(typeof S.normCustomManual!=='boolean')S.normCustomManual=false;
   }
+  ensureNormState();
+
   function tenYearDrivers(name='Base'){
-    ensureState();const first=detailedDrivers(name),target=longRunTargets(name);const years=[...first.years],revGrowth=[...first.revGrowth],ocf=[...first.ocf],cap=[...first.cap],sbc=[...first.sbc],revenues=[...first.revenues];let prev=revenues.at(-1);
+    ensureNormState();
+    const first=detailedDrivers(name),target=longRunTargets(name);
+    const years=[...first.years],revGrowth=[...first.revGrowth],ocf=[...first.ocf],cap=[...first.cap],sbc=[...first.sbc],revenues=[...first.revenues];
+    const fy0=ERT30.fy0(),lastRev=revenues.at(-1);
+    let prev=lastRev;
     const manual=name==='Custom'&&S.normCustomManual&&Array.isArray(S.normManual.Custom)?S.normManual.Custom:null;
     for(let j=1;j<=5;j++){
-      years.push(fy0()+5+j);const t=j/5,d=manual?manual[j-1]:{revGrowth:lerp(revGrowth[4],target.revGrowth,t),ocf:lerp(ocf[4],target.ocf,t),cap:lerp(cap[4],target.cap,t),sbc:lerp(sbc[4],target.sbc,t)};
-      revGrowth.push(Number(d.revGrowth));ocf.push(Number(d.ocf));cap.push(Number(d.cap));sbc.push(Number(d.sbc));prev*=1+Number(d.revGrowth)/100;revenues.push(prev);
+      const year=fy0+5+j;years.push(year);
+      let d;
+      if(manual){
+        d=manual[j-1];
+      }else{
+        const t=j/5;
+        d={
+          revGrowth:lerp(revGrowth[4],target.revGrowth,t),
+          ocf:lerp(ocf[4],target.ocf,t),
+          cap:lerp(cap[4],target.cap,t),
+          sbc:lerp(sbc[4],target.sbc,t)
+        };
+      }
+      revGrowth.push(Number(d.revGrowth));ocf.push(Number(d.ocf));cap.push(Number(d.cap));sbc.push(Number(d.sbc));
+      prev*=1+Number(d.revGrowth)/100;revenues.push(prev);
     }
     return {years,revGrowth,ocf,cap,sbc,revenues,target};
   }
-  function dcfFromDrivers(drv,opts={}){
-    const W=Number(opts.wacc??wacc().w),g=Number(opts.terminal??S.terminal),deductSbc=opts.deductSbc!==false;let pv=0,lastFcf=0;const detail=[];
+
+  function dcf10(name='Base',opts={}){
+    const drv=tenYearDrivers(name),W=Number(opts.wacc??wacc().w),g=Number(opts.terminal??S.terminal);
+    let pv=0,lastFcf=0;const detail=[];
     for(let i=0;i<10;i++){
-      const revenue=Number(drv.revenues[i]),ocfM=revenue*Number(drv.ocf[i])/100,capM=revenue*Number(drv.cap[i])/100,sbcM=revenue*Number(drv.sbc[i])/100;
-      const fcf=ocfM-capM-(deductSbc?sbcM:0),df=1/Math.pow(1+W/100,i+1),pvFcf=fcf*df;pv+=pvFcf;lastFcf=fcf;
-      detail.push({year:drv.years[i],revenue,revGrowth:Number(drv.revGrowth[i]),ocfMargin:Number(drv.ocf[i]),capMargin:Number(drv.cap[i]),sbcMargin:Number(drv.sbc[i]),ocf:ocfM,capex:capM,sbc:sbcM,fcf,fcfMargin:fcf/revenue*100,df,pvFcf});
+      const revenue=drv.revenues[i],ocfM=revenue*drv.ocf[i]/100,capM=revenue*drv.cap[i]/100,sbcM=revenue*drv.sbc[i]/100;
+      const fcf=ocfM-capM-sbcM,df=1/Math.pow(1+W/100,i+1),pvFcf=fcf*df;
+      pv+=pvFcf;lastFcf=fcf;
+      detail.push({year:drv.years[i],revenue,revGrowth:drv.revGrowth[i],ocfMargin:drv.ocf[i],capMargin:drv.cap[i],sbcMargin:drv.sbc[i],ocf:ocfM,capex:capM,sbc:sbcM,fcf,fcfMargin:fcf/revenue*100,df,pvFcf});
     }
-    const spread=W/100-g/100;if(spread<=0)return {ps:NaN,detail,pv,pvt:NaN,ev:NaN,equity:NaN,tvshare:NaN,drivers:drv,wacc:W,terminal:g,deductSbc};
+    const spread=W/100-g/100;
+    if(spread<=0)return {ps:NaN,detail,pv,pvt:NaN,ev:NaN,equity:NaN,tvshare:NaN,drivers:drv};
     const tv=lastFcf*(1+g/100)/spread,pvt=tv/Math.pow(1+W/100,10),ev=pv+pvt,equity=ev+Number(D.market.net_cash_m),ps=equity/Number(D.market.shares_m);
-    return {ps,detail,pv,tv,pvt,ev,equity,tvshare:pvt/ev*100,drivers:drv,wacc:W,terminal:g,deductSbc};
+    return {ps,detail,pv,tv,pvt,ev,equity,tvshare:pvt/ev*100,drivers:drv,wacc:W,terminal:g};
   }
-  function dcf10(name='Base',opts={}){return dcfFromDrivers(tenYearDrivers(name),opts)}
+
   function normalizedFcfCheck(name='Base'){
-    const b=dcf10(name),fy5=b.detail[4],t=b.drivers.target,normMargin=t.ocf-t.cap-t.sbc,normFcf=fy5.revenue*normMargin/100,W=wacc().w/100,g=S.terminal/100;if(W<=g)return {ps:NaN};const tv=normFcf*(1+g)/(W-g),pv=tv/Math.pow(1+W,5),equity=pv+Number(D.market.net_cash_m);return {ps:equity/Number(D.market.shares_m),normMargin,normFcf};
+    const b=dcf10(name),d=b.detail,fy5=d[4],t=b.drivers.target;
+    // A normalized steady-state FCF margin applied to FY2030 revenue, then Gordon-valued at FY2030 and discounted 5 years.
+    const normMargin=t.ocf-t.cap-t.sbc,normFcf=fy5.revenue*normMargin/100;
+    const W=wacc().w/100,g=S.terminal/100;
+    if(W<=g)return {ps:NaN};
+    const tv=normFcf*(1+g)/(W-g),pv=tv/Math.pow(1+W,5),equity=pv+Number(D.market.net_cash_m);
+    return {ps:equity/Number(D.market.shares_m),normMargin,normFcf};
   }
+
   function forwardEarningsCheck(name='Base'){
-    const year=fy0()+2,arr=D.consensus?.forwardAnnual?.eps||[],x=arr.find(z=>Number(z.period)===year&&String(z.data_type||'estimate').toLowerCase()==='estimate');let e=x&&Number.isFinite(Number(x.estimate))?Number(x.estimate):null;
-    if(!Number.isFinite(e)){const eps0=Number(last(by('income.eps')[2])),revg=detailedDrivers(name).revGrowth.slice(0,2);e=eps0*Math.pow(1+mean(revg)/100,2)}const multiple=name==='Bear'?18:name==='Bull'?24:22;return {ps:e*multiple,eps:e,multiple,year};
+    const year=ERT30.fy0()+2,arr=D.consensus?.annual?.eps||[],x=arr.find(z=>Number(z.period)===year);
+    let eps=x&&Number.isFinite(Number(x.estimate))?Number(x.estimate):null;
+    if(!Number.isFinite(eps)){
+      const eps0=Number(last(by('income.eps')[2]));
+      const revg=detailedDrivers(name).revGrowth.slice(0,2);
+      eps=eps0*Math.pow(1+mean(revg)/100,2);
+    }
+    const multiple=name==='Bear'?18:name==='Bull'?24:22; // Explicit ERT cross-check assumption.
+    return {ps:eps*multiple,eps,multiple,year};
   }
+
   function evFcfCheck(name='Base'){
-    const b=dcf10(name),y2=b.detail[1],multiple=name==='Bear'?16:name==='Bull'?22:19;if(!y2||!Number.isFinite(y2.fcf)||y2.fcf<=0)return {ps:NaN,fcf:y2?.fcf,multiple,year:y2?.year,valid:false};const enterprise=y2.fcf*multiple,equity=enterprise+Number(D.market.net_cash_m),ps=equity/Number(D.market.shares_m);return {ps,fcf:y2.fcf,multiple,year:y2.year,valid:Number.isFinite(ps)&&ps>1&&ps<5000};
+    const b=dcf10(name),y2=b.detail[1],multiple=name==='Bear'?16:name==='Bull'?22:19;
+    const ev=y2.fcf*multiple,equity=ev+Number(D.market.net_cash_m),ps=equity/Number(D.market.shares_m);
+    return {ps,fcf:y2.fcf,multiple,year:y2.year};
   }
-  function rangeStatus(v,base){if(!Number.isFinite(v)||!Number.isFinite(base)||base===0)return ['UNAVAILABLE','ert40-warn'];const d=Math.abs(v/base-1)*100;return d<=20?['SUPPORTIVE','ert40-support']:d<=35?['CHECK','ert40-warn']:['OUTLIER','ert40-outlier']}
-  function agreement(name='Base'){const primary=dcf10(name).ps,vals=[normalizedFcfCheck(name).ps,forwardEarningsCheck(name).ps,evFcfCheck(name).ps].filter(Number.isFinite),diffs=vals.map(v=>Math.abs(v/primary-1)*100),supportive=diffs.filter(x=>x<=20).length,outliers=diffs.filter(x=>x>35).length;return {label:outliers>=2?'LOW':supportive>=2?'HIGH':'MEDIUM',supportive,outliers,diffs}}
-  function valuationSummary(){const bear=dcf10('Bear').ps,base=dcf10('Base').ps,bull=dcf10('Bull').ps,ag=agreement('Base'),width=base>0?(bull-bear)/base*100:999,confidence=ag.label==='HIGH'&&width<55?'MEDIUM-HIGH':ag.label==='LOW'||width>90?'LOW':'MEDIUM';return {bear,base,bull,market:Number(D.market.price),confidence,agreement:ag}}
-  function copyToCustom(from){ensureState();const d=detailedDrivers(from),t=longRunTargets(from);S.drvRev=d.revGrowth.map(x=>+Number(x).toFixed(1));S.drvOcf=d.ocf.map(x=>+Number(x).toFixed(1));S.drvCap=d.cap.map(x=>+Number(x).toFixed(1));S.drvSbc=d.sbc.map(x=>+Number(x).toFixed(1));S.normTargets.Custom={...t};S.normManual.Custom=null;S.normCustomManual=false;S.drvScenario='Custom'}
-  function enableManualNormalisation(){ensureState();if(S.drvScenario!=='Custom')copyToCustom(S.drvScenario);const d=tenYearDrivers('Custom');S.normManual.Custom=[5,6,7,8,9].map(i=>({revGrowth:+d.revGrowth[i].toFixed(1),ocf:+d.ocf[i].toFixed(1),cap:+d.cap[i].toFixed(1),sbc:+d.sbc[i].toFixed(1)}));S.normCustomManual=true;S.normOpen=true}
-  function shiftedDrivers(kind,shift){
-    const d=tenYearDrivers('Base'),x={years:[...d.years],revGrowth:[...d.revGrowth],ocf:[...d.ocf],cap:[...d.cap],sbc:[...d.sbc],revenues:[...d.revenues],target:{...d.target}};
-    if(kind==='revenue'){x.revGrowth=x.revGrowth.map(v=>v+shift);let p=Number(last(by('income.revenue')[2]));x.revenues=x.revGrowth.map(g=>{p*=1+g/100;return p})}
-    if(kind==='ocf')x.ocf=x.ocf.map(v=>v+shift);
-    if(kind==='cap')x.cap=x.cap.map(v=>Math.max(0,v-shift));
-    return x;
+
+  function agreement(name='Base'){
+    const primary=dcf10(name).ps,norm=normalizedFcfCheck(name).ps,pe=forwardEarningsCheck(name).ps,ev=evFcfCheck(name).ps;
+    const checks=[norm,pe,ev].filter(Number.isFinite),diffs=checks.map(v=>Math.abs(v/primary-1)*100);
+    const supportive=diffs.filter(x=>x<=20).length,outliers=diffs.filter(x=>x>35).length;
+    const label=outliers>=2?'LOW':supportive>=2?'HIGH':'MEDIUM';
+    return {primary,norm,pe,ev,diffs,supportive,outliers,label};
   }
-  function solveShift(kind){
-    const target=Number(D.market.price),ranges={revenue:[-10,35],ocf:[-20,35],cap:[-5,30]},[lo0,hi0]=ranges[kind];let lo=lo0,hi=hi0;
-    const val=s=>dcfFromDrivers(shiftedDrivers(kind,s)).ps;
-    const vlo=val(lo),vhi=val(hi);if(!Number.isFinite(vlo)||!Number.isFinite(vhi)||target<Math.min(vlo,vhi)||target>Math.max(vlo,vhi))return {kind,shift:null,ps:null,reachable:false};
-    for(let i=0;i<80;i++){const m=(lo+hi)/2,v=val(m);if(v<target)lo=m;else hi=m}
-    const shift=(lo+hi)/2,drv=shiftedDrivers(kind,shift),r=dcfFromDrivers(drv);return {kind,shift,ps:r.ps,reachable:true,drivers:drv};
+
+  function valuationSummary(){
+    const bear=dcf10('Bear').ps,base=dcf10('Base').ps,bull=dcf10('Bull').ps,ag=agreement('Base');
+    const width=base>0?(bull-bear)/base*100:999;
+    const confidence=ag.label==='HIGH'&&width<55?'MEDIUM-HIGH':ag.label==='LOW'||width>90?'LOW':'MEDIUM';
+    return {bear,base,bull,agreement:ag,confidence};
   }
-  function reverseDrivers(){return {revenue:solveShift('revenue'),ocf:solveShift('ocf'),cap:solveShift('cap')}}
-  ensureState();
-  window.ERT40={fy0,detailedYears,actualRatios,streetRevenue,detailedDrivers,longRunTargets,tenYearDrivers,dcfFromDrivers,dcf10,normalizedFcfCheck,forwardEarningsCheck,evFcfCheck,rangeStatus,valuationSummary,copyToCustom,enableManualNormalisation,reverseDrivers,agreement,pct1,mm,num1};
+
+  function rangeStatus(v,base){
+    if(!Number.isFinite(v)||!Number.isFinite(base)||base===0)return ['UNAVAILABLE','ert40-warn'];
+    const d=Math.abs(v/base-1)*100;
+    return d<=20?['SUPPORTIVE','ert40-support']:d<=35?['CHECK','ert40-warn']:['OUTLIER','ert40-outlier'];
+  }
+
+  function marketReality(){
+    const s=valuationSummary(),p=Number(D.market.price);
+    const premium=s.base?((p/s.base)-1)*100:NaN;
+    const assessment=p<=s.base?'Below ERT Base':p<=s.bull?'Within Bear–Bull range':'Above ERT Bull';
+    return {price:p,premium,assessment,...s};
+  }
+
+  function copyToCustom(from){
+    const d=detailedDrivers(from),t=longRunTargets(from);
+    S.drvRev=[...d.revGrowth];S.drvOcf=[...d.ocf];S.drvCap=[...d.cap];S.drvSbc=[...d.sbc];
+    S.normTargets.Custom={...t};S.normManual.Custom=null;S.normCustomManual=false;S.drvScenario='Custom';
+    render();
+  }
+  function resetCustom(){
+    const d=detailedDrivers('Base'),t=longRunTargets('Base');
+    S.drvRev=[...d.revGrowth];S.drvOcf=[...d.ocf];S.drvCap=[...d.cap];S.drvSbc=[...d.sbc];
+    S.normTargets.Custom={...t};S.normManual.Custom=null;S.normCustomManual=false;S.drvScenario='Custom';render();
+  }
+  function enableManualNormalisation(){
+    const d=tenYearDrivers('Custom');
+    S.normManual.Custom=[5,6,7,8,9].map(i=>({revGrowth:d.revGrowth[i],ocf:d.ocf[i],cap:d.cap[i],sbc:d.sbc[i]}));
+    S.normCustomManual=true;S.normOpen=true;render();
+  }
+
+  window.ERT40={actualRatios,streetRevenue,detailedDrivers,longRunTargets,tenYearDrivers,dcf10,normalizedFcfCheck,forwardEarningsCheck,evFcfCheck,agreement,valuationSummary,marketReality,copyToCustom,resetCustom,enableManualNormalisation,rangeStatus,pct1,mm};
 })();
 </script>
+
 <script id="ert40-ui">
 (function(){
-  const scenario=()=>['Bear','Base','Bull','Custom'].includes(S.drvScenario)?S.drvScenario:'Base';
-  const v1=v=>Number.isFinite(Number(v))?Number(v).toFixed(1):'—';
-  const input=(k,i,v,extra='')=>`<input inputmode="decimal" data-driver="${k}" data-i="${i}" value="${v1(v)}" ${extra}>`;
-  const cell=(v,cls='',sub='')=>`<td class="${cls}"><strong>${v}</strong>${sub?`<div class="metricDesc">${sub}</div>`:''}</td>`;
-  function rangeBar(s){
-    const vals=[s.bear,s.base,s.bull,s.market].filter(Number.isFinite),mn0=Math.min(...vals),mx0=Math.max(...vals),pad=(mx0-mn0||1)*.1,mn=Math.max(0,mn0-pad),mx=mx0+pad,pos=v=>Math.max(0,Math.min(100,(v-mn)/(mx-mn)*100));
-    const m=(v,l,c)=>`<div class="mark ${c}" style="left:${pos(v)}%">${l}<br>${money(v)}</div>`;
-    return `<div class="ert40-rangebar"><div class="track"></div>${m(s.bear,'BEAR','bear')}${m(s.base,'ERT BASE','base')}${m(s.bull,'BULL','bull')}${m(s.market,'MARKET','market')}</div>`;
-  }
-  function summary(){const s=ERT40.valuationSummary(),up=(s.base/s.market-1)*100;return `<div class="ert40-summary">${card('Bear',money(s.bear),'10Y Explicit DCF','neg')}<div class="card baseCard clickable" data-inspect="v40:dcf10"><div class="sub">ERT BASE FAIR VALUE</div><div class="value">${money(s.base)}</div><div class="small ${up>=0?'pos':'neg'}">${up>=0?'+':''}${up.toFixed(1)}% vs market</div></div>${card('Bull',money(s.bull),'10Y Explicit DCF','pos')}<div class="card marketCard"><div class="sub">Market</div><div class="value">${money(s.market)}</div><div class="small">${D.market.asof||'Current price'}</div></div></div>${rangeBar(s)}`}
-  function forecast(){
-    const sc=scenario(),d=ERT40.detailedDrivers(sc),r=ERT40.dcf10(sc),actualRev=Number(last(by('income.revenue')[2])),actualOcf=Number(last(by('cashflow.ocf')[2]))/actualRev*100,actualCap=Number(last(by('cashflow.capex')[2]))/actualRev*100,actualSbc=Number(last(by('cashflow.sbc')[2]))/actualRev*100,actualFcf=(actualOcf-actualCap-actualSbc),street=d.years.map(y=>ERT40.streetRevenue(y,'Base'));
-    const rows=[];
-    rows.push(`<tr><td><strong>Revenue (USD m)</strong></td>${cell(fmt(actualRev,0),'actual','SEC ACTUAL')}${d.revenues.map(x=>cell(fmt(x,0),'calc','ERT CALCULATED')).join('')}</tr>`);
-    rows.push(`<tr><td><strong>Street Revenue (USD m)</strong></td>${cell('—','','REFERENCE')}${street.map(x=>cell(Number.isFinite(x)?fmt(x,0):'—','street',Number.isFinite(x)?'BUSINESS QUANT':'NOT PROVIDED')).join('')}</tr>`);
-    rows.push(`<tr><td class="clickable" data-inspect="v40:revenue"><strong>Revenue growth %</strong></td>${cell(pct(yy(by('income.revenue')[2],D.years.length-1)),'actual','SEC ACTUAL')}${d.revGrowth.map((x,i)=>`<td>${input('rev',i,x)}</td>`).join('')}</tr>`);
-    rows.push(`<tr><td class="clickable" data-inspect="v40:ocf"><strong>OCF margin %</strong></td>${cell(pct(actualOcf),'actual','SEC ACTUAL')}${d.ocf.map((x,i)=>`<td>${input('ocf',i,x)}</td>`).join('')}</tr>`);
-    rows.push(`<tr><td class="clickable" data-inspect="v40:capex"><strong>CapEx / Revenue %</strong></td>${cell(pct(actualCap),'actual','SEC ACTUAL')}${d.cap.map((x,i)=>`<td>${input('cap',i,x)}</td>`).join('')}</tr>`);
-    rows.push(`<tr><td class="clickable" data-inspect="v40:sbc"><strong>SBC / Revenue %</strong></td>${cell(pct(actualSbc),'actual','SEC ACTUAL')}${d.sbc.map((x,i)=>`<td>${input('sbc',i,x)}</td>`).join('')}</tr>`);
-    rows.push(`<tr><td><strong>→ Economic FCF margin %</strong></td>${cell(pct(actualFcf),'actual','OCF − CapEx − SBC')}${r.detail.slice(0,5).map(x=>cell(pct(x.fcfMargin),'calc','CALCULATED')).join('')}</tr>`);
-    rows.push(`<tr><td><strong>→ Economic FCF (USD m)</strong></td>${cell(fmt(actualRev*actualFcf/100,0),'actual','CALCULATED')}${r.detail.slice(0,5).map(x=>cell(fmt(x.fcf,0),x.fcf<0?'negative calc':'calc','CALCULATED')).join('')}</tr>`);
-    const hist=fcfMargins(),histLine=`Historical reported FCF margin: <strong>5Y avg ${pct(avg(hist))}</strong> · median <strong>${pct(med(hist))}</strong> · latest <strong>${pct(hist.at(-1))}</strong>`;
-    return `<div class="card"><h3>FCF Forecast Engine</h3><div class="small">FY${ERT40.fy0()}A actual → FY${d.years[0]}–${d.years[4]} detailed forecast. Editing any driver automatically creates a Custom case.</div><div class="ert40-toolbar"><button class="ert-btn ${sc==='Bear'?'active':''}" data-scenario="Bear">Bear</button><button class="ert-btn ${sc==='Base'?'active':''}" data-scenario="Base">Base</button><button class="ert-btn ${sc==='Bull'?'active':''}" data-scenario="Bull">Bull</button><button class="ert-btn ${sc==='Custom'?'active':''}" data-scenario="Custom">Custom</button><span class="spacer"></span>${sc!=='Custom'?`<button class="ert-btn" id="copySelected40">Copy ${sc} → Custom</button>`:''}<button class="ert-btn" id="resetDrivers">Reset Base</button></div><div class="ert40-driverwrap"><table class="ert40-driver"><thead><tr><th>Driver / output</th><th>FY${ERT40.fy0()}A</th>${d.years.map(y=>`<th>FY${y}E</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div><div class="ert40-minirow"><span>${histLine}</span><span><strong>FY${d.years[0]} CapEx guidance:</strong> $175–185bn · Base $180bn</span><span><strong>Selected FV:</strong> ${money(r.ps)}</span></div>${normalisation()}</div>`;
-  }
-  function normalisation(){
-    const sc=scenario(),d=ERT40.tenYearDrivers(sc),idx=[5,6,7,8,9],manual=sc==='Custom'&&S.normCustomManual;
-    const row=(label,key,inspect)=>`<tr><td ${inspect?`class="clickable" data-inspect="${inspect}"`:''}><strong>${label}</strong></td>${idx.map((i,j)=>manual?`<td><input inputmode="decimal" data-norm="${key}" data-i="${j}" value="${v1(S.normManual.Custom[j][key])}"></td>`:cell(pct(d[key==='revGrowth'?'revGrowth':key][i]),'calc','ERT NORMALISATION')).join('')}</tr>`;
-    return `<div class="ert40-normal-head"><button class="ert-btn" id="normToggle">${S.normOpen?`Hide FY${String(d.years[5]).slice(-2)}–${String(d.years[9]).slice(-2)} normalisation`:`Show FY${String(d.years[5]).slice(-2)}–${String(d.years[9]).slice(-2)} normalisation`}</button><span class="small">Explicit years before Terminal Value. These are ERT assumptions, not management guidance.</span><span class="spacer"></span>${sc==='Custom'?`<button class="ert-btn" id="normManual">${manual?'Use automatic fade':'Edit FY31–35 manually'}</button>`:''}</div><div class="ert40-normal ${S.normOpen?'open':''}"><div class="ert40-driverwrap"><table class="ert40-driver"><thead><tr><th>Normalisation driver</th>${idx.map(i=>`<th>FY${d.years[i]}E</th>`).join('')}</tr></thead><tbody>${row('Revenue growth %','revGrowth','v40:revenue')}${row('OCF margin %','ocf','v40:ocf')}${row('CapEx / Revenue %','cap','v40:capex')}${row('SBC / Revenue %','sbc','v40:sbc')}${`<tr><td><strong>→ Economic FCF margin %</strong></td>${idx.map(i=>cell(pct(ERT40.dcf10(sc).detail[i].fcfMargin),'calc','CALCULATED')).join('')}</tr>`}</tbody></table></div></div>`;
-  }
-  function dcfSection(){
-    const sc=scenario(),r=ERT40.dcf10(sc),before=ERT40.dcf10(sc,{deductSbc:false}),bridge=r.detail;
-    return `<div class="card"><div class="ert40-dcf-top"><div><div class="sub">10-Year Explicit DCF · ${sc}</div><div class="ert40-fv clickable" data-inspect="v40:dcf10">${money(r.ps)}</div><div class="small">Economic view deducts SBC once. Before-SBC reference ${money(before.ps)}.</div></div><div class="ert40-assump"><label class="clickable" data-inspect="wacc">WACC %<input data-wa="__waccDisplay" id="ertWaccInput" value="${Number(wacc().w).toFixed(2)}"></label></div><div class="ert40-assump"><label class="clickable" data-inspect="terminal">Terminal growth %<input id="terminal" value="${Number(S.terminal).toFixed(2)}"></label></div></div><div class="ert40-bridge clickable" data-inspect="v40:dcf10"><div><span class="k">PV FY${bridge[0].year}–FY${bridge[9].year} FCF</span><strong>${ERT40.mm(r.pv)}</strong></div><div><span class="k">PV Terminal Value</span><strong>${ERT40.mm(r.pvt)}</strong></div><div><span class="k">Enterprise Value</span><strong>${ERT40.mm(r.ev)}</strong></div><div><span class="k">+ Net cash</span><strong>${ERT40.mm(D.market.net_cash_m)}</strong></div><div><span class="k">Equity Value</span><strong>${ERT40.mm(r.equity)}</strong></div><div><span class="k">÷ Diluted shares</span><strong>${fmt(D.market.shares_m,0)}m → ${money(r.ps)}</strong></div></div><div class="ert40-normal-head"><button class="ert-btn" id="dcfBridgeToggle">${S.dcfBridgeOpen?`Hide FY${String(bridge[0].year).slice(-2)}–${String(bridge[9].year).slice(-2)} cash-flow bridge`:`Show FY${String(bridge[0].year).slice(-2)}–${String(bridge[9].year).slice(-2)} cash-flow bridge`}</button><span class="small">Terminal Value starts after FY${bridge[9].year}; discount exponent = 10.</span></div><div class="ert40-detail ${S.dcfBridgeOpen?'open':''}"><div class="ert40-driverwrap"><table class="ert40-driver"><thead><tr><th>Year</th><th>Revenue</th><th>OCF margin</th><th>CapEx</th><th>SBC</th><th>Economic FCF</th><th>Discount factor</th><th>PV FCF</th></tr></thead><tbody>${bridge.map(x=>`<tr><td><strong>FY${x.year}</strong></td><td>${fmt(x.revenue,0)}m</td><td>${pct(x.ocfMargin)}</td><td>${fmt(x.capex,0)}m</td><td>${fmt(x.sbc,0)}m</td><td>${fmt(x.fcf,0)}m</td><td>${x.df.toFixed(4)}</td><td>${fmt(x.pvFcf,0)}m</td></tr>`).join('')}</tbody></table></div></div></div>`;
-  }
-  function reverse(){
-    const base=ERT40.dcf10('Base'),z=ERT40.reverseDrivers(),r5=base.detail[4],fmtReq=(x,kind)=>{if(!x.reachable)return '<span class="ert40-status ert40-outlier">OUTSIDE SOLVER RANGE</span>';if(kind==='revenue')return `<div class="v ert40-implied">+${x.shift.toFixed(1)}ppt / yr</div><div class="small">FY${r5.year} growth ${pct(x.drivers.revGrowth[4])}</div>`;if(kind==='ocf')return `<div class="v ert40-implied">+${x.shift.toFixed(1)}ppt</div><div class="small">FY${r5.year} OCF margin ${pct(x.drivers.ocf[4])}</div>`;return `<div class="v ert40-implied">−${x.shift.toFixed(1)}ppt</div><div class="small">FY${r5.year} CapEx/Revenue ${pct(x.drivers.cap[4])}</div>`};
-    return `<div class="card"><h3 class="clickable" data-inspect="v40:reverse">Reverse DCF — what does ${money(D.market.price)} require?</h3><div class="small">One driver at a time; WACC ${pct(wacc().w)} and terminal growth ${pct(S.terminal)} held fixed. MARKET-IMPLIED — NOT MANAGEMENT GUIDANCE.</div><div class="ert40-reverse" style="margin-top:10px"><div class="head"><strong>Driver</strong><div class="small">ERT Base → market hurdle</div></div><div><strong>Revenue growth</strong><div class="small">Base FY${r5.year} ${pct(r5.revGrowth)}</div>${fmtReq(z.revenue,'revenue')}</div><div><strong>OCF margin</strong><div class="small">Base FY${r5.year} ${pct(r5.ocfMargin)}</div>${fmtReq(z.ocf,'ocf')}</div><div><strong>CapEx normalisation</strong><div class="small">Base FY${r5.year} ${pct(r5.capMargin)}</div>${fmtReq(z.cap,'cap')}</div></div></div>`;
-  }
-  function cross(){
-    const base=ERT40.dcf10('Base'),n=ERT40.normalizedFcfCheck('Base'),p=ERT40.forwardEarningsCheck('Base'),e=ERT40.evFcfCheck('Base'),one=(label,obj,key)=>{const v=obj.ps,[st,cls]=ERT40.rangeStatus(v,base.ps);return `<div class="clickable" data-inspect="${key}"><strong>${label}</strong><div class="v">${Number.isFinite(v)?money(v):'CHECK DATA'}</div><span class="ert40-status ${Number.isFinite(v)?cls:'ert40-warn'}">${Number.isFinite(v)?st:'UNAVAILABLE'}</span></div>`};
-    return `<div class="card"><h3>Independent Cross-Checks</h3><div class="small">These challenge the primary 10Y DCF. They are not averaged into ERT Base Fair Value.</div><div class="ert40-cross" style="margin-top:9px"><div class="head"><strong>Primary</strong><div class="v">${money(base.ps)}</div><span class="ert40-status ert40-support">10Y DCF</span></div>${one('Normalised FCF DCF',n,'v40:norm')}${one('Forward Earnings',p,'v40:pe')}${one('EV / FCF',e,'v40:evfcf')}</div></div>`;
-  }
-  function page(){return `<h1>Valuation Studio</h1><div class="lead">One 10-year DCF engine. Forecast first; valuation second. Detailed evidence stays in the Inspector.</div>${summary()}<div class="grid" style="gap:12px">${forecast()}${dcfSection()}${reverse()}${cross()}</div>`}
-  window.ERT40UI={page,summary,forecast,normalisation,dcfSection,reverse,cross};
+ function rangeBar(sum){
+   const vals=[sum.bear,sum.base,sum.bull,Number(D.market.price)].filter(Number.isFinite);
+   let mn=Math.min(...vals),mx=Math.max(...vals),pad=(mx-mn||1)*.12;mn=Math.max(0,mn-pad);mx+=pad;
+   const pos=v=>Math.max(0,Math.min(100,(v-mn)/(mx-mn)*100));
+   const item=(v,label,cls)=>`<div class="mark ${cls}" style="left:${pos(v)}%">${label}<br>${money(v)}</div>`;
+   return `<div class="card" style="margin-top:12px"><h3>ERT Valuation Range</h3><div class="ert40-rangebar"><div class="track"></div>${item(sum.bear,'BEAR','bear')}${item(sum.base,'ERT BASE','base')}${item(sum.bull,'BULL','bull')}${item(Number(D.market.price),'MARKET','market')}</div></div>`;
+ }
+ function hero(){
+   const x=ERT40.marketReality(),prem=x.premium;
+   return `<div class="ert40-hero">
+     <div><div class="sub">ERT PRIMARY FAIR VALUE</div><div class="ert40-big">${money(x.base)}</div><div class="ert40-range">Reasonable range ${money(x.bear)} – ${money(x.bull)}</div><div class="small">10-Year Explicit DCF · after SBC</div></div>
+     <div><div class="sub">Current price</div><div class="ert40-big">${money(x.price)}</div><div class="${prem<=0?'pos':'neg'}">${Number.isFinite(prem)?(prem>=0?'+':'')+prem.toFixed(1)+'% vs ERT Base':'—'}</div><div class="small">${x.assessment}</div></div>
+     <div><div class="sub">Valuation confidence</div><div class="ert40-big">${x.confidence}</div><div class="small">Driven by scenario spread + cross-check agreement</div></div>
+     <div><div class="sub">Main valuation uncertainty</div><div class="ert40-big" style="font-size:21px">AI CapEx return</div><div class="small">Timing of CapEx normalisation and FCF conversion</div></div>
+   </div>${rangeBar(x)}`;
+ }
+ function methods(){
+   const ag=ERT40.agreement('Base'),n=ERT40.normalizedFcfCheck('Base'),pe=ERT40.forwardEarningsCheck('Base'),ev=ERT40.evFcfCheck('Base');
+   const stN=ERT40.rangeStatus(n.ps,ag.primary),stP=ERT40.rangeStatus(pe.ps,ag.primary),stE=ERT40.rangeStatus(ev.ps,ag.primary);
+   return `<div class="card" style="margin-top:12px"><h3>Primary Valuation & Independent Cross-Checks</h3>
+     <p>The 10-Year Explicit DCF is the primary valuation. The other methods challenge it; they are <strong>not</strong> averaged into the answer.</p>
+     <div class="ert40-methods">
+       <div class="ert40-method primary clickable" data-inspect="v40:dcf10"><div class="sub">PRIMARY · 10-Year Explicit DCF</div><div class="mprice">${money(ag.primary)}</div><div class="small">FY2026–30 detailed forecast → FY2031–35 normalisation → terminal value</div></div>
+       <div class="ert40-method clickable" data-inspect="v40:norm"><div class="sub">Normalised FCF DCF</div><div class="mprice">${money(n.ps)}</div><span class="ert40-status ${stN[1]}">${stN[0]}</span><div class="small">Normalised FCF margin ${ERT40.pct1(n.normMargin)}</div></div>
+       <div class="ert40-method clickable" data-inspect="v40:pe"><div class="sub">Forward Earnings</div><div class="mprice">${money(pe.ps)}</div><span class="ert40-status ${stP[1]}">${stP[0]}</span><div class="small">FY${pe.year}E EPS ${pe.eps?.toFixed(2)} × ${pe.multiple.toFixed(0)}x ERT justified P/E</div></div>
+       <div class="ert40-method clickable" data-inspect="v40:evfcf"><div class="sub">EV / FCF Cross-check</div><div class="mprice">${money(ev.ps)}</div><span class="ert40-status ${stE[1]}">${stE[0]}</span><div class="small">FY${ev.year}E FCF × ${ev.multiple.toFixed(0)}x EV/FCF + net cash</div></div>
+     </div>
+     <div class="sourcebox"><strong>Model agreement:</strong> ${ag.label}. If cross-checks materially disagree with the primary DCF, ERT flags the disagreement rather than hiding it inside a weighted average.</div>
+   </div>`;
+ }
+ function thesis(){
+   const d=ERT40.tenYearDrivers('Base'),t=d.target;
+   const arr=(a)=>a.slice(0,5).map(v=>Number(v).toFixed(1)+'%').join(' → ');
+   return `<div class="card" style="margin-top:12px"><h3>What has to be true for ERT Base?</h3>
+    <div class="ert40-thesis-grid">
+      <div class="ert40-thesis clickable" data-inspect="v40:revenue"><div class="sub">Revenue growth FY26–30</div><div class="line">${arr(d.revGrowth)}</div><div class="ert40-source">STREET-ANCHORED where Business Quant estimates are available</div></div>
+      <div class="ert40-thesis clickable" data-inspect="v40:ocf"><div class="sub">OCF margin FY26–30</div><div class="line">${arr(d.ocf)}</div><div class="ert40-source">ERT ASSUMPTION · historical margin anchor</div></div>
+      <div class="ert40-thesis clickable" data-inspect="v40:capex"><div class="sub">CapEx / Revenue FY26–30</div><div class="line">${arr(d.cap)}</div><div class="ert40-source">FY26 MANAGEMENT GUIDANCE · FY27–30 ERT normalisation assumption</div></div>
+      <div class="ert40-thesis clickable" data-inspect="v40:sbc"><div class="sub">SBC / Revenue FY26–30</div><div class="line">${arr(d.sbc)}</div><div class="ert40-source">ERT ASSUMPTION · SEC historical SBC/revenue</div></div>
+    </div>
+    <div class="sourcebox">FY2031–35 automatically fade toward long-run targets: Revenue growth ${ERT40.pct1(t.revGrowth)}, OCF margin ${ERT40.pct1(t.ocf)}, CapEx/Revenue ${ERT40.pct1(t.cap)}, SBC/Revenue ${ERT40.pct1(t.sbc)}. These are explicit ERT assumptions, not management guidance.</div>
+   </div>`;
+ }
+
+ function normalizationTable(){
+   const name=S.drvScenario,d=ERT40.tenYearDrivers(name),isCustom=name==='Custom',manual=isCustom&&S.normCustomManual;
+   const years=d.years.slice(5),idx=[5,6,7,8,9];
+   const row=(label,key,vals)=>`<tr><td><strong>${label}</strong></td>${idx.map((i,j)=>manual?`<td><input inputmode="decimal" data-norm="${key}" data-i="${j}" value="${Number(vals[i]).toFixed(2)}"></td>`:`<td>${Number(vals[i]).toFixed(1)}%</td>`).join('')}</tr>`;
+   return `<div class="ert40-normal-toggle"><div><strong>FY2031–FY2035 Normalisation Period</strong><div class="small">DCF calculates these five years explicitly before terminal value.</div></div><div>${isCustom?`<button id="normManual">${manual?'Auto normalisation':'Edit FY31–35 manually'}</button>`:''}<button id="normToggle">${S.normOpen?'Collapse':'Expand'}</button></div></div>
+    <div class="ert40-normal-table ${S.normOpen?'open':''}"><div class="tw"><table><thead><tr><th>Driver</th>${years.map(y=>`<th>FY${y}E</th>`).join('')}</tr></thead><tbody>
+      ${row('Revenue growth %','revGrowth',d.revGrowth)}
+      ${row('OCF margin %','ocf',d.ocf)}
+      ${row('CapEx / Revenue %','cap',d.cap)}
+      ${row('SBC / Revenue %','sbc',d.sbc)}
+      <tr><td><strong>FCF after SBC (USD m)</strong></td>${idx.map(i=>`<td>${fmt(ERT40.dcf10(name).detail[i].fcf,0)}</td>`).join('')}</tr>
+    </tbody></table></div></div>`;
+ }
+ function customControls(){
+   return `<div class="card" style="margin-top:12px"><h3>Custom Scenario Controls</h3><div class="row" style="gap:8px;flex-wrap:wrap">
+     <button data-copycustom="Base">Copy Base → Custom</button><button data-copycustom="Bear">Copy Bear → Custom</button><button data-copycustom="Bull">Copy Bull → Custom</button><button id="resetCustom40">Reset Custom</button>
+   </div><div class="small" style="margin-top:8px">Bear / Base / Bull remain ERT scenarios. Manual edits are isolated to Custom.</div></div>`;
+ }
+ function customCompare(){
+   if(S.drvScenario!=='Custom')return '';
+   const b=ERT40.dcf10('Base'),c=ERT40.dcf10('Custom'),b5=b.detail[4],c5=c.detail[4];
+   return `<div class="card" style="margin-top:12px"><h3>Custom Impact vs ERT Base</h3><div class="ert40-compare">
+     <div class="head">Metric</div><div class="head">ERT Base</div><div class="head">Your Custom</div>
+     <div>FY2030 Revenue growth</div><div>${ERT40.pct1(b5.revGrowth)}</div><div>${ERT40.pct1(c5.revGrowth)}</div>
+     <div>FY2030 OCF margin</div><div>${ERT40.pct1(b5.ocfMargin)}</div><div>${ERT40.pct1(c5.ocfMargin)}</div>
+     <div>FY2030 CapEx / Revenue</div><div>${ERT40.pct1(b5.capMargin)}</div><div>${ERT40.pct1(c5.capMargin)}</div>
+     <div>FY2030 SBC / Revenue</div><div>${ERT40.pct1(b5.sbcMargin)}</div><div>${ERT40.pct1(c5.sbcMargin)}</div>
+     <div><strong>10Y DCF Fair Value</strong></div><div><strong>${money(b.ps)}</strong></div><div><strong>${money(c.ps)}</strong> · ${(c.ps-b.ps)>=0?'+':''}${money(c.ps-b.ps)}/share impact</div>
+   </div></div>`;
+ }
+ function audit(){
+   const ag=ERT40.agreement('Base'),b=ERT40.dcf10('Base'),old=ERT32.dcfAdjusted(),ratio=old.ps?Math.abs(b.ps/old.ps-1)*100:NaN;
+   const items=[
+     ['Revenue forecast','Street estimates anchor FY26–30 where available','pass'],
+     ['FY2026 CapEx','$175–185bn management-guidance range; Base midpoint $180bn','pass'],
+     ['FY2027–30 CapEx','ERT normalisation assumption — management has not supplied exact targets','caution'],
+     ['FY2031–35','Explicit normalisation years before terminal value','pass'],
+     ['SBC','Explicitly deducted from economic FCF; Custom can edit SBC/revenue','pass'],
+     ['Terminal dependency',ERT40.pct1(b.tvshare)+' of 10Y DCF enterprise value','caution'],
+     ['Cross-check agreement',ag.label,'pass'],
+     ['Legacy 5Y vs new 10Y DCF',Number.isFinite(ratio)?ratio.toFixed(1)+'% difference':'Unavailable',ratio>35?'caution':'pass']
+   ];
+   return `<div class="card" style="margin-top:12px"><h3>Valuation Audit</h3><div class="ert40-audit">${items.map(x=>`<div class="ert40-audit-item ert40-${x[2]}"><strong>${x[0]}</strong><div>${x[1]}</div></div>`).join('')}</div></div>`;
+ }
+
+ window.ERT40UI={hero,methods,thesis,normalizationTable,customControls,customCompare,audit};
 })();
 </script>
+
 <script id="ert40-integrate">
 (function(){
-  /* Valuation is rendered directly by the canonical valuation() function. No valuation override lives here. */
-  const oldOverview=window.overview;
-  window.overview=function(){
-    let x=oldOverview(),s=ERT40.valuationSummary(),base=s.base,bear=s.bear,bull=s.bull;
-    x=x.replace(/<div class="sub">Base fair value — after SBC<\/div><div class="value [^"]*">[^<]*<\/div><div class="small">Primary · OCF − CapEx − SBC<\/div>/,
-      `<div class="sub">ERT Primary Fair Value</div><div class="value ${base>=D.market.price?'pos':'neg'}">${money(base)}</div><div class="delta33 ${base>=D.market.price?'pos':'neg'}">${base>=D.market.price?'▲':'▼'} ${((base/D.market.price-1)*100).toFixed(1)}% vs current price</div><div class="small">10-Year Explicit DCF · range ${money(bear)}–${money(bull)}</div>`);
-    x=x.replace('<div class="lead">30-second answer: is GOOG worth deeper research?</div>',`<div class="lead">30-second answer: is GOOG worth deeper research?</div><div class="sourcebox"><strong>ERT valuation:</strong> ${money(base)} central fair value · ${money(bear)}–${money(bull)} Bear–Bull range · confidence ${s.confidence}. Primary method: 10-Year Explicit DCF.</div>`);return x;
-  };
-  const oldIns=window.inspector;
-  window.inspector=function(){
-    const k=String(S.sel||'');
-    if(k==='v40:dcf10'){
-      const sc=['Bear','Base','Bull','Custom'].includes(S.drvScenario)?S.drvScenario:'Base',b=ERT40.dcf10(sc),before=ERT40.dcf10(sc,{deductSbc:false});
-      return specialInspector(`10-Year Explicit DCF — ${sc}`,`<div class="traceFact"><b>STRUCTURE</b><br>FY${b.detail[0].year}–FY${b.detail[4].year} detailed forecast<br>FY${b.detail[5].year}–FY${b.detail[9].year} explicit normalisation<br>Terminal Value begins after FY${b.detail[9].year}</div><div class="traceCalc"><b>CALCULATION</b><br>PV explicit FCF ${ERT40.mm(b.pv)}<br>PV Terminal Value ${ERT40.mm(b.pvt)}<br>Enterprise Value ${ERT40.mm(b.ev)}<br>+ Net cash ${ERT40.mm(D.market.net_cash_m)}<br>Equity Value ${ERT40.mm(b.equity)}<br>÷ ${fmt(D.market.shares_m,0)}m diluted shares<br><strong>Fair Value ${money(b.ps)}/share</strong></div><div class="traceAssume"><b>SBC TREATMENT</b><br>After-SBC economic FV ${money(b.ps)}<br>Before-SBC reference ${money(before.ps)}<br>SBC is deducted once from FCF; there is no second full dilution penalty.</div>`);
-    }
-    if(k==='v40:revenue'){const d=ERT40.tenYearDrivers('Base');return specialInspector('Revenue growth — Base',`<div class="traceFact"><b>STREET / FACT ANCHOR</b><br>FY${d.years[0]}–FY${d.years[4]} uses Business Quant annual Revenue estimates where available, with SEC actual revenue as the starting point.</div><div class="traceAssume"><b>FY${d.years[5]}–FY${d.years[9]}</b><br>ERT fades growth toward ${ERT40.pct1(d.target.revGrowth)} before terminal growth ${ERT40.pct1(S.terminal)}.</div>`)}
-    if(k==='v40:ocf'){const d=ERT40.tenYearDrivers('Base');return specialInspector('OCF margin — Base',`<div class="traceFact"><b>HISTORICAL ANCHOR</b><br>SEC OCF / Revenue history.</div><div class="traceAssume"><b>LONG-RUN TARGET</b><br>${ERT40.pct1(d.target.ocf)} · ERT assumption.</div><div class="traceCalc"><b>VALUATION EFFECT</b><br>Higher OCF margin → higher economic FCF → higher fair value, all else equal.</div>`)}
-    if(k==='v40:capex'){const d=ERT40.tenYearDrivers('Base');return specialInspector('CapEx / Revenue — Base',`<div class="traceFact"><b>MANAGEMENT GUIDANCE</b><br>FY${d.years[0]} CapEx range $175–185bn; Base uses $180bn midpoint.</div><div class="traceAssume"><b>ERT NORMALISATION</b><br>FY${d.years[1]} onward is an ERT assumption, not management guidance. Base FY${d.years[4]} ${ERT40.pct1(d.cap[4])}; long-run ${ERT40.pct1(d.target.cap)}.</div><div class="traceCalc"><b>VALUATION EFFECT</b><br>Higher CapEx → lower FCF → lower fair value, all else equal.</div>`)}
-    if(k==='v40:sbc'){const d=ERT40.tenYearDrivers('Base');return specialInspector('SBC / Revenue — Base',`<div class="traceFact"><b>SEC HISTORY</b><br>Historical SBC / Revenue is the anchor.</div><div class="traceAssume"><b>ERT NORMALISATION</b><br>Long-run target ${ERT40.pct1(d.target.sbc)}.</div><div class="traceCalc"><b>ECONOMIC FCF</b><br>OCF − CapEx − SBC. SBC is not deducted a second time as a full dilution penalty.</div>`)}
-    if(k==='v40:reverse'){const z=ERT40.reverseDrivers();return specialInspector('Reverse DCF — market-implied hurdles',`<div class="traceFact"><b>MARKET PRICE</b><br>${money(D.market.price)}/share</div><div class="traceAssume"><b>FIXED</b><br>WACC ${pct(wacc().w)}<br>Terminal growth ${pct(S.terminal)}</div><div class="traceCalc"><b>ONE DRIVER AT A TIME</b><br>Revenue growth uplift: ${z.revenue.reachable?z.revenue.shift.toFixed(1)+'ppt/year':'outside solver range'}<br>OCF margin uplift: ${z.ocf.reachable?z.ocf.shift.toFixed(1)+'ppt':'outside solver range'}<br>CapEx-intensity reduction: ${z.cap.reachable?z.cap.shift.toFixed(1)+'ppt':'outside solver range'}</div><div class="sourcebox">MARKET-IMPLIED — NOT MANAGEMENT GUIDANCE. The solver changes one driver at a time; it does not claim these outcomes will occur.</div>`)}
-    if(k==='v40:norm'){const n=ERT40.normalizedFcfCheck('Base');return specialInspector('Normalised FCF DCF — cross-check',`<div class="traceAssume"><b>CROSS-CHECK</b><br>Normalised FCF margin ${ERT40.pct1(n.normMargin)}<br>Indicated fair value ${money(n.ps)}</div><div class="sourcebox">Independent challenge to the 10Y DCF; not averaged into Base.</div>`)}
-    if(k==='v40:pe'){const z=ERT40.forwardEarningsCheck('Base');return specialInspector('Forward Earnings — cross-check',`<div class="traceFact"><b>FY${z.year}E EPS</b><br>${Number.isFinite(z.eps)?z.eps.toFixed(2):'Unavailable'}</div><div class="traceAssume"><b>ERT P/E</b><br>${z.multiple.toFixed(0)}x</div><div class="traceCalc"><b>INDICATION</b><br>${money(z.ps)}/share</div>`)}
-    if(k==='v40:evfcf'){const z=ERT40.evFcfCheck('Base');return specialInspector('EV / FCF — cross-check',`<div class="traceCalc"><b>FY${z.year||'—'}E ECONOMIC FCF</b><br>${Number.isFinite(z.fcf)?ERT40.mm(z.fcf):'Unavailable'}</div><div class="traceAssume"><b>ERT EV/FCF</b><br>${z.multiple.toFixed(0)}x</div><div class="traceCalc"><b>INDICATION</b><br>${Number.isFinite(z.ps)?money(z.ps):'CHECK DATA / UNAVAILABLE'}</div>`)}
-    return oldIns();
-  };
-  function refresh(){if(typeof window.ERT43_REFRESH_VALUATION==='function')window.ERT43_REFRESH_VALUATION();else render()}
-  document.addEventListener('click',e=>{
-    if(S.page!=='valuation')return;
-    if(e.target?.id==='copySelected40'){e.preventDefault();e.stopImmediatePropagation();ERT40.copyToCustom(S.drvScenario);refresh();return}
-    if(e.target?.id==='normToggle'){e.preventDefault();e.stopImmediatePropagation();S.normOpen=!S.normOpen;refresh();return}
-    if(e.target?.id==='normManual'){e.preventDefault();e.stopImmediatePropagation();if(S.normCustomManual){S.normCustomManual=false}else{ERT40.enableManualNormalisation()}refresh();return}
-    if(e.target?.id==='dcfBridgeToggle'){e.preventDefault();e.stopImmediatePropagation();S.dcfBridgeOpen=!S.dcfBridgeOpen;refresh();return}
-  },true);
-  document.addEventListener('focusin',e=>{if(S.page==='valuation'){const el=e.target.closest('[data-norm]');if(el)el.dataset.start=el.value}},true);
-  document.addEventListener('keydown',e=>{if(S.page!=='valuation')return;const el=e.target.closest('[data-norm]');if(!el)return;if(e.key==='Enter'){e.preventDefault();el.blur()}if(e.key==='Escape'){e.preventDefault();el.value=el.dataset.start??el.value;el.blur()}},true);
-  document.addEventListener('change',e=>{if(S.page!=='valuation')return;const el=e.target.closest('[data-norm]');if(!el)return;e.preventDefault();e.stopImmediatePropagation();const v=parseFloat(el.value),i=+el.dataset.i,k=el.dataset.norm;if(!Number.isFinite(v))return;if(!S.normCustomManual||!Array.isArray(S.normManual?.Custom)){ERT40.enableManualNormalisation()}S.normManual.Custom[i][k]=v;S.drvScenario='Custom';refresh()},true);
+ const oldVal=window.valuation;
+ window.valuation=function(){
+   let x=oldVal();
+
+   // Keep the existing Forecast Engine, but clearly demote the legacy five-year DCF outputs.
+   x=x.replace('<h1>Valuation Studio</h1>','<h1>Valuation Studio</h1>'+ERT40UI.hero()+ERT40UI.methods()+ERT40UI.thesis());
+
+   // Add Custom controls immediately before the forecast engine.
+   const forecastMarker='<div class="card" style="margin-top:12px"><h3>FCF Forecast Engine';
+   const idx=x.indexOf(forecastMarker);
+   if(idx>=0)x=x.slice(0,idx)+ERT40UI.customControls()+x.slice(idx);
+
+   // Append 10Y normalization table at the end of the current Forecast Engine card.
+   const aiMarker='<div class="card" style="margin-top:12px"><h3>AI / CapEx Investment Return Analysis</h3>';
+   if(x.includes(aiMarker))x=x.replace(aiMarker,`<div class="card" style="margin-top:12px"><h3>10-Year Explicit DCF Extension</h3>${ERT40UI.normalizationTable()}</div>${ERT40UI.customCompare()}${aiMarker}`);
+
+   // Legacy SBC bridge remains as supporting analysis, not the primary fair value.
+   x=x.replace('SBC valuation bridge — before vs after stock-based compensation','SBC valuation bridge — legacy 5Y model reference');
+   x=x.replace('Why is Fair Value different from Market Price?','Legacy 5Y DCF Audit — reference only');
+
+   return x+ERT40UI.audit();
+ };
+
+ const oldOverview=window.overview;
+ window.overview=function(){
+   let x=oldOverview(),s=ERT40.marketReality();
+   // Replace the after-SBC Base card with the new primary 10Y DCF central value.
+   x=x.replace(/<div class="sub">Base fair value — after SBC<\/div><div class="value [^"]*">[^<]*<\/div><div class="small">Primary · OCF − CapEx − SBC<\/div>/,
+     `<div class="sub">ERT Primary Fair Value</div><div class="value ${s.base>=D.market.price?'pos':'neg'}">${money(s.base)}</div><div class="delta33 ${s.base>=D.market.price?'pos':'neg'}">${s.base>=D.market.price?'▲':'▼'} ${((s.base/D.market.price-1)*100).toFixed(1)}% vs current price</div><div class="small">10-Year Explicit DCF · range ${money(s.bear)}–${money(s.bull)}</div>`);
+   // Add valuation confidence near top without removing existing market context.
+   x=x.replace('<div class="lead">30-second answer: is GOOG worth deeper research?</div>',
+     `<div class="lead">30-second answer: is GOOG worth deeper research?</div><div class="sourcebox"><strong>ERT valuation:</strong> ${money(s.base)} central fair value · ${money(s.bear)}–${money(s.bull)} Bear–Bull range · confidence ${s.confidence}. Primary method: 10-Year Explicit DCF.</div>`);
+   return x;
+ };
+
+ // Inspector for new valuation items.
+ const oldIns=window.inspector;
+ window.inspector=function(){
+   const k=String(S.sel||'');
+   if(k==='v40:dcf10'){const b=ERT40.dcf10('Base');return specialInspector('10-Year Explicit DCF — ERT primary valuation',`<div class="traceFact"><b>STRUCTURE</b><br>FY2026–30 detailed forecast<br>FY2031–35 explicit normalisation<br>Terminal value begins after FY2035</div><div class="traceCalc"><b>RESULT</b><br>Fair value ${money(b.ps)}/share<br>WACC ${pct(wacc().w)}<br>Terminal growth ${pct(S.terminal)}<br>Terminal value share ${ERT40.pct1(b.tvshare)}</div><div class="sourcebox">This is the ERT primary fair value. Cross-check methods challenge it but are not averaged into it.</div>`);}
+   if(k==='v40:norm'){const n=ERT40.normalizedFcfCheck('Base');return specialInspector('Normalised FCF DCF — cross-check',`<div class="traceAssume"><b>CROSS-CHECK</b><br>Normalised FCF margin ${ERT40.pct1(n.normMargin)}<br>Indicated fair value ${money(n.ps)}</div><div class="sourcebox">Uses the ERT long-run OCF, CapEx and SBC targets on FY2030 revenue, then Gordon-values that normalised cash generation. It is a cross-check, not the primary model.</div>`);}
+   if(k==='v40:pe'){const z=ERT40.forwardEarningsCheck('Base');return specialInspector('Forward Earnings — cross-check',`<div class="traceFact"><b>FORWARD EPS</b><br>FY${z.year}E EPS ${z.eps.toFixed(2)}</div><div class="traceAssume"><b>ERT MULTIPLE ASSUMPTION</b><br>${z.multiple.toFixed(0)}x justified P/E</div><div class="traceCalc"><b>INDICATION</b><br>${money(z.ps)}/share</div><div class="sourcebox">This multiple is an explicit ERT cross-check assumption, not a market fact.</div>`);}
+   if(k==='v40:evfcf'){const z=ERT40.evFcfCheck('Base');return specialInspector('EV / FCF — cross-check',`<div class="traceCalc"><b>FY${z.year}E ECONOMIC FCF</b><br>${ERT40.mm(z.fcf)}</div><div class="traceAssume"><b>ERT MULTIPLE ASSUMPTION</b><br>${z.multiple.toFixed(0)}x EV/FCF</div><div class="traceCalc"><b>INDICATION</b><br>${money(z.ps)}/share after net cash</div>`);}
+   if(k==='v40:revenue'){const d=ERT40.tenYearDrivers('Base');return specialInspector('Revenue growth — ERT Base',`<div class="traceFact"><b>STREET-ANCHORED</b><br>FY2026–30 uses Business Quant annual revenue estimates where available; ERT calculates implied growth from those revenue levels.</div><div class="traceAssume"><b>FY2031–35</b><br>Growth fades toward ${ERT40.pct1(d.target.revGrowth)} before terminal growth ${ERT40.pct1(S.terminal)}.</div>`);}
+   if(k==='v40:ocf'){const d=ERT40.tenYearDrivers('Base');return specialInspector('OCF margin — ERT Base',`<div class="traceFact"><b>HISTORICAL ANCHOR</b><br>Latest SEC OCF / Revenue and recent history inform the model.</div><div class="traceAssume"><b>LONG-RUN TARGET</b><br>${ERT40.pct1(d.target.ocf)}. This is an ERT assumption.</div>`);}
+   if(k==='v40:capex'){const d=ERT40.tenYearDrivers('Base');return specialInspector('CapEx / Revenue — ERT Base',`<div class="traceFact"><b>FY2026 GUIDANCE</b><br>Base uses $180bn, midpoint of the $175–185bn guidance range.</div><div class="traceAssume"><b>FY2027–30</b><br>ERT gradually normalises CapEx intensity to 18% by FY2030.</div><div class="traceAssume"><b>FY2031–35</b><br>Further fades to ${ERT40.pct1(d.target.cap)}. Management has not promised these normalisation targets.</div>`);}
+   if(k==='v40:sbc'){const d=ERT40.tenYearDrivers('Base');return specialInspector('SBC / Revenue — ERT Base',`<div class="traceFact"><b>SEC HISTORY</b><br>ERT uses historical SBC / Revenue as the anchor.</div><div class="traceAssume"><b>FY2035 TARGET</b><br>${ERT40.pct1(d.target.sbc)}.</div><div class="sourcebox">Economic FCF deducts SBC. The model does not add a second full SBC dilution penalty.</div>`);}
+   return oldIns();
+ };
+
+ // New controls and normalisation input handling.
+ document.addEventListener('click',e=>{
+   const c=e.target.closest('[data-copycustom]');
+   if(c){e.preventDefault();e.stopImmediatePropagation();ERT40.copyToCustom(c.dataset.copycustom);return;}
+   if(e.target?.id==='resetCustom40'){e.preventDefault();e.stopImmediatePropagation();ERT40.resetCustom();return;}
+   if(e.target?.id==='normToggle'){e.preventDefault();e.stopImmediatePropagation();S.normOpen=!S.normOpen;render();return;}
+   if(e.target?.id==='normManual'){e.preventDefault();e.stopImmediatePropagation();if(S.normCustomManual){S.normCustomManual=false;render();}else ERT40.enableManualNormalisation();return;}
+ },true);
+
+ document.addEventListener('focusin',e=>{
+   const el=e.target.closest('[data-norm]');if(el)el.dataset.start=el.value;
+ },true);
+ document.addEventListener('keydown',e=>{
+   const el=e.target.closest('[data-norm]');if(!el)return;
+   if(e.key==='Enter'){e.preventDefault();e.stopImmediatePropagation();el.blur();}
+   if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();el.value=el.dataset.start??el.value;el.blur();}
+ },true);
+ document.addEventListener('change',e=>{
+   const el=e.target.closest('[data-norm]');if(!el)return;
+   e.preventDefault();e.stopImmediatePropagation();
+   const v=parseFloat(el.value),i=+el.dataset.i,k=el.dataset.norm;if(!Number.isFinite(v))return;
+   if(!Array.isArray(S.normManual.Custom)){ERT40.enableManualNormalisation();return;}
+   S.normManual.Custom[i][k]=v;S.normCustomManual=true;S.drvScenario='Custom';render();
+ },true);
 })();
 </script>
+
+
+<style id="ert41-css">
+.ert41-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.ert41-summary-card{background:#101b27;border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}.ert41-summary-card.base{border-color:#4d98e8;background:#10233a}.ert41-summary-card .v{font-size:25px;font-weight:900;margin:4px 0;color:var(--text)}.ert41-summary-meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}.ert41-chip{border:1px solid var(--line);background:#0d1823;border-radius:999px;padding:6px 10px;font-size:11px;color:var(--muted)}.ert41-chip strong{color:var(--text)}
+.ert41-section{margin-top:12px}.ert41-section-head{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.ert41-section-head h3{margin:0}.ert41-actions{display:flex;gap:7px;flex-wrap:wrap}.ert41-actions button,.ert41-normalbar button{border:1px solid #38536c;background:#142536;color:#eef5fc;border-radius:7px;padding:7px 10px}.ert41-actions button.active{outline:2px solid var(--blue)}.ert41-subactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ert41-subactions button{font-size:11px;padding:5px 8px}
+.ert41-forecast-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}.ert41-forecast{min-width:980px!important}.ert41-forecast th:first-child,.ert41-forecast td:first-child{min-width:205px}.ert41-forecast input,.ert41-normal-table input,.ert41-assumption-grid input{width:100%;background:#08131e;color:#fff;border:1px solid #36506a;border-radius:6px;padding:7px;box-sizing:border-box}.ert41-forecast .actual{background:#10283a}.ert41-forecast .street{background:#211c38}.ert41-forecast .guidance{background:#2d2612}.ert41-forecast .calc{background:#10271f}.ert41-tag{display:block;font-size:9px;line-height:1.2;margin-top:3px;color:var(--muted);white-space:normal}
+.ert41-normalbar{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);margin-top:10px;padding-top:10px}.ert41-normal-table{margin-top:9px}.ert41-normal-table .tw{max-height:none}.ert41-normal-table table{min-width:760px}.ert41-inline-note{font-size:11px;color:var(--muted);margin-top:8px}.ert41-inline-note strong{color:var(--text)}
+.ert41-dcf-top{display:grid;grid-template-columns:1.2fr repeat(4,minmax(0,1fr));gap:8px}.ert41-dcf-kpi{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.ert41-dcf-kpi.primary{border-color:#4d98e8;background:#10233a}.ert41-dcf-kpi .v{font-size:20px;font-weight:900;margin-top:4px;color:var(--text)}.ert41-bridge{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-top:10px}.ert41-step{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:9px;min-width:0}.ert41-step .v{font-size:16px;font-weight:800;margin-top:4px;color:var(--text)}
+.ert41-details{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}.ert41-details summary{cursor:pointer;font-weight:700;color:#cfe6fa}.ert41-assumption-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}.ert41-assumption-grid label{font-size:10px;color:var(--muted)}
+.ert41-reverse{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.ert41-reverse>div{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.ert41-reverse .v{font-size:19px;font-weight:800;margin:4px 0;color:var(--text)}
+.ert41-cross{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.ert41-cross>div{background:#0b1621;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}.ert41-cross .v{font-size:19px;font-weight:900;margin:4px 0;color:var(--text)}.ert41-status{display:inline-block;padding:3px 7px;border-radius:999px;font-size:9px;font-weight:800;margin-top:4px}.ert41-support{background:#123c2b;color:#72e3aa}.ert41-warn{background:#463819;color:#ffd36c}.ert41-outlier{background:#4a2028;color:#ff97a2}.ert41-unavailable{background:#273442;color:#b8c7d4}
+.ert41-rangebar{position:relative;height:42px;margin:4px 12px 0}.ert41-track{position:absolute;left:0;right:0;top:18px;height:7px;border-radius:999px;background:linear-gradient(90deg,#8e3f4a,#b48a32,#3a8a65)}.ert41-mark{position:absolute;top:3px;transform:translateX(-50%);font-size:9px;font-weight:800;text-align:center;white-space:nowrap}.ert41-mark:after{content:"";display:block;width:2px;height:22px;background:currentColor;margin:2px auto 0}.ert41-mark.bear{color:#ff7f8a}.ert41-mark.base{color:#72a9ff}.ert41-mark.bull{color:#62d494}.ert41-mark.market{color:#fff}
+@media(max-width:1200px){.ert41-summary,.ert41-dcf-top,.ert41-cross{grid-template-columns:repeat(2,minmax(0,1fr))}.ert41-bridge{grid-template-columns:repeat(4,minmax(0,1fr))}.ert41-reverse{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.ert41-summary,.ert41-dcf-top,.ert41-cross,.ert41-bridge,.ert41-reverse,.ert41-assumption-grid{grid-template-columns:1fr}.ert41-section-head,.ert41-normalbar{display:block}.ert41-actions,.ert41-normalbar>div:last-child{margin-top:8px}}
+</style>
+<script id="ert41-single-source">
+(function(){
+ const oldAnalysis41=window.analysis, oldOverview41=window.overview;
+ const mm=v=>Number.isFinite(Number(v))?fmt(Number(v),0)+'m':'—';
+ const p1=v=>Number.isFinite(Number(v))?Number(v).toFixed(1)+'%':'—';
+ const num=v=>Number.isFinite(Number(v))?Number(v):NaN;
+ const latest=a=>Number(last(by(a)[2]));
+
+ function ensureSlimState(){
+   if(!Array.isArray(S.drvSbc)||S.drvSbc.length!==5){
+     try{S.drvSbc=[...ERT40.detailedDrivers('Base').sbc]}catch(_e){S.drvSbc=[5.5,5.5,5.5,5.5,5.5]}
+   }
+   if(typeof S.normOpen!=='boolean')S.normOpen=false;
+   S.normTargets=S.normTargets||{};
+   if(!S.normTargets.Custom)S.normTargets.Custom={...ERT40.longRunTargets('Base')};
+   S.normManual=S.normManual||{};
+   if(typeof S.normCustomManual!=='boolean')S.normCustomManual=false;
+ }
+ ensureSlimState();
+
+ function streetRevenueM(year){
+   const arr=D.consensus?.forwardAnnual?.revenue||D.consensus?.annual?.revenue||[];
+   const x=arr.find(z=>Number(z.period)===Number(year)&&String(z.data_type||'estimate').toLowerCase()==='estimate');
+   return Number.isFinite(Number(x?.estimate))?Number(x.estimate)/1e6:NaN;
+ }
+ function actuals(){
+   const revenue=latest('income.revenue'),ocf=latest('cashflow.ocf'),capex=latest('cashflow.capex'),sbc=latest('cashflow.sbc');
+   return {revenue,revGrowth:yy(by('income.revenue')[2],D.years.length-1),ocfMargin:revenue>0?ocf/revenue*100:NaN,capMargin:revenue>0?capex/revenue*100:NaN,sbcMargin:revenue>0?sbc/revenue*100:NaN,fcf:ocf-capex-sbc,fcfMargin:revenue>0?(ocf-capex-sbc)/revenue*100:NaN,capex};
+ }
+ function capexGuidance(year){
+   if(Number(year)===2026)return '<strong>175,000–185,000</strong><span class="ert41-tag">MANAGEMENT GUIDANCE · Base midpoint 180,000</span>';
+   if(Number(year)===2027)return 'Exact amount not verified<span class="ert41-tag">DIRECTION ONLY · no exact amount</span>';
+   return '—<span class="ert41-tag">NO NUMERIC MANAGEMENT GUIDANCE</span>';
+ }
+ function summary(){
+   const s=ERT40.valuationSummary(),p=Number(D.market.price),lo=Math.min(s.bear,s.base,s.bull,p),hi=Math.max(s.bear,s.base,s.bull,p),pos=v=>hi===lo?50:(v-lo)/(hi-lo)*100;
+   return `<div class="ert41-summary">
+     <div class="ert41-summary-card"><div class="sub">Bear</div><div class="v neg">${money(s.bear)}</div><div class="small">10Y Explicit DCF</div></div>
+     <div class="ert41-summary-card base clickable" data-inspect="v40:dcf10"><div class="sub">ERT BASE FAIR VALUE</div><div class="v">${money(s.base)}</div><div class="small">Primary · after SBC</div></div>
+     <div class="ert41-summary-card"><div class="sub">Bull</div><div class="v pos">${money(s.bull)}</div><div class="small">10Y Explicit DCF</div></div>
+     <div class="ert41-summary-card"><div class="sub">Market</div><div class="v">${money(p)}</div><div class="small">${D.market.asof||'—'}</div></div>
+   </div>
+   <div class="ert41-rangebar"><div class="ert41-track"></div><span class="ert41-mark bear" style="left:${pos(s.bear)}%">Bear</span><span class="ert41-mark base" style="left:${pos(s.base)}%">Base</span><span class="ert41-mark bull" style="left:${pos(s.bull)}%">Bull</span><span class="ert41-mark market" style="left:${pos(p)}%">Market</span></div>
+   <div class="ert41-summary-meta"><span class="ert41-chip">Confidence: <strong>${s.confidence}</strong></span><span class="ert41-chip clickable" data-inspect="capexroi:market">Main uncertainty: <strong>AI CapEx return / normalisation</strong></span><span class="ert41-chip clickable" data-inspect="v40:sbc">SBC: <strong>deducted once in economic FCF</strong></span></div>`;
+ }
+ function scenarioButtons(name){
+   return `<div class="ert41-actions">${['Bear','Base','Bull','Custom'].map(x=>`<button data-vscenario="${x}" class="${name===x?'active':''}">${x}</button>`).join('')}</div>
+   ${name==='Custom'?`<div class="ert41-subactions"><button data-vcopy="Base">Copy Base → Custom</button><button data-vcopy="Bear">Copy Bear → Custom</button><button data-vcopy="Bull">Copy Bull → Custom</button><button id="vResetCustom">Reset Custom</button></div>`:''}`;
+ }
+ function forecast(){
+   ensureSlimState();
+   const name=S.drvScenario||'Base',r=ERT40.dcf10(name),d=r.drivers,a=actuals(),fyA=ERT30.fy0(),idx=[0,1,2,3,4],editable=name==='Custom';
+   const input=(key,i,v)=>editable?`<input inputmode="decimal" data-vdriver="${key}" data-i="${i}" value="${Number(v).toFixed(1)}">`:p1(v);
+   const row=(label,key,vals,inspect)=>`<tr><td class="clickable" data-inspect="${inspect}"><strong>${label}</strong></td><td class="actual">${key==='revGrowth'?p1(a.revGrowth):key==='ocf'?p1(a.ocfMargin):key==='cap'?p1(a.capMargin):p1(a.sbcMargin)}<span class="ert41-tag">SEC ACTUAL</span></td>${idx.map(i=>`<td>${input(key,i,vals[i])}<span class="ert41-tag">${editable?'CUSTOM ASSUMPTION':'ERT '+name.toUpperCase()}</span></td>`).join('')}</tr>`;
+   const street=`<tr><td><strong>Street Revenue (USD m)</strong></td><td class="actual">—</td>${idx.map(i=>{const v=streetRevenueM(d.years[i]);return `<td class="street">${Number.isFinite(v)?fmt(v,0):'—'}<span class="ert41-tag">${Number.isFinite(v)?'BUSINESS QUANT':'NOT PROVIDED'}</span></td>`}).join('')}</tr>`;
+   const rev=`<tr><td class="clickable" data-inspect="v40:revenue"><strong>Revenue (USD m)</strong></td><td class="actual">${fmt(a.revenue,0)}<span class="ert41-tag">SEC ACTUAL</span></td>${idx.map(i=>`<td>${fmt(r.detail[i].revenue,0)}<span class="ert41-tag">CALCULATED</span></td>`).join('')}</tr>`;
+   const fcf=`<tr><td class="clickable" data-inspect="v40:dcf10"><strong>→ Economic FCF after SBC (USD m)</strong></td><td class="actual">${fmt(a.fcf,0)}<span class="ert41-tag">OCF − CAPEX − SBC</span></td>${idx.map(i=>`<td class="calc"><strong>${fmt(r.detail[i].fcf,0)}</strong><span class="ert41-tag">CALCULATED</span></td>`).join('')}</tr>`;
+   const fm=`<tr><td><strong>→ Economic FCF margin %</strong></td><td class="actual">${p1(a.fcfMargin)}</td>${idx.map(i=>`<td class="calc"><strong>${p1(r.detail[i].fcfMargin)}</strong></td>`).join('')}</tr>`;
+   const capM=`<tr><td class="clickable" data-inspect="v40:capex"><strong>CapEx (USD m)</strong></td><td class="actual">${fmt(a.capex,0)}<span class="ert41-tag">SEC ACTUAL</span></td>${idx.map(i=>`<td>${fmt(r.detail[i].capex,0)}<span class="ert41-tag">CALCULATED</span></td>`).join('')}</tr>`;
+   const guide=`<tr><td><strong>Management CapEx guidance</strong></td><td class="actual">—</td>${idx.map(i=>`<td class="guidance">${capexGuidance(d.years[i])}</td>`).join('')}</tr>`;
+   return `<div class="card ert41-section"><div class="ert41-section-head"><div><h3>FCF Forecast Engine</h3><div class="small">FY${fyA}A actual anchor → FY${d.years[0]}–FY${d.years[4]} detailed forecast. Facts, Street data and ERT assumptions remain separate.</div></div>${scenarioButtons(name)}</div>
+     <div class="ert41-forecast-wrap"><table class="ert41-forecast"><thead><tr><th>Driver / output</th><th>FY${fyA}A</th>${idx.map(i=>`<th>FY${d.years[i]}E</th>`).join('')}</tr></thead><tbody>${rev}${street}${row('Revenue growth %','revGrowth',d.revGrowth,'v40:revenue')}${row('OCF margin %','ocf',d.ocf,'v40:ocf')}${row('CapEx / Revenue %','cap',d.cap,'v40:capex')}${capM}${row('SBC / Revenue %','sbc',d.sbc,'v40:sbc')}${fm}${fcf}${guide}</tbody></table></div>
+     ${normalisation(name,r)}
+     <div class="ert41-inline-note clickable" data-inspect="fcfmargin"><strong>Historical reported FCF anchor:</strong> 5Y average ${p1(avg(fcfMargins()))} · median ${p1(med(fcfMargins()))}. Historical context only; the DCF uses the forward driver model above.</div>
+   </div>`;
+ }
+ function normalisation(name,r){
+   const d=r.drivers,open=!!S.normOpen,manual=name==='Custom'&&!!S.normCustomManual,idx=[5,6,7,8,9];
+   const cell=(key,i,j,val)=>manual?`<td><input inputmode="decimal" data-vnorm="${key}" data-i="${j}" value="${Number(val).toFixed(1)}"></td>`:`<td>${p1(val)}</td>`;
+   const row=(label,key,vals)=>`<tr><td><strong>${label}</strong></td>${idx.map((i,j)=>cell(key,i,j,vals[i])).join('')}</tr>`;
+   return `<div class="ert41-normalbar"><div><strong>FY${d.years[5]}–FY${d.years[9]} Normalisation Period</strong><div class="small">Same forecast engine. Five explicit years before terminal value.</div></div><div>${name==='Custom'?`<button id="vNormManual">${manual?'Use auto normalisation':'Edit normalisation manually'}</button>`:''}<button id="vNormToggle">${open?'Hide FY'+d.years[5]+'–FY'+d.years[9]+' normalisation':'Show FY'+d.years[5]+'–FY'+d.years[9]+' normalisation'}</button></div></div>${open?`<div class="ert41-normal-table"><div class="tw"><table><thead><tr><th>Driver</th>${idx.map(i=>`<th>FY${d.years[i]}E</th>`).join('')}</tr></thead><tbody>${row('Revenue growth %','revGrowth',d.revGrowth)}${row('OCF margin %','ocf',d.ocf)}${row('CapEx / Revenue %','cap',d.cap)}${row('SBC / Revenue %','sbc',d.sbc)}<tr><td><strong>Economic FCF after SBC (USD m)</strong></td>${idx.map(i=>`<td class="calc">${fmt(r.detail[i].fcf,0)}</td>`).join('')}</tr></tbody></table></div></div>`:''}`;
+ }
+ function sensitivity10(name){
+   const ws=[7.5,8,8.5,9,9.5,10],gs=[1.5,2,2.5,3,3.5],p=Number(D.market.price);let best=null,bd=Infinity;
+   const mat=ws.map(w=>gs.map(g=>{const v=ERT40.dcf10(name,{wacc:w,terminal:g}).ps;if(Number.isFinite(v)&&Number.isFinite(p)){const d=Math.abs(v-p);if(d<bd){bd=d;best=[w,g]}}return v}));
+   return `<div class="tw" style="max-height:none"><table style="min-width:660px"><thead><tr><th>WACC \\ g</th>${gs.map(g=>`<th>${g.toFixed(1)}%</th>`).join('')}</tr></thead><tbody>${ws.map((w,ri)=>`<tr><td>${w.toFixed(1)}%</td>${gs.map((g,ci)=>{const v=mat[ri][ci],b=best&&best[0]===w&&best[1]===g;return `<td style="${b?'outline:2px solid var(--amber);background:#28220c':''}">${Number.isFinite(v)?money(v):'—'}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>`;
+ }
+ function dcfCard(){
+   const name=S.drvScenario||'Base',r=ERT40.dcf10(name),mos=Number.isFinite(r.ps)&&Number(D.market.price)?(r.ps/Number(D.market.price)-1)*100:NaN,shares=Number(D.market.shares_m),nc=Number(D.market.net_cash_m);
+   return `<div class="card ert41-section"><div class="ert41-section-head"><div><h3>10-Year Explicit DCF — ${name}</h3><div class="small">One valuation engine for Bear / Base / Bull / Custom. Terminal value begins after FY${r.detail[9]?.year}.</div></div></div>
+    <div class="ert41-dcf-top"><div class="ert41-dcf-kpi primary clickable" data-inspect="v40:dcf10"><div class="sub">Fair value / share</div><div class="v">${money(r.ps)}</div></div><div class="ert41-dcf-kpi clickable" data-inspect="wacc"><div class="sub">WACC</div><div class="v">${p1(r.wacc)}</div></div><div class="ert41-dcf-kpi clickable" data-inspect="terminal"><div class="sub">Terminal growth</div><div class="v">${p1(r.terminal)}</div></div><div class="ert41-dcf-kpi"><div class="sub">Terminal value share</div><div class="v">${p1(r.tvshare)}</div></div><div class="ert41-dcf-kpi"><div class="sub">Margin of safety</div><div class="v ${mos>=0?'pos':'neg'}">${p1(mos)}</div></div></div>
+    <div class="ert41-bridge clickable" data-inspect="v40:dcf10"><div class="ert41-step"><div class="sub">PV FY${r.detail[0]?.year}–${r.detail[9]?.year} FCF</div><div class="v">${mm(r.pv)}</div></div><div class="ert41-step"><div class="sub">+ PV Terminal</div><div class="v">${mm(r.pvt)}</div></div><div class="ert41-step"><div class="sub">= Enterprise Value</div><div class="v">${mm(r.ev)}</div></div><div class="ert41-step"><div class="sub">+ Net Cash</div><div class="v">${mm(nc)}</div></div><div class="ert41-step"><div class="sub">= Equity Value</div><div class="v">${mm(r.equity)}</div></div><div class="ert41-step"><div class="sub">÷ Shares</div><div class="v">${fmt(shares,0)}m</div></div><div class="ert41-step"><div class="sub">= FV / Share</div><div class="v">${money(r.ps)}</div></div></div>
+    <details class="ert41-details"><summary>Edit DCF assumptions</summary><div class="ert41-assumption-grid">${[['Risk-free rate (%)','rf',S.rf],['Beta','beta',S.beta],['Equity risk premium (%)','erp',S.erp],['Pre-tax cost of debt (%)','cod',S.cod],['Tax rate (%)','tax',S.tax]].map(x=>`<label>${x[0]}<input data-vwa="${x[1]}" value="${Number(x[2]).toFixed(2)}"></label>`).join('')}<label>Terminal growth (%)<input id="vTerminal" value="${Number(S.terminal).toFixed(2)}"></label></div></details>
+    <details class="ert41-details"><summary>Show annual FY${r.detail[0]?.year}–FY${r.detail[9]?.year} DCF bridge</summary><div class="tw" style="max-height:370px"><table><thead><tr><th>Year</th><th>Revenue</th><th>OCF margin</th><th>CapEx / Rev</th><th>SBC / Rev</th><th>Economic FCF</th><th>Discount factor</th><th>PV FCF</th></tr></thead><tbody>${r.detail.map(x=>`<tr><td>FY${x.year}</td><td>${mm(x.revenue)}</td><td>${p1(x.ocfMargin)}</td><td>${p1(x.capMargin)}</td><td>${p1(x.sbcMargin)}</td><td>${mm(x.fcf)}</td><td>${x.df.toFixed(3)}</td><td>${mm(x.pvFcf)}</td></tr>`).join('')}</tbody></table></div></details>
+    <details class="ert41-details"><summary>Sensitivity — WACC × terminal growth</summary>${sensitivity10(name)}</details>
+   </div>`;
+ }
+ function reverseCard(){
+   const p=Number(D.market.price),b=ERT40.dcf10('Base'),eqReq=p*Number(D.market.shares_m),evReq=eqReq-Number(D.market.net_cash_m),gap=b.ev?evReq/b.ev-1:NaN,d=b.detail,baseRevCagr=d.length?((Math.pow(d[4].revenue/(d[0].revenue/(1+d[0].revGrowth/100)),1/5)-1)*100):NaN,fcfM=d[4]?.fcfMargin,cap=d[4]?.capMargin;
+   return `<div class="card ert41-section"><div class="ert41-section-head"><div><h3>Reverse DCF — what does ${money(p)} require?</h3><div class="small">Directional one-driver hurdles with Base WACC ${p1(b.wacc)} and terminal growth ${p1(b.terminal)} held fixed. These are MARKET-IMPLIED, not management guidance.</div></div></div><div class="ert41-reverse"><div><div class="sub">Required EV vs ERT Base</div><div class="v ${gap>0?'neg':'pos'}">${Number.isFinite(gap)?(gap>=0?'+':'')+(gap*100).toFixed(1)+'%':'—'}</div><div class="small">Required EV ${mm(evReq)}</div></div><div><div class="sub">Revenue growth hurdle</div><div class="v">&gt; ${p1(baseRevCagr)}</div><div class="small">If cash conversion is unchanged</div></div><div><div class="sub">Economic FCF margin hurdle</div><div class="v">&gt; ${p1(fcfM)}</div><div class="small">If growth is unchanged</div></div><div><div class="sub">CapEx normalisation hurdle</div><div class="v">&lt; ${p1(cap)}</div><div class="small">If other drivers are unchanged</div></div></div><div class="ert41-inline-note clickable" data-inspect="capexroi:market"><strong>AI / CapEx evidence and return analysis</strong> moved to the Inspector to keep this page focused.</div></div>`;
+ }
+ function crossCard(){
+   const primary=ERT40.dcf10('Base').ps,n=ERT40.normalizedFcfCheck('Base'),pe=ERT40.forwardEarningsCheck('Base'),ev=ERT40.evFcfCheck('Base');
+   const item=(label,val,inspect,valid=true)=>{if(!valid||!Number.isFinite(Number(val))||Number(val)<=0)return `<div class="clickable" data-inspect="${inspect}"><div class="sub">${label}</div><div class="v">UNAVAILABLE</div><span class="ert41-status ert41-unavailable">CHECK DATA</span></div>`;const st=ERT40.rangeStatus(val,primary),cls=st[0]==='SUPPORTIVE'?'ert41-support':st[0]==='CHECK'?'ert41-warn':'ert41-outlier';return `<div class="clickable" data-inspect="${inspect}"><div class="sub">${label}</div><div class="v">${money(val)}</div><span class="ert41-status ${cls}">${st[0]}</span></div>`};
+   return `<div class="card ert41-section"><div class="ert41-section-head"><div><h3>Independent Cross-Checks</h3><div class="small">Challenge the primary DCF; never averaged into the fair value.</div></div></div><div class="ert41-cross"><div class="clickable" data-inspect="v40:dcf10"><div class="sub">Primary · 10Y Explicit DCF</div><div class="v">${money(primary)}</div><span class="ert41-status ert41-support">PRIMARY</span></div>${item('Normalised FCF DCF',n.ps,'v40:norm',Number.isFinite(n.normFcf)&&n.normFcf>0)}${item('Forward Earnings',pe.ps,'v40:pe',Number.isFinite(pe.eps)&&pe.eps>0)}${item('EV / FCF',ev.ps,'v40:evfcf',Number.isFinite(ev.fcf)&&ev.fcf>0)}</div></div>`;
+ }
+
+ window.valuation=function(){
+   ensureSlimState();
+   return `<h1>Valuation Studio</h1><div class="lead">Primary method: 10-Year Explicit DCF. Forecast assumptions stay on the page; detailed evidence, methodology and AI / CapEx analysis live in the Inspector.</div>${summary()}${forecast()}${dcfCard()}${reverseCard()}${crossCard()}`;
+ };
+
+ function refreshValuationOnly(){
+   if(S.page!=='valuation')return;
+   const c=document.querySelector('.content');if(!c)return;
+   const sy=window.scrollY,st=c.scrollTop;c.innerHTML=window.valuation();c.scrollTop=st;requestAnimationFrame(()=>window.scrollTo(window.scrollX,sy));
+ }
+ function updateInspectorOnly(key){
+   S.sel=key;S.show=true;const work=document.getElementById('work');if(!work)return;
+   work.classList.remove('inspectorCollapsed');work.querySelector('#show')?.remove();
+   let ins=work.querySelector('.ins'),res=work.querySelector('.res');
+   if(!res){res=document.createElement('div');res.className='res';res.id='res';work.querySelector('.content')?.after(res)}
+   const html=inspector();if(ins)ins.outerHTML=html;else work.insertAdjacentHTML('beforeend',html);
+ }
+ function hideInspectorOnly(){
+   S.show=false;const work=document.getElementById('work');if(!work)return;work.classList.add('inspectorCollapsed');work.querySelector('.res')?.remove();work.querySelector('.ins')?.remove();if(!work.querySelector('#show'))work.insertAdjacentHTML('beforeend','<button id="show" class="restore">Evidence / Context</button>');
+ }
+ function selectScenarioLocal(name){
+   if(name!=='Custom'){
+     const p=ERT30.scenario(name);S.drvRev=[...p.rev];S.drvOcf=[...p.ocf];S.drvCap=[...p.cap];
+     try{S.drvSbc=[...ERT32.sbcScenario(name)]}catch(_e){}
+     S.scenarioMeta=p.meta;
+   }
+   S.drvScenario=name;refreshValuationOnly();
+ }
+ function copyCustomLocal(from){
+   const d=ERT40.detailedDrivers(from),t=ERT40.longRunTargets(from);S.drvRev=[...d.revGrowth];S.drvOcf=[...d.ocf];S.drvCap=[...d.cap];S.drvSbc=[...d.sbc];S.normTargets.Custom={...t};S.normManual.Custom=null;S.normCustomManual=false;S.drvScenario='Custom';refreshValuationOnly();
+ }
+ function resetCustomLocal(){copyCustomLocal('Base')}
+ function toggleManual(){
+   if(S.drvScenario!=='Custom')return;
+   if(S.normCustomManual){S.normCustomManual=false}else{const d=ERT40.tenYearDrivers('Custom');S.normManual.Custom=[5,6,7,8,9].map(i=>({revGrowth:d.revGrowth[i],ocf:d.ocf[i],cap:d.cap[i],sbc:d.sbc[i]}));S.normCustomManual=true;S.normOpen=true}refreshValuationOnly();
+ }
+
+ document.addEventListener('click',e=>{
+   if(S.page!=='valuation')return;
+   const inspect=e.target.closest('[data-inspect]');if(inspect){e.preventDefault();e.stopImmediatePropagation();updateInspectorOnly(inspect.dataset.inspect);return}
+   const sc=e.target.closest('[data-vscenario]');if(sc){e.preventDefault();e.stopImmediatePropagation();selectScenarioLocal(sc.dataset.vscenario);return}
+   const cp=e.target.closest('[data-vcopy]');if(cp){e.preventDefault();e.stopImmediatePropagation();copyCustomLocal(cp.dataset.vcopy);return}
+   if(e.target.closest('#vResetCustom')){e.preventDefault();e.stopImmediatePropagation();resetCustomLocal();return}
+   if(e.target.closest('#vNormToggle')){e.preventDefault();e.stopImmediatePropagation();S.normOpen=!S.normOpen;refreshValuationOnly();return}
+   if(e.target.closest('#vNormManual')){e.preventDefault();e.stopImmediatePropagation();toggleManual();return}
+   if(e.target.closest('#hide')){e.preventDefault();e.stopImmediatePropagation();hideInspectorOnly();return}
+   if(e.target.closest('#show')){e.preventDefault();e.stopImmediatePropagation();updateInspectorOnly(S.sel||'v40:dcf10');return}
+ },true);
+ document.addEventListener('focusin',e=>{if(S.page==='valuation'&&e.target.matches('[data-vdriver],[data-vnorm],[data-vwa],#vTerminal'))e.target.dataset.startValue=e.target.value},true);
+ document.addEventListener('keydown',e=>{if(S.page!=='valuation'||!e.target.matches('[data-vdriver],[data-vnorm],[data-vwa],#vTerminal'))return;if(e.key==='Enter'){e.preventDefault();e.target.blur()}else if(e.key==='Escape'){e.preventDefault();e.target.value=e.target.dataset.startValue??e.target.value;e.target.blur()}},true);
+ document.addEventListener('change',e=>{
+   if(S.page!=='valuation')return;const t=e.target;
+   if(!t.matches('[data-vdriver],[data-vnorm],[data-vwa],#vTerminal'))return;e.stopImmediatePropagation();
+   const v=parseFloat(t.value);if(!Number.isFinite(v)){t.value=t.dataset.startValue??'';return}
+   if(t.matches('[data-vdriver]')){const i=+t.dataset.i,k=t.dataset.vdriver;if(k==='revGrowth')S.drvRev[i]=v;if(k==='ocf')S.drvOcf[i]=v;if(k==='cap')S.drvCap[i]=v;if(k==='sbc')S.drvSbc[i]=v;S.drvScenario='Custom'}
+   else if(t.matches('[data-vnorm]')){const i=+t.dataset.i,k=t.dataset.vnorm;if(!Array.isArray(S.normManual.Custom)){const d=ERT40.tenYearDrivers('Custom');S.normManual.Custom=[5,6,7,8,9].map(j=>({revGrowth:d.revGrowth[j],ocf:d.ocf[j],cap:d.cap[j],sbc:d.sbc[j]}))}S.normManual.Custom[i][k]=v;S.normCustomManual=true;S.normOpen=true;S.drvScenario='Custom'}
+   else if(t.matches('[data-vwa]'))S[t.dataset.vwa]=v;else if(t.id==='vTerminal')S.terminal=v;
+   refreshValuationOnly();
+ },true);
+
+ // Keep the baseline behaviour of non-Valuation pages exactly as supplied.
+ window.analysis=function(){
+   let x=oldAnalysis41();
+   x=x.replace('ERT vs Street vs Market-implied expectations','Actual vs ERT vs Street vs Market');
+   x=x.replace(/<div class="grid two" style="margin-top:12px"><div class="card"><h3>Business Quant analyst consensus[\s\S]*?<\/div><div class="card"><h3>Upcoming catalysts/,`<div class="grid two" style="margin-top:12px"><div class="card"><details><summary><strong>Street estimate detail (Business Quant)</strong></summary><p class="small">Q3/Q4 and annual Street detail is supporting evidence. Use Financial Statements or Inspector for line-item estimates.</p></details></div><div class="card"><h3>Upcoming catalysts`);
+   return x;
+ };
+ window.overview=function(){let x=oldOverview41();return x.replace(/ERT Primary Fair Value/g,'ERT Base Fair Value').replace(/ERT PRIMARY FAIR VALUE/g,'ERT BASE FAIR VALUE');};
+ // Preserve the baseline render wrapper for all non-Valuation navigation / live-refresh behaviour.
+ let savedScroll=0;
+ document.addEventListener('pointerdown',e=>{if(S.page!=='valuation'&&e.target.closest('[data-scenario],[data-copycustom],#resetCustom40,#normToggle,#normManual,[data-inspect]')){const c=document.querySelector('.content');savedScroll=c?c.scrollTop:0;}},true);
+ const oldRender41=window.render;window.render=function(){oldRender41();requestAnimationFrame(()=>{const c=document.querySelector('.content');if(c&&savedScroll>0){c.scrollTop=savedScroll;savedScroll=0;}})};
+})();
+</script>
+
 </body></html>
